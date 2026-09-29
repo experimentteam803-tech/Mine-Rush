@@ -328,9 +328,8 @@
         
         .btn-gold { background: linear-gradient(135deg, #FFD200, #F7931A); color: #000; box-shadow: 0 4px 20px rgba(255, 210, 0, 0.25); }
         .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
-        .btn-red { background: linear-gradient(135deg, #EF4444, #DC2626); color: #FFF; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); }
 
-        /* Tasks & Ads Cards (Redesigned) */
+        /* Tasks & Ads Cards */
         .filter-scroller { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .filter-scroller::-webkit-scrollbar { display: none; }
         .chip-tab { padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; white-space: nowrap; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; }
@@ -426,6 +425,40 @@
         .status-approved { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
         .status-rejected { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
 
+        /* Referral Roadmap Box */
+        .refer-guide-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .guide-step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .guide-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
+        .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+
         /* Modals & Backdrop */
         .modal-backdrop {
             display: none;
@@ -458,8 +491,33 @@
         .form-input { width: 100%; background: var(--bg-base); border: 1px solid var(--border); color: #FFF; padding: 13px 14px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; outline: none; }
         .form-input:focus { border-color: var(--accent-cyan); }
 
-        .auth-toggle-row { display: flex; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-secondary); margin-top: 16px; }
-        .auth-toggle-btn { color: var(--accent-cyan); font-weight: 800; cursor: pointer; text-decoration: underline; }
+        .auth-nav-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 18px;
+        }
+
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .auth-tab-btn.active {
+            background: var(--bg-card-subtle);
+            color: var(--accent-cyan);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
 
         /* Payout Method Tabs (UPI vs TON) */
         .payout-method-selector {
@@ -515,7 +573,7 @@
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 300; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
         .toast { background: rgba(15, 23, 42, 0.98); border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; font-size: 13px; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); pointer-events: auto; }
         
-        /* Celebration Modal (Welcome Bonus) */
+        /* Celebration Modal */
         .celebration-modal {
             background: linear-gradient(135deg, #172238, #0B1120);
             border: 2px solid var(--accent-gold);
@@ -542,16 +600,16 @@
 
     <div id="toast-container"></div>
 
-    <!-- ================= CELEBRATION WELCOME MODAL ================= -->
+    <!-- Celebration Welcome Modal (1-Time Claim) -->
     <div class="modal-backdrop" id="modal-welcome" style="z-index: 400;">
         <div class="celebration-modal">
             <div style="font-size: 50px; margin-bottom: 8px;">🎁</div>
             <h2 style="font-size: 22px; font-weight: 800; color: #FFF;">Welcome Gift!</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin: 6px 0 16px 0;">
-                You received an exclusive Welcome Bonus as a new verified miner!
+                You unlocked an exclusive 1-time Welcome Bonus as a verified miner!
             </p>
             <div style="background: rgba(255, 210, 0, 0.12); border: 1px solid rgba(255, 210, 0, 0.3); border-radius: 16px; padding: 14px; margin-bottom: 20px;">
-                <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">CREDITED BALANCE</div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">BONUS CREDIT</div>
                 <div style="font-size: 32px; font-weight: 800; color: var(--accent-gold); margin-top: 2px;">+100 COINS</div>
             </div>
             <button class="btn-primary btn-gold" onclick="App.closeWelcomeModal()">
@@ -560,67 +618,77 @@
         </div>
     </div>
 
-    <!-- ================= FULL AUTHENTICATION (CREATE ACCOUNT / LOGIN) ================= -->
+    <!-- ================= FIREBASE EMAIL / PASSWORD AUTH MODAL ================= -->
     <div class="modal-backdrop" id="modal-auth" style="z-index: 250;">
         <div class="modal-sheet" style="border-radius: 26px; margin: auto; max-width: 400px; max-height: 94vh;">
-            <div style="text-align: center; margin-bottom: 18px;">
-                <h2 style="font-size: 22px; font-weight: 800;" id="auth-title">Create Account</h2>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;" id="auth-subtitle">
-                    Register your phone number to secure cloud mining profits
-                </p>
+            
+            <div class="auth-nav-tabs">
+                <button class="auth-tab-btn active" id="tab-btn-signup" onclick="App.switchAuthTab('signup')">Create Account</button>
+                <button class="auth-tab-btn" id="tab-btn-login" onclick="App.switchAuthTab('login')">Sign In</button>
             </div>
 
-            <!-- Sign Up Form Container -->
-            <div id="form-signup-container">
-                <label class="form-label">MOBILE NUMBER</label>
-                <div style="display: flex; gap: 8px; margin-bottom: 14px;">
-                    <input type="tel" class="form-input" id="signup-phone" placeholder="Enter 10-digit mobile" style="margin-bottom:0; flex:1;">
-                    <button class="btn-primary" id="btn-send-otp" style="width: auto; padding: 0 16px; font-size: 12px; white-space: nowrap;" onclick="App.sendOTP()">
-                        Send OTP
-                    </button>
-                </div>
+            <!-- Sign Up Container -->
+            <div id="auth-signup-view">
+                <label class="form-label">EMAIL ADDRESS</label>
+                <input type="email" class="form-input" id="signup-email" placeholder="name@example.com">
 
-                <div id="otp-field-group" style="display: none;">
-                    <label class="form-label">ENTER 4-DIGIT OTP</label>
-                    <input type="number" class="form-input" id="signup-otp" placeholder="Enter verification code">
-                </div>
-
-                <label class="form-label">CREATE PASSWORD</label>
-                <input type="password" class="form-input" id="signup-pass" placeholder="Min 6 characters">
+                <label class="form-label">PASSWORD</label>
+                <input type="password" class="form-input" id="signup-password" placeholder="Minimum 6 characters">
 
                 <label class="form-label">CONFIRM PASSWORD</label>
-                <input type="password" class="form-input" id="signup-confirm-pass" placeholder="Re-enter password">
+                <input type="password" class="form-input" id="signup-confirm-password" placeholder="Repeat your password">
 
                 <label class="form-label">REFERRAL CODE (OPTIONAL)</label>
                 <input type="text" class="form-input" id="signup-ref-code" placeholder="Auto-fills from invite link">
 
-                <button class="btn-primary" onclick="App.handleRegister()">
-                    🚀 Create Account
+                <button class="btn-primary" id="btn-auth-register" onclick="App.handleRegister()">
+                    🚀 Create Free Account
                 </button>
-                
-                <div class="auth-toggle-row">
-                    <span>Already have an account?</span>
-                    <span class="auth-toggle-btn" onclick="App.toggleAuthMode('login')">Login</span>
-                </div>
             </div>
 
-            <!-- Login Form Container -->
-            <div id="form-login-container" style="display: none;">
-                <label class="form-label">MOBILE NUMBER</label>
-                <input type="tel" class="form-input" id="login-phone" placeholder="Enter your registered mobile">
+            <!-- Sign In Container -->
+            <div id="auth-login-view" style="display: none;">
+                <label class="form-label">EMAIL ADDRESS</label>
+                <input type="email" class="form-input" id="login-email" placeholder="name@example.com">
 
                 <label class="form-label">PASSWORD</label>
-                <input type="password" class="form-input" id="login-pass" placeholder="Enter password">
+                <input type="password" class="form-input" id="login-password" placeholder="Enter your password">
 
-                <button class="btn-primary" onclick="App.handleLogin()">
-                    🔐 Secure Login
+                <button class="btn-primary" id="btn-auth-login" onclick="App.handleLogin()">
+                    🔐 Sign In
                 </button>
 
-                <div class="auth-toggle-row">
-                    <span>Don't have an account?</span>
-                    <span class="auth-toggle-btn" onclick="App.toggleAuthMode('signup')">Create Account</span>
+                <div style="text-align: center; margin-top: 14px;">
+                    <a href="javascript:void(0)" onclick="App.handleForgotPassword()" style="font-size: 12px; color: var(--accent-cyan); text-decoration: none; font-weight: 700;">
+                        Forgot Password?
+                    </a>
                 </div>
             </div>
+
+            <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 16px;">
+                Secured by Firebase Enterprise Authentication.
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= PROFILE MODAL ================= -->
+    <div class="modal-backdrop" id="modal-profile">
+        <div class="modal-sheet">
+            <div class="sheet-handle"></div>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <img src="https://i.pravatar.cc/100" style="width:54px; height:54px; border-radius:50%; border:2px solid var(--accent-cyan);">
+                <div>
+                    <h3 id="profile-email-display" style="font-size:15px; font-weight:800; word-break: break-all;">user@email.com</h3>
+                    <span id="profile-uid-display" style="font-size:11px; color:var(--text-muted);">UID: ...</span>
+                </div>
+            </div>
+            <div class="wallet-card-cell" style="text-align:left; margin-bottom:14px;">
+                <div class="label">ACCOUNT STATUS</div>
+                <div style="font-size:14px; font-weight:700; color:var(--accent-green); margin-top:2px;">Verified Member ✅</div>
+            </div>
+            <button class="btn-primary btn-outline" style="margin-bottom:10px;" onclick="App.openSupportLink()">🎧 Contact Customer Support</button>
+            <button class="btn-primary btn-outline" style="margin-bottom:10px; border-color: rgba(239, 68, 68, 0.4); color: var(--accent-red);" onclick="App.handleSignOut()">🚪 Sign Out</button>
+            <button class="btn-primary" onclick="App.closeModals()">Close</button>
         </div>
     </div>
 
@@ -645,7 +713,7 @@
                 <div class="balance-hero">
                     <div class="balance-label">
                         <span>Total Portfolio</span>
-                        <span style="color:var(--accent-cyan); font-size:11px;">100 Coins = ₹1</span>
+                        <span style="color:var(--accent-cyan); font-size:11px;" id="rate-badge">100 Coins = ₹1</span>
                     </div>
                     <div class="primary-balance">
                         <span class="coin-val" id="home-coin-balance">0</span>
@@ -726,7 +794,7 @@
                 </div>
             </section>
 
-            <!-- 📋 TASKS SECTION (Clear Step-by-Step Instructions) -->
+            <!-- 📋 TASKS SECTION -->
             <section id="view-tasks" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Task Center</h2>
@@ -779,7 +847,7 @@
                 </div>
             </section>
 
-            <!-- 💰 WALLET & WITHDRAWAL SECTION (With Swap + Withdraw Button + Records) -->
+            <!-- 💰 WALLET & WITHDRAWAL -->
             <section id="view-wallet" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Treasury & Cashout</h2>
@@ -805,7 +873,7 @@
                 <div class="swap-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h4 style="font-size:14px; font-weight:800;">💱 Convert & Swap</h4>
-                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;">Rate: 100 C = ₹1</span>
+                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires 1 Ad</span>
                     </div>
 
                     <div class="swap-input-group">
@@ -844,24 +912,61 @@
                 </div>
             </section>
 
-            <!-- 👥 REFERRAL -->
+            <!-- 👥 ADVANCED REFERRAL PROGRAM (+200 COINS PER QUALIFIED MINER) -->
             <section id="view-refer" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Invite & Earn</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Share your link. Referral code auto-fills when friends join!</p>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Get +200 Coins for every invited friend who completes their 1st mining session.</p>
                 </div>
 
                 <div class="balance-hero" style="border-color: rgba(255, 210, 0, 0.3);">
                     <div class="balance-label">
-                        <span>Your Referral Code</span>
-                        <span>Tier 1 Active</span>
+                        <span>Your Unique Referral Link</span>
+                        <span style="color:var(--accent-gold);">+200 Coins / User</span>
                     </div>
-                    <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:18px; font-weight:800; color:var(--accent-gold); letter-spacing:2px; text-align:center; margin:10px 0;" id="user-ref-code-display">
-                        MINE123
+                    <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:12px; color:var(--accent-cyan); word-break:break-all; margin:10px 0;" id="user-ref-link-display">
+                        Loading your link...
                     </div>
                     <button class="btn-primary btn-gold" onclick="App.copyReferralLink()">
-                        📋 Copy Invite Link (With Auto-Fill)
+                        📋 Copy Invite Link
                     </button>
+                </div>
+
+                <!-- 4-Step Referral Qualification Roadmap -->
+                <div class="refer-guide-card">
+                    <h4 style="font-size:14px; font-weight:800; color:#FFF; margin-bottom:4px;">How Referral Rewards Work</h4>
+                    
+                    <div class="guide-step">
+                        <div class="guide-icon">1</div>
+                        <div class="guide-text">
+                            <h5>Share Your Unique Link</h5>
+                            <p>Send your link to friends via WhatsApp, Telegram, or social media.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="guide-icon">2</div>
+                        <div class="guide-text">
+                            <h5>Friend Creates Account</h5>
+                            <p>Friend installs the app and registers using their email & password.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="guide-icon">3</div>
+                        <div class="guide-text">
+                            <h5>Friend Completes 1st Mining</h5>
+                            <p>To prevent fake bots, your friend must complete their first 1-hour mining session.</p>
+                        </div>
+                    </div>
+
+                    <div class="guide-step">
+                        <div class="guide-icon">4</div>
+                        <div class="guide-text">
+                            <h5>Instant +200 Coins Credited!</h5>
+                            <p>200 Coins are automatically deposited into your treasury.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="wallet-grid">
@@ -870,8 +975,8 @@
                         <div class="val" id="ref-invited-count">0</div>
                     </div>
                     <div class="wallet-card-cell">
-                        <div class="label">ACTIVE</div>
-                        <div class="val" id="ref-active-count">0</div>
+                        <div class="label">QUALIFIED</div>
+                        <div class="val" id="ref-qualified-count">0</div>
                     </div>
                     <div class="wallet-card-cell">
                         <div class="label">COMMISSION</div>
@@ -905,32 +1010,30 @@
         </nav>
     </div>
 
-    <!-- ================= DEDICATED WITHDRAWAL MODAL (UPI & USDT TON) ================= -->
+    <!-- ================= WITHDRAWAL MODAL (UPI & TON USDT) ================= -->
     <div class="modal-backdrop" id="modal-withdraw">
         <div class="modal-sheet">
             <div class="sheet-handle"></div>
             <h3 style="font-size:18px; font-weight:800; margin-bottom:4px;">Request Cashout</h3>
             <p style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">Select payment method & enter correct receiving details.</p>
 
-            <!-- Payout Method Selection Tabs -->
             <div class="payout-method-selector">
                 <div class="payout-tab selected" id="tab-upi" onclick="App.selectPayoutMethod('UPI')">
                     <div class="tab-title">🇮🇳 UPI Cashout</div>
-                    <div class="tab-sub">Min ₹50 (INR)</div>
+                    <div class="tab-sub" id="payout-min-upi-text">Min ₹50 (INR)</div>
                 </div>
                 <div class="payout-tab" id="tab-ton" onclick="App.selectPayoutMethod('TON')">
                     <div class="tab-title">💎 USDT (TON)</div>
-                    <div class="tab-sub">Min $5 (TON Net)</div>
+                    <div class="tab-sub" id="payout-min-ton-text">Min $5 (TON Net)</div>
                 </div>
             </div>
 
-            <!-- TON Specific Warning -->
             <div class="warning-callout" id="ton-warning" style="display: none;">
                 ⚠️ <strong>CRITICAL TON NETWORK SAFETY:</strong> Send only to a valid <strong>USDT TON Network Address</strong>. Sending to ERC20 or TRC20 will result in permanent loss.
             </div>
 
             <label class="form-label" id="withdraw-label-dest">YOUR UPI ID</label>
-            <input type="text" class="form-input" id="withdraw-dest-input" placeholder="e.g. username@okhdfcbank">
+            <input type="text" class="form-input" id="withdraw-dest-input" placeholder="e.g. mobile@paytm or name@okhdfcbank">
 
             <label class="form-label">WITHDRAWAL AMOUNT</label>
             <input type="number" class="form-input" id="withdraw-amount-input" placeholder="0.00">
@@ -942,9 +1045,13 @@
         </div>
     </div>
 
-    <!-- ================= FIREBASE APPLICATION LOGIC ================= -->
+    <!-- ================= FIREBASE APP LOGIC (AUTH & ADMIN CONTROLS) ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { 
+            getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+            signOut, onAuthStateChanged, sendPasswordResetEmail 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         import { 
             getDatabase, ref, set, get, update, push, onValue, runTransaction, query, orderByChild, equalTo 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
@@ -960,101 +1067,106 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const database = getDatabase(app);
 
-        // Core State Machine
+        // Core State
         const State = {
-            userId: localStorage.getItem('mf_user_phone') || null,
-            userName: localStorage.getItem('mf_user_name') || 'Miner',
+            user: null,
+            userId: null,
             coins: 0,
             inr: 0,
             usdt: 0,
             miningEndTime: 0,
             miningAdsWatched: 0,
-            rates: { coinToInr: 100, coinToUsdt: 9000 },
+            firstMiningCompleted: false,
+            admin: {
+                rates: { coin_to_inr: 100, coin_to_usdt: 9000 },
+                mining: { ads_required: 5, session_duration_ms: 3600000 },
+                exchange: { ads_required: 1, min_swap_coins: 100 },
+                withdrawals: { min_upi_inr: 50, min_ton_usdt: 5 },
+                referral: { reward_coins: 200 }
+            },
             selectedPayoutMethod: 'UPI',
-            generatedOtp: null,
-            otpTimerInterval: null,
             lastAdWatchTime: 0
         };
 
         window.App = {
             init: function() {
-                // Check if referral param is present in URL to auto-fill
+                // Auto-fill Referral Code from URL Query if available (?ref=UID)
                 const urlParams = new URLSearchParams(window.location.search);
                 const refCodeParam = urlParams.get('ref') || urlParams.get('startapp') || '';
                 if (refCodeParam) {
                     const refInput = document.getElementById('signup-ref-code');
-                    if (refInput) refInput.value = refCodeParam.replace('ref_', '').toUpperCase();
+                    if (refInput) refInput.value = refCodeParam.replace('ref_', '').trim();
                 }
 
-                if (!State.userId) {
-                    document.getElementById('modal-auth').classList.add('open');
-                } else {
-                    this.attachUserSession();
-                }
+                // Listen to Admin Panel Settings in Realtime
+                this.listenToAdminSettings();
+
+                // Listen to Firebase Auth State Change
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        State.user = user;
+                        State.userId = user.uid;
+                        document.getElementById('modal-auth').classList.remove('open');
+                        this.attachUserSession();
+                    } else {
+                        State.user = null;
+                        State.userId = null;
+                        document.getElementById('modal-auth').classList.add('open');
+                    }
+                });
+
                 this.startMiningClock();
             },
 
-            toggleAuthMode: function(mode) {
-                if (mode === 'login') {
-                    document.getElementById('form-signup-container').style.display = 'none';
-                    document.getElementById('form-login-container').style.display = 'block';
-                    document.getElementById('auth-title').innerText = "Welcome Back";
-                    document.getElementById('auth-subtitle').innerText = "Enter credentials to access your earnings";
-                } else {
-                    document.getElementById('form-signup-container').style.display = 'block';
-                    document.getElementById('form-login-container').style.display = 'none';
-                    document.getElementById('auth-title').innerText = "Create Account";
-                    document.getElementById('auth-subtitle').innerText = "Register your phone number to secure cloud mining profits";
-                }
+            // ================= REALTIME ADMIN PANEL LISTENER =================
+            listenToAdminSettings: function() {
+                onValue(ref(database, 'admin_settings'), (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        if (data.rates) State.admin.rates = { ...State.admin.rates, ...data.rates };
+                        if (data.mining) State.admin.mining = { ...State.admin.mining, ...data.mining };
+                        if (data.exchange) State.admin.exchange = { ...State.admin.exchange, ...data.exchange };
+                        if (data.withdrawals) State.admin.withdrawals = { ...State.admin.withdrawals, ...data.withdrawals };
+                        if (data.referral) State.admin.referral = { ...State.admin.referral, ...data.referral };
+                    }
+                    this.updateAdminDynamicUI();
+                });
             },
 
-            sendOTP: function() {
-                const phone = document.getElementById('signup-phone').value.trim();
-                if (phone.length < 10) {
-                    this.toast("Enter a valid 10-digit mobile number", "error");
-                    return;
+            updateAdminDynamicUI: function() {
+                document.getElementById('rate-badge').innerText = `${State.admin.rates.coin_to_inr} Coins = ₹1`;
+                document.getElementById('swap-req-ad-text').innerText = `Requires ${State.admin.exchange.ads_required} Ad`;
+                document.getElementById('payout-min-upi-text').innerText = `Min ₹${State.admin.withdrawals.min_upi_inr} (INR)`;
+                document.getElementById('payout-min-ton-text').innerText = `Min $${State.admin.withdrawals.min_ton_usdt} (TON Net)`;
+                this.updateMiningUI();
+            },
+
+            // ================= AUTHENTICATION FLOW =================
+            switchAuthTab: function(tab) {
+                if (tab === 'signup') {
+                    document.getElementById('auth-signup-view').style.display = 'block';
+                    document.getElementById('auth-login-view').style.display = 'none';
+                    document.getElementById('tab-btn-signup').classList.add('active');
+                    document.getElementById('tab-btn-login').classList.remove('active');
+                } else {
+                    document.getElementById('auth-signup-view').style.display = 'none';
+                    document.getElementById('auth-login-view').style.display = 'block';
+                    document.getElementById('tab-btn-signup').classList.remove('active');
+                    document.getElementById('tab-btn-login').classList.add('active');
                 }
-
-                // Generate simulated 4-digit code
-                State.generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-                document.getElementById('otp-field-group').style.display = 'block';
-
-                const btn = document.getElementById('btn-send-otp');
-                btn.disabled = true;
-                let countdown = 30;
-                btn.innerText = `${countdown}s`;
-
-                clearInterval(State.otpTimerInterval);
-                State.otpTimerInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown <= 0) {
-                        clearInterval(State.otpTimerInterval);
-                        btn.disabled = false;
-                        btn.innerText = "Resend OTP";
-                    } else {
-                        btn.innerText = `${countdown}s`;
-                    }
-                }, 1000);
-
-                // Professional interactive simulation toast
-                this.toast(`Verification Code: ${State.generatedOtp}`, "info");
             },
 
             handleRegister: async function() {
-                const phone = document.getElementById('signup-phone').value.trim();
-                const otp = document.getElementById('signup-otp').value.trim();
-                const pass = document.getElementById('signup-pass').value.trim();
-                const confirmPass = document.getElementById('signup-confirm-pass').value.trim();
+                const email = document.getElementById('signup-email').value.trim();
+                const pass = document.getElementById('signup-password').value.trim();
+                const confirmPass = document.getElementById('signup-confirm-password').value.trim();
                 const refCode = document.getElementById('signup-ref-code').value.trim();
 
-                if (phone.length < 10) {
-                    this.toast("Please enter a valid 10-digit mobile number", "error");
-                    return;
-                }
-                if (!State.generatedOtp || otp !== State.generatedOtp) {
-                    this.toast("Invalid or unverified OTP code", "error");
+                if (!email || !email.includes('@')) {
+                    this.toast("Please enter a valid email address", "error");
                     return;
                 }
                 if (pass.length < 6) {
@@ -1066,95 +1178,100 @@
                     return;
                 }
 
-                const userKey = phone.replace(/[^0-9]/g, "");
-                const userSnapshot = await get(ref(database, `users/${userKey}`));
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    const user = userCredential.user;
 
-                if (userSnapshot.exists()) {
-                    this.toast("Mobile already registered! Please login.", "error");
-                    this.toggleAuthMode('login');
-                    return;
-                }
-
-                // Register New Profile with Welcome Bonus (100 Coins)
-                const newUserData = {
-                    userId: userKey,
-                    phone: phone,
-                    pass: pass,
-                    coins: 100, // 100 Coins Welcome Bonus
-                    welcomeBonusClaimed: true,
-                    inr_balance: 0,
-                    usdt_balance: 0,
-                    miningEndTime: 0,
-                    miningAdsWatched: 0,
-                    referredBy: refCode || 'DIRECT',
-                    joinDate: Date.now()
-                };
-
-                await set(ref(database, `users/${userKey}`), newUserData);
-
-                // Credit Referral Commission to Referrer if exists
-                if (refCode && refCode !== 'DIRECT') {
-                    const referrerKey = refCode.toLowerCase();
-                    runTransaction(ref(database, `users/${referrerKey}/coins`), (curr) => {
-                        return (parseFloat(curr) || 0) + 50; // +50 Coins invite reward
+                    // Initialize Profile with Welcome Gift (100 Coins)
+                    await set(ref(database, `users/${user.uid}`), {
+                        uid: user.uid,
+                        email: email,
+                        coins: 100, // 100 Coins Welcome Gift
+                        welcomeBonusClaimed: true,
+                        inr_balance: 0,
+                        usdt_balance: 0,
+                        miningEndTime: 0,
+                        miningAdsWatched: 0,
+                        firstMiningCompleted: false,
+                        referredBy: refCode || 'DIRECT',
+                        createdAt: Date.now()
                     });
+
+                    // Log referral binding if user entered referral code
+                    if (refCode && refCode !== 'DIRECT') {
+                        await set(ref(database, `referral_bindings/${user.uid}`), {
+                            referrerUid: refCode,
+                            userUid: user.uid,
+                            userEmail: email,
+                            status: 'Pending First Mining',
+                            createdAt: Date.now()
+                        });
+                    }
+
+                    document.getElementById('modal-welcome').classList.add('open');
+                    this.toast("Account created successfully!", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
                 }
-
-                localStorage.setItem('mf_user_phone', userKey);
-                localStorage.setItem('mf_user_name', `User_${userKey.slice(-4)}`);
-                State.userId = userKey;
-                State.userName = `User_${userKey.slice(-4)}`;
-
-                document.getElementById('modal-auth').classList.remove('open');
-                this.attachUserSession();
-
-                // Trigger Celebrating Welcome Bonus Modal
-                document.getElementById('modal-welcome').classList.add('open');
             },
 
             handleLogin: async function() {
-                const phone = document.getElementById('login-phone').value.trim();
-                const pass = document.getElementById('login-pass').value.trim();
+                const email = document.getElementById('login-email').value.trim();
+                const pass = document.getElementById('login-password').value.trim();
 
-                if (phone.length < 10 || pass.length < 4) {
-                    this.toast("Enter your registered phone and password", "error");
+                if (!email || !pass) {
+                    this.toast("Please enter email & password", "error");
                     return;
                 }
 
-                const userKey = phone.replace(/[^0-9]/g, "");
-                const snapshot = await get(ref(database, `users/${userKey}`));
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    this.toast("Welcome back!", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
 
-                if (!snapshot.exists()) {
-                    this.toast("Account not found. Please create an account.", "error");
+            handleForgotPassword: async function() {
+                const email = document.getElementById('login-email').value.trim();
+                if (!email) {
+                    this.toast("Enter your email above to reset password", "info");
                     return;
                 }
-
-                const data = snapshot.val();
-                if (data.pass !== pass) {
-                    this.toast("Incorrect password", "error");
-                    return;
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    this.toast("Password reset email sent! Check your inbox.", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
                 }
+            },
 
-                localStorage.setItem('mf_user_phone', userKey);
-                localStorage.setItem('mf_user_name', `User_${userKey.slice(-4)}`);
-                State.userId = userKey;
-                State.userName = `User_${userKey.slice(-4)}`;
-
-                document.getElementById('modal-auth').classList.remove('open');
-                this.attachUserSession();
-                this.toast("Logged in successfully!", "success");
+            handleSignOut: async function() {
+                await signOut(auth);
+                this.closeModals();
+                this.toast("Signed out successfully", "info");
             },
 
             closeWelcomeModal: function() {
                 document.getElementById('modal-welcome').classList.remove('open');
             },
 
+            // ================= USER SESSION SYNC =================
             attachUserSession: function() {
-                document.getElementById('user-display-name').innerText = State.userName;
-                document.getElementById('user-display-tag').innerText = `ID: ${State.userId}`;
-                document.getElementById('user-ref-code-display').innerText = State.userId.toUpperCase();
+                const uid = State.userId;
+                const email = State.user.email;
 
-                const userRef = ref(database, `users/${State.userId}`);
+                document.getElementById('user-display-name').innerText = email.split('@')[0];
+                document.getElementById('user-display-tag').innerText = `ID: ${uid.slice(0, 8)}...`;
+                document.getElementById('profile-email-display').innerText = email;
+                document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
+
+                // Generate Unique Referral Link
+                const origin = window.location.origin + window.location.pathname;
+                const refLink = `${origin}?ref=${uid}`;
+                document.getElementById('user-ref-link-display').innerText = refLink;
+
+                const userRef = ref(database, `users/${uid}`);
                 onValue(userRef, (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
@@ -1163,12 +1280,14 @@
                         State.usdt = parseFloat(data.usdt_balance) || 0;
                         State.miningEndTime = parseInt(data.miningEndTime) || 0;
                         State.miningAdsWatched = parseInt(data.miningAdsWatched) || 0;
+                        State.firstMiningCompleted = data.firstMiningCompleted || false;
 
                         this.renderBalances();
                         this.updateMiningUI();
                     }
                 });
 
+                this.listenToReferralStats();
                 this.listenToTasks();
                 this.listenToHistory();
             },
@@ -1182,7 +1301,7 @@
                 document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
             },
 
-            // ================= MINING ENGINE & ANIMATIONS =================
+            // ================= MINING ENGINE (WITH 1ST MINING REFERRAL CHECK) =================
             handleMiningAction: async function() {
                 const now = Date.now();
                 if (State.miningEndTime > now) {
@@ -1190,20 +1309,58 @@
                     return;
                 }
 
-                const requiredAds = 5;
+                const requiredAds = State.admin.mining.ads_required;
                 if (State.miningAdsWatched < requiredAds) {
                     this.watchNativeRewardedAd();
                     return;
                 }
 
-                // Start 1-Hour Mining
-                const duration = 60 * 60 * 1000;
+                // Start Session
+                const duration = State.admin.mining.session_duration_ms;
                 await update(ref(database, `users/${State.userId}`), {
                     miningStartTime: now,
                     miningEndTime: now + duration,
                     miningAdsWatched: 0
                 });
+
+                // Anti-Cheat Referral Reward Trigger: Upon completing/starting 1st Mining
+                if (!State.firstMiningCompleted) {
+                    await update(ref(database, `users/${State.userId}`), { firstMiningCompleted: true });
+                    this.processReferralCommission();
+                }
+
                 this.toast("Mining Started! Sit back & earn coins.", "success");
+            },
+
+            // Gives Referrer +200 Coins after Refer User Starts First Mining
+            processReferralCommission: async function() {
+                const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
+                if (bindingSnap.exists()) {
+                    const binding = bindingSnap.val();
+                    if (binding.status === 'Pending First Mining') {
+                        const referrerUid = binding.referrerUid;
+                        const reward = State.admin.referral.reward_coins || 200;
+
+                        // Atomically reward the referrer
+                        await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
+                            return (parseFloat(curr) || 0) + reward;
+                        });
+
+                        // Record reward history in referrer profile
+                        await push(ref(database, `users/${referrerUid}/coin_history`), {
+                            amount: reward,
+                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
+                            timestamp: Date.now()
+                        });
+
+                        // Mark binding as qualified
+                        await update(ref(database, `referral_bindings/${State.userId}`), {
+                            status: 'Qualified',
+                            rewardedCoins: reward,
+                            qualifiedAt: Date.now()
+                        });
+                    }
+                }
             },
 
             startMiningClock: function() {
@@ -1222,10 +1379,9 @@
                         badge.className = "badge badge-active";
                         badge.innerText = "MINING ACTIVE";
 
-                        // Enable CSS Animation classes
                         dial.classList.add('active-mining');
 
-                        const progress = 1 - (remaining / 3600000);
+                        const progress = 1 - (remaining / State.admin.mining.session_duration_ms);
                         circle.style.strokeDashoffset = 534 - (534 * progress);
 
                         // Spawn floating coin particles every 2 seconds
@@ -1260,7 +1416,7 @@
             updateMiningUI: function() {
                 const now = Date.now();
                 const btnLabel = document.getElementById('btn-mine-label');
-                const reqAds = 5;
+                const reqAds = State.admin.mining.ads_required;
                 document.getElementById('mining-ads-status').innerText = `${State.miningAdsWatched}/${reqAds}`;
 
                 if (State.miningEndTime > now) {
@@ -1283,11 +1439,9 @@
                     return;
                 }
 
-                // Check for Native Android Studio Bridge
                 if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
                     window.AndroidBridge.showRewardedAd();
                 } else {
-                    // Browser Web Fallback
                     if (window.Adsgram) {
                         window.Adsgram.init({ blockId: "19245" }).show()
                             .then(() => window.onNativeAdRewarded())
@@ -1324,16 +1478,17 @@
                 const target = document.getElementById('swap-target-currency').value;
                 const out = document.getElementById('swap-output-preview');
 
-                if (target === 'INR') out.value = `₹ ${(amount / State.rates.coinToInr).toFixed(2)}`;
-                else out.value = `$ ${(amount / State.rates.coinToUsdt).toFixed(3)}`;
+                if (target === 'INR') out.value = `₹ ${(amount / State.admin.rates.coin_to_inr).toFixed(2)}`;
+                else out.value = `$ ${(amount / State.admin.rates.coin_to_usdt).toFixed(3)}`;
             },
 
             triggerCoinExchange: async function() {
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
                 const target = document.getElementById('swap-target-currency').value;
+                const minSwap = State.admin.exchange.min_swap_coins;
 
-                if (coinsToSwap < 100) {
-                    this.toast("Minimum swap is 100 Coins", "error");
+                if (coinsToSwap < minSwap) {
+                    this.toast(`Minimum swap is ${minSwap} Coins`, "error");
                     return;
                 }
                 if (coinsToSwap > State.coins) {
@@ -1341,11 +1496,22 @@
                     return;
                 }
 
+                // Gated by Admin Configured Ad requirement
+                if (State.admin.exchange.ads_required > 0) {
+                    try {
+                        this.toast("Loading required sponsor ad before swap...", "info");
+                        if (window.Adsgram) await window.Adsgram.init({ blockId: "19245" }).show();
+                    } catch(e) {
+                        this.toast("You must watch the ad to complete currency swap", "error");
+                        return;
+                    }
+                }
+
                 await runTransaction(ref(database, `users/${State.userId}`), (u) => {
                     if (!u || u.coins < coinsToSwap) return;
                     u.coins -= coinsToSwap;
-                    if (target === 'INR') u.inr_balance = (parseFloat(u.inr_balance) || 0) + (coinsToSwap / State.rates.coinToInr);
-                    else u.usdt_balance = (parseFloat(u.usdt_balance) || 0) + (coinsToSwap / State.rates.coinToUsdt);
+                    if (target === 'INR') u.inr_balance = (parseFloat(u.inr_balance) || 0) + (coinsToSwap / State.admin.rates.coin_to_inr);
+                    else u.usdt_balance = (parseFloat(u.usdt_balance) || 0) + (coinsToSwap / State.admin.rates.coin_to_usdt);
                     return u;
                 });
 
@@ -1354,7 +1520,7 @@
                 this.toast("Coins swapped successfully!", "success");
             },
 
-            // ================= DEDICATED WITHDRAWAL SYSTEM (UPI & USDT TON) =================
+            // ================= WITHDRAWALS =================
             openWithdrawModal: function() {
                 document.getElementById('modal-withdraw').classList.add('open');
                 this.selectPayoutMethod('UPI');
@@ -1390,6 +1556,8 @@
                 const dest = document.getElementById('withdraw-dest-input').value.trim();
                 const amount = parseFloat(document.getElementById('withdraw-amount-input').value) || 0;
                 const method = State.selectedPayoutMethod;
+                const minUpi = State.admin.withdrawals.min_upi_inr;
+                const minTon = State.admin.withdrawals.min_ton_usdt;
 
                 if (!dest || amount <= 0) {
                     this.toast("Enter valid details & amount", "error");
@@ -1397,8 +1565,8 @@
                 }
 
                 if (method === 'UPI') {
-                    if (amount < 50) {
-                        this.toast("Minimum UPI withdrawal is ₹50", "error");
+                    if (amount < minUpi) {
+                        this.toast(`Minimum UPI withdrawal is ₹${minUpi}`, "error");
                         return;
                     }
                     if (amount > State.inr) {
@@ -1406,8 +1574,8 @@
                         return;
                     }
                 } else {
-                    if (amount < 5) {
-                        this.toast("Minimum USDT (TON) withdrawal is $5", "error");
+                    if (amount < minTon) {
+                        this.toast(`Minimum USDT (TON) withdrawal is $${minTon}`, "error");
                         return;
                     }
                     if (amount > State.usdt) {
@@ -1416,7 +1584,6 @@
                     }
                 }
 
-                // Atomic deduction to avoid double spend
                 await runTransaction(ref(database, `users/${State.userId}`), (u) => {
                     if (!u) return;
                     if (method === 'UPI') u.inr_balance -= amount;
@@ -1424,9 +1591,9 @@
                     return u;
                 });
 
-                // Write to global withdrawal records queue
                 await push(ref(database, 'withdrawals'), {
                     userId: State.userId,
+                    userEmail: State.user.email,
                     amount: amount,
                     method: method === 'UPI' ? 'UPI' : 'USDT_TON',
                     network: method === 'UPI' ? 'Bank' : 'TON',
@@ -1469,7 +1636,29 @@
                 });
             },
 
-            // ================= TASKS SYSTEM =================
+            // ================= REALTIME REFERRAL STATS =================
+            listenToReferralStats: function() {
+                const q = query(ref(database, 'referral_bindings'), orderByChild('referrerUid'), equalTo(State.userId));
+                onValue(q, (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) {
+                        document.getElementById('ref-invited-count').innerText = "0";
+                        document.getElementById('ref-qualified-count').innerText = "0";
+                        document.getElementById('ref-commission-val').innerText = "0 C";
+                        return;
+                    }
+                    const list = Object.values(data);
+                    const totalInvited = list.length;
+                    const qualified = list.filter(item => item.status === 'Qualified').length;
+                    const totalEarned = qualified * (State.admin.referral.reward_coins || 200);
+
+                    document.getElementById('ref-invited-count').innerText = totalInvited;
+                    document.getElementById('ref-qualified-count').innerText = qualified;
+                    document.getElementById('ref-commission-val').innerText = `${totalEarned} C`;
+                });
+            },
+
+            // ================= TASKS LISTENER =================
             listenToTasks: function() {
                 onValue(ref(database, 'tasks'), (snap) => {
                     const c = document.getElementById('tasks-container');
@@ -1484,7 +1673,6 @@
                         const card = document.createElement('div');
                         card.className = 'task-card';
 
-                        // Render Step-by-Step Instructions cleanly
                         let instructionsHtml = '';
                         if (t.instructions && Array.isArray(t.instructions)) {
                             instructionsHtml = `<div class="task-steps-box">` + 
@@ -1524,16 +1712,17 @@
             },
 
             copyReferralLink: function() {
-                const link = `${window.location.origin}${window.location.pathname}?ref=${State.userId.toUpperCase()}`;
+                const origin = window.location.origin + window.location.pathname;
+                const link = `${origin}?ref=${State.userId}`;
                 navigator.clipboard.writeText(link).then(() => {
-                    this.toast("Invite link copied! Code auto-fills on open.", "success");
+                    this.toast("Unique invite link copied to clipboard!", "success");
                 }).catch(() => {
-                    this.toast(`Code: ${State.userId.toUpperCase()}`, "info");
+                    this.toast(`Code: ${State.userId}`, "info");
                 });
             },
 
             openProfileModal: function() {
-                this.toast(`Active Account: ${State.userName}`, "info");
+                document.getElementById('modal-profile').classList.add('open');
             },
 
             openSupportLink: function() {
@@ -1557,11 +1746,12 @@
 
         // Android Native Bridge Callback
         window.onNativeAdRewarded = function() {
-            if (State.miningEndTime <= Date.now() && State.miningAdsWatched < 5) {
+            const reqMiningAds = State.admin.mining.ads_required;
+            if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                 runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                     return (parseInt(curr) || 0) + 1;
                 });
-                App.toast("Ad completed! Added to mining countdown.", "success");
+                App.toast("Ad completed! Step added toward mining session.", "success");
             } else {
                 App.creditCoins(50, "Native Android Video Ad");
             }
