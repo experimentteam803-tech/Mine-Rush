@@ -1778,24 +1778,33 @@
             },
 
             // ================= REWARDED ADS =================
+            // ================= SMART ADMOB REWARDED TRIGGER =================
             watchNativeRewardedAd: function() {
                 SoundFX.playClick();
                 const now = Date.now();
-                if (now - State.lastAdWatchTime < 12000) {
-                    this.toast("Please wait 12s between ad views", "info");
+                if (now - State.lastAdWatchTime < 10000) {
+                    this.toast("Please wait 10s between ad views", "info");
                     return;
                 }
 
+                // 1. Agar WebIntoApp / Android APK ke andar hai (Native AdMob)
                 if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
                     window.AndroidBridge.showRewardedAd();
+                    return;
+                } else if (window.Android && typeof window.Android.showAd === 'function') {
+                    window.Android.showAd();
+                    return;
+                }
+
+                // 2. Browser Testing Fallback (Agar Chrome me test kar rahe hon)
+                if (window.Adsgram) {
+                    window.Adsgram.init({ blockId: "19245" }).show()
+                        .then(() => window.onNativeAdRewarded())
+                        .catch(() => this.toast("Ad unavailable. Try again in a moment.", "error"));
                 } else {
-                    if (window.Adsgram) {
-                        window.Adsgram.init({ blockId: "19245" }).show()
-                            .then(() => window.onNativeAdRewarded())
-                            .catch(() => this.toast("Ad skipped or unavailable", "error"));
-                    } else {
-                        setTimeout(() => window.onNativeAdRewarded(), 1500);
-                    }
+                    // Quick test simulation for browser
+                    this.toast("Simulating Ad View (1.5s)...", "info");
+                    setTimeout(() => window.onNativeAdRewarded(), 1500);
                 }
             },
 
