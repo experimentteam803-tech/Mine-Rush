@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
-    <title>Mining Father - NextGen Cloud Rewards</title>
+    <title>MineRush - NextGen Quantum Cloud Mining</title>
 
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,14 +16,15 @@
 
     <style>
         :root {
-            --bg-base: #070B12;
-            --bg-card: #0F172A;
-            --bg-card-subtle: #172238;
+            --bg-base: #040711;
+            --bg-card: rgba(13, 20, 38, 0.78);
+            --bg-card-subtle: rgba(22, 34, 60, 0.65);
             --border: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(0, 242, 254, 0.35);
+            --border-glow: rgba(0, 242, 254, 0.35);
 
             --accent-cyan: #00F2FE;
-            --accent-blue: #4FACFE;
+            --accent-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
             --accent-gold: #FFD200;
             --accent-green: #10B981;
             --accent-red: #EF4444;
@@ -48,8 +49,8 @@
         body {
             background-color: var(--bg-base);
             background-image: 
-                radial-gradient(ellipse 90% 40% at 50% 0%, rgba(0, 242, 254, 0.09), transparent),
-                radial-gradient(ellipse 60% 40% at 50% 100%, rgba(79, 172, 254, 0.06), transparent);
+                radial-gradient(ellipse 90% 50% at 50% -10%, rgba(0, 242, 254, 0.14), transparent),
+                radial-gradient(ellipse 70% 40% at 50% 105%, rgba(139, 92, 246, 0.1), transparent);
             color: var(--text-primary);
             height: 100vh;
             width: 100vw;
@@ -67,14 +68,15 @@
             overflow: hidden;
         }
 
-        /* Header */
+        /* Top Header */
         header {
-            padding: calc(var(--safe-top) + 12px) 16px 12px 16px;
+            padding: calc(var(--safe-top) + 12px) 18px 12px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(16px);
+            background: rgba(10, 16, 32, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border);
             z-index: 50;
             flex-shrink: 0;
@@ -83,45 +85,54 @@
         .header-profile {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
         }
 
-        .header-profile img {
-            width: 40px;
-            height: 40px;
+        .profile-glow-ring {
+            position: relative;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            border: 2px solid var(--accent-cyan);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            padding: 2px;
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+        }
+
+        .profile-glow-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
             object-fit: cover;
-            box-shadow: 0 0 14px rgba(0, 242, 254, 0.3);
+            background: var(--bg-base);
         }
 
         .header-user-info { display: flex; flex-direction: column; }
         .header-user-name { font-size: 14px; font-weight: 800; color: #FFF; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .header-user-tag { font-size: 11px; color: var(--accent-cyan); font-weight: 600; }
+        .header-user-tag { font-size: 11px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
 
         .icon-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: #FFF;
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
+            font-size: 17px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .icon-btn:active { transform: scale(0.92); }
+        .icon-btn:active { transform: scale(0.9); background: rgba(0, 242, 254, 0.15); border-color: var(--accent-cyan); }
 
-        /* Main View Container */
+        /* Scroll Area */
         main {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 16px 16px calc(var(--safe-bottom) + 82px) 16px;
+            padding: 16px 16px calc(var(--safe-bottom) + 84px) 16px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -129,51 +140,63 @@
         }
         main::-webkit-scrollbar { display: none; }
 
-        .section-view { display: none; flex-direction: column; gap: 16px; animation: fadeIn 0.25s ease; }
+        .section-view { display: none; flex-direction: column; gap: 16px; animation: viewFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .section-view.active { display: flex; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* Cards & Heroes */
+        /* Ultra Balance Hero */
         .balance-hero {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.98));
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(20, 30, 56, 0.9), rgba(11, 16, 32, 0.96));
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 24px;
+            padding: 22px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .balance-hero::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.22), transparent 70%);
+            pointer-events: none;
         }
 
         .balance-label {
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 11px;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 1px;
             color: var(--text-secondary);
             margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
         }
 
-        .primary-balance { display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px; }
-        .primary-balance .coin-val { font-size: 36px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 20px rgba(255, 210, 0, 0.25); }
-        .primary-balance .coin-symbol { font-size: 15px; font-weight: 700; color: var(--text-secondary); }
+        .primary-balance { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+        .primary-balance .coin-val { font-size: 38px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 25px rgba(255, 210, 0, 0.35); letter-spacing: -0.5px; }
+        .primary-balance .coin-symbol { font-size: 15px; font-weight: 800; color: var(--text-secondary); }
 
         .secondary-currencies {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             padding-top: 14px;
             border-top: 1px solid var(--border);
         }
 
         .curr-box {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 14px;
-            padding: 10px 12px;
+            padding: 10px 14px;
+            backdrop-filter: blur(8px);
         }
-        .curr-box .curr-title { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .curr-box .curr-title { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
         .curr-box .curr-amount { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
 
         /* Quick Action Bar */
@@ -181,102 +204,185 @@
         .quick-action-btn {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 12px 6px;
+            border-radius: 18px;
+            padding: 14px 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
-        .quick-action-btn:active { transform: scale(0.94); background: var(--bg-card-subtle); }
-        .quick-action-btn .btn-icon { font-size: 20px; }
-        .quick-action-btn .btn-text { font-size: 11px; font-weight: 700; color: var(--text-secondary); }
+        .quick-action-btn:active { transform: translateY(2px) scale(0.95); background: var(--bg-card-subtle); border-color: var(--accent-cyan); }
+        .quick-action-btn .btn-icon { font-size: 22px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3)); }
+        .quick-action-btn .btn-text { font-size: 11px; font-weight: 800; color: var(--text-secondary); }
 
-        /* Mining Engine Card with Advanced Animations */
-        .mining-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 22px;
+        /* ================= QUANTUM CLOUD MINING MACHINE RIG ================= */
+        .mining-rig-card {
+            background: linear-gradient(180deg, rgba(16, 24, 46, 0.95) 0%, rgba(8, 13, 26, 0.98) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.22);
+            border-radius: 26px;
             padding: 22px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 16px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        .mining-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .badge { font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; letter-spacing: 0.5px; }
-        .badge-active { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.35); animation: pulseGreen 1.8s infinite alternate; }
-        .badge-idle { background: rgba(148, 163, 184, 0.12); color: var(--text-secondary); border: 1px solid var(--border); }
-
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.2); }
-            100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
+        .rig-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .mining-dial {
+        .rig-id-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #FFF;
+        }
+
+        .rig-led-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            box-shadow: 0 0 6px var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .rig-led-dot.active {
+            background: var(--accent-green);
+            box-shadow: 0 0 12px var(--accent-green);
+            animation: ledBlink 1.2s infinite alternate;
+        }
+
+        @keyframes ledBlink {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Machine Visual Rig Console */
+        .rig-chassis {
+            background: radial-gradient(circle at 50% 50%, rgba(26, 38, 70, 0.6) 0%, rgba(10, 16, 32, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
             position: relative;
-            width: 200px;
-            height: 200px;
+            overflow: hidden;
+        }
+
+        /* Dual High-Speed Cooling Turbofans */
+        .turbofan-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .fan-housing {
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: #060A14;
+            border: 2px solid rgba(255, 255, 255, 0.07);
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 8px 0 20px 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        .mining-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-        .mining-dial-bg { fill: none; stroke: rgba(255, 255, 255, 0.05); stroke-width: 10; }
-        .mining-dial-progress {
-            fill: none;
-            stroke: var(--accent-cyan);
-            stroke-width: 10;
-            stroke-linecap: round;
-            stroke-dasharray: 534;
-            stroke-dashoffset: 534;
-            transition: stroke-dashoffset 0.8s ease;
-            filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5));
+        .fan-blades {
+            width: 82%;
+            height: 82%;
+            position: relative;
+            transform-origin: center;
+            opacity: 0.45;
+            transition: opacity 0.4s;
         }
 
-        .mining-dial.active-mining .mining-dial-progress {
-            stroke: url(#cyanBlueGrad);
-            animation: ringGlow 2.5s infinite alternate;
+        .fan-blades svg { width: 100%; height: 100%; }
+
+        .mining-rig-card.active-rig .fan-housing {
+            border-color: var(--accent-cyan);
+            box-shadow: inset 0 0 25px rgba(0, 242, 254, 0.3), 0 0 20px rgba(0, 242, 254, 0.35);
         }
 
-        @keyframes ringGlow {
-            0% { filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.4)); }
-            100% { filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.85)); }
+        .mining-rig-card.active-rig .fan-blades {
+            opacity: 1;
+            animation: fanSpin 0.55s infinite linear;
         }
 
-        .mining-dial-content { position: absolute; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        
-        .dial-icon {
-            font-size: 38px;
-            margin-bottom: 4px;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-
-        /* Active Pickaxe Striking Animation */
-        .mining-dial.active-mining .dial-icon {
-            animation: pickaxeStrike 1.2s infinite ease-in-out;
-            transform-origin: bottom right;
-        }
-
-        @keyframes pickaxeStrike {
+        @keyframes fanSpin {
             0% { transform: rotate(0deg); }
-            35% { transform: rotate(-28deg); }
-            70% { transform: rotate(14deg); }
-            100% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .dial-value { font-size: 21px; font-weight: 800; color: #FFF; letter-spacing: 0.5px; }
-        .dial-sub { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 2px; }
+        .fan-center-core {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
 
-        /* Floating Coin Sparkles Container */
+        .mining-rig-card.active-rig .fan-center-core {
+            background: var(--accent-cyan);
+            color: #040711;
+            font-weight: 800;
+            box-shadow: 0 0 14px var(--accent-cyan);
+        }
+
+        /* Machine Telemetry Display Matrix */
+        .rig-matrix-display {
+            background: rgba(4, 7, 17, 0.9);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .matrix-param { display: flex; flex-direction: column; }
+        .matrix-title { font-size: 10px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px; }
+        .matrix-val { font-size: 15px; font-weight: 800; color: #FFF; font-variant-numeric: tabular-nums; }
+
+        /* Laser Progress Gauge */
+        .rig-laser-gauge {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rig-laser-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 0 12px var(--accent-cyan);
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        /* Floating Sparks in Rig */
         .sparkle-container {
             position: absolute;
             width: 100%;
@@ -293,6 +399,7 @@
             font-size: 14px;
             font-weight: 800;
             animation: floatSparkle 1.6s forwards ease-out;
+            text-shadow: 0 0 10px rgba(255, 210, 0, 0.7);
         }
 
         @keyframes floatSparkle {
@@ -300,60 +407,55 @@
             100% { transform: translateY(-70px) scale(1.1); opacity: 0; }
         }
 
-        .mining-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; gap: 8px; margin-bottom: 18px; }
-        .mini-stat { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 14px; padding: 10px 8px; text-align: center; }
-        .mini-stat-label { font-size: 10px; color: var(--text-muted); font-weight: 700; }
-        .mini-stat-val { font-size: 13px; font-weight: 800; color: #FFF; margin-top: 2px; }
-
         /* Unified Buttons */
         .btn-primary {
             width: 100%;
-            padding: 15px;
-            border-radius: 14px;
+            padding: 16px;
+            border-radius: 16px;
             font-size: 15px;
             font-weight: 800;
             border: none;
             cursor: pointer;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            color: #050811;
-            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.25);
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: #040711;
+            box-shadow: 0 4px 22px rgba(0, 242, 254, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .btn-primary:active:not(:disabled) { transform: scale(0.97); }
-        .btn-primary:disabled { opacity: 0.5; background: #253349; color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
+        .btn-primary:disabled { opacity: 0.5; background: #1C2740; color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
         
-        .btn-gold { background: linear-gradient(135deg, #FFD200, #F7931A); color: #000; box-shadow: 0 4px 20px rgba(255, 210, 0, 0.25); }
+        .btn-gold { background: linear-gradient(135deg, #FFD200 0%, #F59E0B 100%); color: #040711; box-shadow: 0 4px 22px rgba(255, 210, 0, 0.35); }
         .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
 
         /* Tasks & Ads Cards */
         .filter-scroller { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .filter-scroller::-webkit-scrollbar { display: none; }
-        .chip-tab { padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; white-space: nowrap; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; }
-        .chip-tab.active { background: rgba(0, 242, 254, 0.12); color: var(--accent-cyan); border-color: rgba(0, 242, 254, 0.4); }
+        .chip-tab { padding: 8px 16px; border-radius: 14px; font-size: 12px; font-weight: 800; white-space: nowrap; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .chip-tab.active { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
 
         .task-card, .ad-network-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 16px;
+            border-radius: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            gap: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
         .task-card-top, .ad-card-top { display: flex; justify-content: space-between; align-items: center; }
-        .task-icon { width: 46px; height: 46px; border-radius: 14px; object-fit: cover; border: 1px solid var(--border); background: var(--bg-card-subtle); flex-shrink: 0; }
+        .task-icon { width: 48px; height: 48px; border-radius: 16px; object-fit: cover; border: 1px solid var(--border); background: var(--bg-card-subtle); flex-shrink: 0; }
         .task-info { flex: 1; margin-left: 12px; min-width: 0; }
         .task-name { font-size: 15px; font-weight: 800; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .task-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12px; }
 
         .task-steps-box {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(4, 7, 17, 0.6);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 12px;
@@ -362,19 +464,19 @@
             color: var(--text-secondary);
         }
 
-        .step-row { display: flex; gap: 8px; margin-bottom: 6px; }
-        .step-num { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-cyan); color: #000; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+        .step-row { display: flex; gap: 10px; margin-bottom: 6px; }
+        .step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-cyan); color: #040711; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
 
         /* Wallet Section with Direct Payout Button */
-        .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .wallet-card-cell { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 14px 10px; text-align: center; }
-        .wallet-card-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .wallet-card-cell { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 14px 10px; text-align: center; }
+        .wallet-card-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; }
         .wallet-card-cell .val { font-size: 16px; font-weight: 800; color: #FFF; margin-top: 4px; word-break: break-all; }
 
         .swap-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 22px;
             padding: 20px;
             display: flex;
             flex-direction: column;
@@ -384,27 +486,23 @@
         .swap-input-group {
             background: var(--bg-base);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px 14px;
+            border-radius: 16px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .swap-input-group input { background: transparent; border: none; color: #FFF; font-size: 18px; font-weight: 800; width: 60%; outline: none; }
-        .swap-input-group select { background: var(--bg-card-subtle); border: 1px solid var(--border); color: #FFF; padding: 6px 10px; border-radius: 10px; font-size: 13px; font-weight: 700; outline: none; }
+        .swap-input-group select { background: var(--bg-card-subtle); border: 1px solid var(--border); color: #FFF; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; outline: none; }
 
-        .wallet-action-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+        .wallet-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        /* History Table Cards */
+        /* History Table */
         .history-table-wrapper {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 16px;
+            border-radius: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -413,14 +511,14 @@
         .history-item {
             background: var(--bg-base);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 14px;
+            border-radius: 14px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .status-pill { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 8px; }
+        .status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; }
         .status-pending { background: rgba(255, 210, 0, 0.15); color: var(--accent-gold); }
         .status-approved { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
         .status-rejected { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
@@ -429,37 +527,33 @@
         .refer-guide-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 16px;
+            border-radius: 20px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .guide-step {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
+        .guide-step { display: flex; gap: 14px; align-items: flex-start; }
         .guide-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
             background: rgba(0, 242, 254, 0.12);
             color: var(--accent-cyan);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 800;
             flex-shrink: 0;
+            border: 1px solid rgba(0, 242, 254, 0.25);
         }
 
         .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
-        .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+        .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
 
-        /* Modals & Backdrop */
+        /* ================= ULTRA MODERN LOGIN / SIGNUP MODAL ================= */
         .modal-backdrop {
             display: none;
             position: fixed;
@@ -467,38 +561,56 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 150;
-            align-items: flex-end;
+            background: rgba(4, 7, 17, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 250;
+            align-items: center;
             justify-content: center;
+            padding: 20px;
         }
         .modal-backdrop.open { display: flex; }
 
-        .modal-sheet {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            border-radius: 26px 26px 0 0;
-            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
+        .modal-cyber-sheet {
+            background: linear-gradient(145deg, rgba(18, 27, 52, 0.98), rgba(9, 14, 28, 0.99));
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            border-radius: 28px;
+            padding: 28px 24px;
             width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 410px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 242, 254, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: sheetScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
-        .form-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; display: block; }
-        .form-input { width: 100%; background: var(--bg-base); border: 1px solid var(--border); color: #FFF; padding: 13px 14px; border-radius: 12px; font-size: 14px; margin-bottom: 14px; outline: none; }
-        .form-input:focus { border-color: var(--accent-cyan); }
+        @keyframes sheetScale {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .auth-brand-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 12px auto;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+        }
 
         .auth-nav-tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            background: var(--bg-base);
+            background: rgba(4, 7, 17, 0.8);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 16px;
             padding: 4px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
+            position: relative;
         }
 
         .auth-tab-btn {
@@ -506,111 +618,165 @@
             border: none;
             color: var(--text-secondary);
             font-size: 13px;
-            font-weight: 700;
-            padding: 10px;
-            border-radius: 10px;
+            font-weight: 800;
+            padding: 11px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
         }
 
         .auth-tab-btn.active {
-            background: var(--bg-card-subtle);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(59, 130, 246, 0.22));
             color: var(--accent-cyan);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* Payout Method Tabs (UPI vs TON) */
-        .payout-method-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 16px;
+        .form-group-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
         }
 
-        .payout-tab {
-            background: var(--bg-base);
+        .form-label { font-size: 11px; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.5px; }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 16px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(4, 7, 17, 0.85);
             border: 1px solid var(--border);
+            color: #FFF;
+            padding: 14px 14px 14px 42px;
             border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
             transition: all 0.2s;
         }
 
-        .payout-tab.selected {
-            background: rgba(0, 242, 254, 0.12);
+        .form-input:focus {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.25);
+            background: rgba(4, 7, 17, 1);
         }
 
+        .pw-toggle-btn {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Payout Modal / Standard Modal */
+        .modal-sheet {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-radius: 28px 28px 0 0;
+            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin-top: auto;
+        }
+
+        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
+
+        .payout-method-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .payout-tab { background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .payout-tab.selected { background: rgba(0, 242, 254, 0.12); border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(0, 242, 254, 0.22); }
         .payout-tab .tab-title { font-size: 14px; font-weight: 800; }
         .payout-tab .tab-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 12px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
+        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
 
-        /* Bottom Nav */
+        /* Floating Modern Bottom Nav */
         nav.bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: calc(var(--safe-bottom) + 64px);
+            height: calc(var(--safe-bottom) + 68px);
             padding-bottom: var(--safe-bottom);
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(16px);
+            background: rgba(10, 16, 32, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border-top: 1px solid var(--border);
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             align-items: center;
             z-index: 50;
         }
-        .nav-tab { background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+
+        .nav-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 0;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-tab .tab-icon { font-size: 22px; transition: transform 0.2s; }
+        .nav-tab .tab-name { font-size: 10px; font-weight: 800; letter-spacing: 0.3px; }
+
         .nav-tab.active { color: var(--accent-cyan); }
-        .nav-tab .tab-icon { font-size: 20px; }
-        .nav-tab .tab-name { font-size: 10px; font-weight: 700; }
+        .nav-tab.active .tab-icon { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
 
         /* Toast Container */
-        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 300; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
-        .toast { background: rgba(15, 23, 42, 0.98); border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; font-size: 13px; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); pointer-events: auto; }
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 350; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
+        .toast { background: rgba(13, 20, 38, 0.98); border: 1px solid var(--border); border-radius: 16px; padding: 14px 18px; font-size: 13px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); pointer-events: auto; }
         
         /* Celebration Modal */
         .celebration-modal {
-            background: linear-gradient(135deg, #172238, #0B1120);
+            background: linear-gradient(145deg, #162447, #0B1120);
             border: 2px solid var(--accent-gold);
-            border-radius: 24px;
-            padding: 26px 20px;
+            border-radius: 28px;
+            padding: 28px 22px;
             text-align: center;
             max-width: 340px;
             width: 90%;
-            box-shadow: 0 0 50px rgba(255, 210, 0, 0.35);
+            box-shadow: 0 0 60px rgba(255, 210, 0, 0.4);
             margin: auto;
         }
     </style>
 </head>
 <body>
 
-    <svg width="0" height="0" style="position:absolute">
-        <defs>
-            <linearGradient id="cyanBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#00F2FE" />
-                <stop offset="100%" stop-color="#4FACFE" />
-            </linearGradient>
-        </defs>
-    </svg>
-
     <div id="toast-container"></div>
 
     <!-- Celebration Welcome Modal (1-Time Claim) -->
     <div class="modal-backdrop" id="modal-welcome" style="z-index: 400;">
         <div class="celebration-modal">
-            <div style="font-size: 50px; margin-bottom: 8px;">🎁</div>
+            <div style="font-size: 52px; margin-bottom: 8px;">🎁</div>
             <h2 style="font-size: 22px; font-weight: 800; color: #FFF;">Welcome Gift!</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin: 6px 0 16px 0;">
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 6px 0 18px 0;">
                 You unlocked an exclusive 1-time Welcome Bonus as a verified miner!
             </p>
-            <div style="background: rgba(255, 210, 0, 0.12); border: 1px solid rgba(255, 210, 0, 0.3); border-radius: 16px; padding: 14px; margin-bottom: 20px;">
-                <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">BONUS CREDIT</div>
-                <div style="font-size: 32px; font-weight: 800; color: var(--accent-gold); margin-top: 2px;">+100 COINS</div>
+            <div style="background: rgba(255, 210, 0, 0.12); border: 1px solid rgba(255, 210, 0, 0.35); border-radius: 18px; padding: 16px; margin-bottom: 22px;">
+                <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px;">BONUS CREDIT</div>
+                <div style="font-size: 34px; font-weight: 800; color: var(--accent-gold); margin-top: 2px;">+100 COINS</div>
             </div>
             <button class="btn-primary btn-gold" onclick="App.closeWelcomeModal()">
                 🎉 Claim & Start Mining
@@ -618,60 +784,100 @@
         </div>
     </div>
 
-    <!-- ================= FIREBASE EMAIL / PASSWORD AUTH MODAL ================= -->
-    <div class="modal-backdrop" id="modal-auth" style="z-index: 250;">
-        <div class="modal-sheet" style="border-radius: 26px; margin: auto; max-width: 400px; max-height: 94vh;">
-            
+    <!-- ================= ULTRA-SLEEK FIREBASE AUTH MODAL ================= -->
+    <div class="modal-backdrop" id="modal-auth">
+        <div class="modal-cyber-sheet">
+            <div class="auth-brand-logo">⚡</div>
+            <div style="text-align: center; margin-bottom: 18px;">
+                <h2 style="font-size: 22px; font-weight: 800;" id="auth-title">Welcome to MineRush</h2>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="auth-subtitle">
+                    Enter credentials to connect to your cloud mining rig
+                </p>
+            </div>
+
             <div class="auth-nav-tabs">
                 <button class="auth-tab-btn active" id="tab-btn-signup" onclick="App.switchAuthTab('signup')">Create Account</button>
                 <button class="auth-tab-btn" id="tab-btn-login" onclick="App.switchAuthTab('login')">Sign In</button>
             </div>
 
-            <!-- Sign Up Container -->
+            <!-- Sign Up Form -->
             <div id="auth-signup-view">
-                <label class="form-label">EMAIL ADDRESS</label>
-                <input type="email" class="form-input" id="signup-email" placeholder="name@example.com">
+                <div class="form-group-field">
+                    <label class="form-label">EMAIL ADDRESS</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" class="form-input" id="signup-email" placeholder="name@example.com">
+                    </div>
+                </div>
 
-                <label class="form-label">PASSWORD</label>
-                <input type="password" class="form-input" id="signup-password" placeholder="Minimum 6 characters">
+                <div class="form-group-field">
+                    <label class="form-label">PASSWORD</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" class="form-input" id="signup-password" placeholder="Minimum 6 characters">
+                        <button type="button" class="pw-toggle-btn" onclick="App.togglePasswordVisibility('signup-password')">👁️</button>
+                    </div>
+                </div>
 
-                <label class="form-label">CONFIRM PASSWORD</label>
-                <input type="password" class="form-input" id="signup-confirm-password" placeholder="Repeat your password">
+                <div class="form-group-field">
+                    <label class="form-label">CONFIRM PASSWORD</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🛡️</span>
+                        <input type="password" class="form-input" id="signup-confirm-password" placeholder="Repeat your password">
+                        <button type="button" class="pw-toggle-btn" onclick="App.togglePasswordVisibility('signup-confirm-password')">👁️</button>
+                    </div>
+                </div>
 
-                <label class="form-label">REFERRAL CODE (OPTIONAL)</label>
-                <input type="text" class="form-input" id="signup-ref-code" placeholder="Auto-fills from invite link">
+                <div class="form-group-field">
+                    <label class="form-label">REFERRAL CODE (OPTIONAL)</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🎁</span>
+                        <input type="text" class="form-input" id="signup-ref-code" placeholder="Auto-fills from invite link">
+                    </div>
+                </div>
 
                 <button class="btn-primary" id="btn-auth-register" onclick="App.handleRegister()">
                     🚀 Create Free Account
                 </button>
             </div>
 
-            <!-- Sign In Container -->
+            <!-- Sign In Form -->
             <div id="auth-login-view" style="display: none;">
-                <label class="form-label">EMAIL ADDRESS</label>
-                <input type="email" class="form-input" id="login-email" placeholder="name@example.com">
+                <div class="form-group-field">
+                    <label class="form-label">EMAIL ADDRESS</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" class="form-input" id="login-email" placeholder="name@example.com">
+                    </div>
+                </div>
 
-                <label class="form-label">PASSWORD</label>
-                <input type="password" class="form-input" id="login-password" placeholder="Enter your password">
+                <div class="form-group-field">
+                    <label class="form-label">PASSWORD</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" class="form-input" id="login-password" placeholder="Enter your password">
+                        <button type="button" class="pw-toggle-btn" onclick="App.togglePasswordVisibility('login-password')">👁️</button>
+                    </div>
+                </div>
 
                 <button class="btn-primary" id="btn-auth-login" onclick="App.handleLogin()">
-                    🔐 Sign In
+                    🔐 Secure Sign In
                 </button>
 
-                <div style="text-align: center; margin-top: 14px;">
-                    <a href="javascript:void(0)" onclick="App.handleForgotPassword()" style="font-size: 12px; color: var(--accent-cyan); text-decoration: none; font-weight: 700;">
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="javascript:void(0)" onclick="App.handleForgotPassword()" style="font-size: 12px; color: var(--accent-cyan); text-decoration: none; font-weight: 800;">
                         Forgot Password?
                     </a>
                 </div>
             </div>
 
-            <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 16px;">
-                Secured by Firebase Enterprise Authentication.
+            <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 18px;">
+                Protected by Firebase SSL Cloud Vault.
             </p>
         </div>
     </div>
 
-    <!-- ================= PROFILE MODAL ================= -->
+    <!-- Profile Modal -->
     <div class="modal-backdrop" id="modal-profile">
         <div class="modal-sheet">
             <div class="sheet-handle"></div>
@@ -696,10 +902,12 @@
     <div id="app">
         <header>
             <div class="header-profile" onclick="App.openProfileModal()">
-                <img id="user-avatar" src="https://i.pravatar.cc/100" alt="Avatar">
+                <div class="profile-glow-ring">
+                    <img id="user-avatar" src="https://i.pravatar.cc/100" alt="Avatar">
+                </div>
                 <div class="header-user-info">
                     <span class="header-user-name" id="user-display-name">Miner</span>
-                    <span class="header-user-tag" id="user-display-tag">UID: Loading</span>
+                    <span class="header-user-tag" id="user-display-tag">ONLINE</span>
                 </div>
             </div>
             <div class="header-actions">
@@ -710,6 +918,7 @@
         <main>
             <!-- 🏠 HOME SECTION -->
             <section id="view-home" class="section-view active">
+                <!-- Portfolio Card -->
                 <div class="balance-hero">
                     <div class="balance-label">
                         <span>Total Portfolio</span>
@@ -731,6 +940,7 @@
                     </div>
                 </div>
 
+                <!-- Quick Action Bar -->
                 <div class="quick-actions">
                     <div class="quick-action-btn" onclick="App.switchTab('view-tasks')">
                         <span class="btn-icon">📋</span>
@@ -750,46 +960,76 @@
                     </div>
                 </div>
 
-                <!-- Mining Card with Interactive Animated Dial -->
-                <div class="mining-card">
+                <!-- ================= QUANTUM CLOUD MINING MACHINE RIG ================= -->
+                <div class="mining-rig-card" id="mining-rig-wrapper">
                     <div class="sparkle-container" id="sparkle-container"></div>
-                    <div class="mining-header">
-                        <div>
-                            <h3 style="font-size: 15px; font-weight: 800;">Cloud Mining</h3>
-                            <span style="font-size: 11px; color: var(--text-muted);">Session Duration: 1 Hour</span>
+                    
+                    <div class="rig-top-bar">
+                        <div class="rig-id-badge">
+                            <div class="rig-led-dot" id="rig-status-led"></div>
+                            <span>ASIC RIG v4.8</span>
                         </div>
-                        <span class="badge badge-idle" id="mining-status-badge">READY</span>
+                        <span style="font-size: 11px; font-weight: 800; color: var(--accent-cyan);" id="rig-state-label">STANDBY</span>
                     </div>
 
-                    <div class="mining-dial" id="mining-dial-element">
-                        <svg viewBox="0 0 190 190">
-                            <circle class="mining-dial-bg" cx="95" cy="95" r="85"></circle>
-                            <circle class="mining-dial-progress" id="dial-progress-circle" cx="95" cy="95" r="85"></circle>
-                        </svg>
-                        <div class="mining-dial-content">
-                            <span class="dial-icon" id="mining-dial-icon">⛏️</span>
-                            <span class="dial-value" id="mining-timer-display">01:00:00</span>
-                            <span class="dial-sub" id="mining-sub-text">Tap Start</span>
+                    <!-- Machine Console (Chassis) -->
+                    <div class="rig-chassis">
+                        <!-- Dual Cooling Turbofans -->
+                        <div class="turbofan-grid">
+                            <!-- Left Fan -->
+                            <div class="fan-housing">
+                                <div class="fan-blades">
+                                    <svg viewBox="0 0 100 100" fill="none">
+                                        <circle cx="50" cy="50" r="46" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+                                        <path d="M50 50 C40 20 20 20 15 35 C10 50 30 50 50 50 Z" fill="rgba(0,242,254,0.7)"/>
+                                        <path d="M50 50 C80 40 80 20 65 15 C50 10 50 30 50 50 Z" fill="rgba(0,242,254,0.7)"/>
+                                        <path d="M50 50 C60 80 80 80 85 65 C90 50 70 50 50 50 Z" fill="rgba(0,242,254,0.7)"/>
+                                        <path d="M50 50 C20 60 20 80 35 85 C50 90 50 70 50 50 Z" fill="rgba(0,242,254,0.7)"/>
+                                    </svg>
+                                </div>
+                                <div class="fan-center-core">⚡</div>
+                            </div>
+                            <!-- Right Fan -->
+                            <div class="fan-housing">
+                                <div class="fan-blades">
+                                    <svg viewBox="0 0 100 100" fill="none">
+                                        <circle cx="50" cy="50" r="46" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+                                        <path d="M50 50 C40 20 20 20 15 35 C10 50 30 50 50 50 Z" fill="rgba(139,92,246,0.7)"/>
+                                        <path d="M50 50 C80 40 80 20 65 15 C50 10 50 30 50 50 Z" fill="rgba(139,92,246,0.7)"/>
+                                        <path d="M50 50 C60 80 80 80 85 65 C90 50 70 50 50 50 Z" fill="rgba(139,92,246,0.7)"/>
+                                        <path d="M50 50 C20 60 20 80 35 85 C50 90 50 70 50 50 Z" fill="rgba(139,92,246,0.7)"/>
+                                    </svg>
+                                </div>
+                                <div class="fan-center-core">⛏️</div>
+                            </div>
+                        </div>
+
+                        <!-- Telemetry Display Matrix -->
+                        <div class="rig-matrix-display">
+                            <div class="matrix-param">
+                                <span class="matrix-title">POWER / HASH</span>
+                                <span class="matrix-val" id="rig-hashrate-val">0.0 MH/s</span>
+                            </div>
+                            <div class="matrix-param" style="text-align: right;">
+                                <span class="matrix-title">SESSION TIME</span>
+                                <span class="matrix-val" id="mining-timer-display" style="color:var(--accent-gold);">01:00:00</span>
+                            </div>
+                        </div>
+
+                        <!-- Laser Progress Gauge -->
+                        <div class="rig-laser-gauge">
+                            <div class="rig-laser-bar" id="rig-progress-laser"></div>
                         </div>
                     </div>
 
-                    <div class="mining-stats-row">
-                        <div class="mini-stat">
-                            <div class="mini-stat-label">RATE</div>
-                            <div class="mini-stat-val">+0.15/sec</div>
-                        </div>
-                        <div class="mini-stat">
-                            <div class="mini-stat-label">SESSION COINS</div>
-                            <div class="mini-stat-val">+540 Coins</div>
-                        </div>
-                        <div class="mini-stat">
-                            <div class="mini-stat-label">REQUIRED ADS</div>
-                            <div class="mini-stat-val" id="mining-ads-status">0/5</div>
-                        </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--text-muted);">
+                        <span>RATE: +0.15/sec</span>
+                        <span id="mining-ads-status">ADS: 0/5</span>
+                        <span>SESSION: +540 C</span>
                     </div>
 
                     <button class="btn-primary" id="btn-mine-action" onclick="App.handleMiningAction()">
-                        <span>🪙</span> <span id="btn-mine-label">Watch Ads to Unlock Mining (0/5)</span>
+                        <span>⚡</span> <span id="btn-mine-label">Watch Ads to Power Up (0/5)</span>
                     </button>
                 </div>
             </section>
@@ -824,7 +1064,7 @@
                             <div style="font-size: 15px; font-weight: 800;">Native Rewarded Video</div>
                             <div style="font-size: 12px; color: var(--text-secondary);">Direct High-Paying Sponsor Ad</div>
                         </div>
-                        <span class="badge badge-active">+50 Coins</span>
+                        <span class="status-pill status-approved">+50 Coins</span>
                     </div>
                     <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Watch a full 15-30 second sponsor video. Coins are credited instantly after completion.</p>
                     <button class="btn-primary btn-gold" onclick="App.watchNativeRewardedAd()">
@@ -838,7 +1078,7 @@
                             <div style="font-size: 15px; font-weight: 800;">Interactive Sponsor Task</div>
                             <div style="font-size: 12px; color: var(--text-secondary);">Fast Bonus Sponsor Task</div>
                         </div>
-                        <span class="badge badge-active">+30 Coins</span>
+                        <span class="status-pill status-approved">+30 Coins</span>
                     </div>
                     <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Check quick sponsor deals & interact to claim your coins.</p>
                     <button class="btn-primary" onclick="App.watchWebAd()">
@@ -891,7 +1131,6 @@
                         </select>
                     </div>
 
-                    <!-- Dual Action Row: Swap Currency & Withdraw Button -->
                     <div class="wallet-action-row">
                         <button class="btn-primary" onclick="App.triggerCoinExchange()">
                             💱 Swap Currency
@@ -912,7 +1151,7 @@
                 </div>
             </section>
 
-            <!-- 👥 ADVANCED REFERRAL PROGRAM (+200 COINS PER QUALIFIED MINER) -->
+            <!-- 👥 ADVANCED REFERRAL PROGRAM -->
             <section id="view-refer" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Invite & Earn</h2>
@@ -924,7 +1163,7 @@
                         <span>Your Unique Referral Link</span>
                         <span style="color:var(--accent-gold);">+200 Coins / User</span>
                     </div>
-                    <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:12px; color:var(--accent-cyan); word-break:break-all; margin:10px 0;" id="user-ref-link-display">
+                    <div style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:14px; padding:12px; font-size:12px; color:var(--accent-cyan); word-break:break-all; margin:10px 0;" id="user-ref-link-display">
                         Loading your link...
                     </div>
                     <button class="btn-primary btn-gold" onclick="App.copyReferralLink()">
@@ -1010,7 +1249,7 @@
         </nav>
     </div>
 
-    <!-- ================= WITHDRAWAL MODAL (UPI & TON USDT) ================= -->
+    <!-- WITHDRAWAL MODAL -->
     <div class="modal-backdrop" id="modal-withdraw">
         <div class="modal-sheet">
             <div class="sheet-handle"></div>
@@ -1033,10 +1272,10 @@
             </div>
 
             <label class="form-label" id="withdraw-label-dest">YOUR UPI ID</label>
-            <input type="text" class="form-input" id="withdraw-dest-input" placeholder="e.g. mobile@paytm or name@okhdfcbank">
+            <input type="text" class="form-input" id="withdraw-dest-input" placeholder="e.g. mobile@paytm or name@okhdfcbank" style="padding:14px; margin-bottom:14px;">
 
             <label class="form-label">WITHDRAWAL AMOUNT</label>
-            <input type="number" class="form-input" id="withdraw-amount-input" placeholder="0.00">
+            <input type="number" class="form-input" id="withdraw-amount-input" placeholder="0.00" style="padding:14px; margin-bottom:14px;">
 
             <button class="btn-primary" onclick="App.submitPayoutRequest()">
                 💸 Confirm & Request Payout
@@ -1045,7 +1284,7 @@
         </div>
     </div>
 
-    <!-- ================= FIREBASE APP LOGIC (AUTH & ADMIN CONTROLS) ================= -->
+    <!-- ================= FIREBASE & WEB AUDIO SYNTH ENGINE ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { 
@@ -1056,19 +1295,101 @@
             getDatabase, ref, set, get, update, push, onValue, runTransaction, query, orderByChild, equalTo 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
+        // Verified Firebase Config
         const firebaseConfig = {
-    apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
-    authDomain: "mine-rush-f580a.firebaseapp.com",
-    projectId: "mine-rush-f580a",
-    storageBucket: "mine-rush-f580a.firebasestorage.app",
-    messagingSenderId: "250630688178",
-    appId: "1:250630688178:web:9f42ff370b129930a028ab",
-    measurementId: "G-4CDWDL6Z1J"
-};
+            apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
+            authDomain: "mine-rush-f580a.firebaseapp.com",
+            projectId: "mine-rush-f580a",
+            storageBucket: "mine-rush-f580a.firebasestorage.app",
+            messagingSenderId: "250630688178",
+            appId: "1:250630688178:web:9f42ff370b129930a028ab",
+            measurementId: "G-4CDWDL6Z1J"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
+
+        // ================= ZERO-LATENCY WEB AUDIO SYNTHESIZER =================
+        const SoundFX = {
+            ctx: null,
+            init: function() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+            playClick: function() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(350, this.ctx.currentTime + 0.04);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.04);
+            },
+            playCoin: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                // Double harmonic coin chime
+                [1800, 2400].forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.14, now + idx * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.07);
+                    osc.stop(now + idx * 0.07 + 0.25);
+                });
+            },
+            playSuccess: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                // Major triad fanfare
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.35);
+                });
+            },
+            playPowerUp: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.6);
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(now + 0.7);
+            }
+        };
 
         // Core State
         const State = {
@@ -1119,6 +1440,9 @@
                 });
 
                 this.startMiningClock();
+
+                // Initialize audio context on first screen tap
+                document.body.addEventListener('click', () => SoundFX.init(), { once: true });
             },
 
             // ================= REALTIME ADMIN PANEL LISTENER =================
@@ -1146,6 +1470,7 @@
 
             // ================= AUTHENTICATION FLOW =================
             switchAuthTab: function(tab) {
+                SoundFX.playClick();
                 if (tab === 'signup') {
                     document.getElementById('auth-signup-view').style.display = 'block';
                     document.getElementById('auth-login-view').style.display = 'none';
@@ -1159,7 +1484,14 @@
                 }
             },
 
+            togglePasswordVisibility: function(inputId) {
+                SoundFX.playClick();
+                const input = document.getElementById(inputId);
+                input.type = input.type === 'password' ? 'text' : 'password';
+            },
+
             handleRegister: async function() {
+                SoundFX.playClick();
                 const email = document.getElementById('signup-email').value.trim();
                 const pass = document.getElementById('signup-password').value.trim();
                 const confirmPass = document.getElementById('signup-confirm-password').value.trim();
@@ -1186,7 +1518,7 @@
                     await set(ref(database, `users/${user.uid}`), {
                         uid: user.uid,
                         email: email,
-                        coins: 100, // 100 Coins Welcome Gift
+                        coins: 100,
                         welcomeBonusClaimed: true,
                         inr_balance: 0,
                         usdt_balance: 0,
@@ -1208,6 +1540,7 @@
                         });
                     }
 
+                    SoundFX.playSuccess();
                     document.getElementById('modal-welcome').classList.add('open');
                     this.toast("Account created successfully!", "success");
                 } catch (error) {
@@ -1216,6 +1549,7 @@
             },
 
             handleLogin: async function() {
+                SoundFX.playClick();
                 const email = document.getElementById('login-email').value.trim();
                 const pass = document.getElementById('login-password').value.trim();
 
@@ -1226,6 +1560,7 @@
 
                 try {
                     await signInWithEmailAndPassword(auth, email, pass);
+                    SoundFX.playSuccess();
                     this.toast("Welcome back!", "success");
                 } catch (error) {
                     this.toast(error.message.replace("Firebase: ", ""), "error");
@@ -1233,6 +1568,7 @@
             },
 
             handleForgotPassword: async function() {
+                SoundFX.playClick();
                 const email = document.getElementById('login-email').value.trim();
                 if (!email) {
                     this.toast("Enter your email above to reset password", "info");
@@ -1247,12 +1583,14 @@
             },
 
             handleSignOut: async function() {
+                SoundFX.playClick();
                 await signOut(auth);
                 this.closeModals();
                 this.toast("Signed out successfully", "info");
             },
 
             closeWelcomeModal: function() {
+                SoundFX.playCoin();
                 document.getElementById('modal-welcome').classList.remove('open');
             },
 
@@ -1262,7 +1600,7 @@
                 const email = State.user.email;
 
                 document.getElementById('user-display-name').innerText = email.split('@')[0];
-                document.getElementById('user-display-tag').innerText = `ID: ${uid.slice(0, 8)}...`;
+                document.getElementById('user-display-tag').innerText = `RIG ACTIVE`;
                 document.getElementById('profile-email-display').innerText = email;
                 document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
 
@@ -1301,11 +1639,12 @@
                 document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
             },
 
-            // ================= MINING ENGINE (WITH 1ST MINING REFERRAL CHECK) =================
+            // ================= MINING RIG CONTROLLER =================
             handleMiningAction: async function() {
+                SoundFX.playClick();
                 const now = Date.now();
                 if (State.miningEndTime > now) {
-                    this.toast("Mining is currently active!", "info");
+                    this.toast("Quantum Rig is currently mining!", "info");
                     return;
                 }
 
@@ -1315,7 +1654,8 @@
                     return;
                 }
 
-                // Start Session
+                // Power up sound and start 1-hour session
+                SoundFX.playPowerUp();
                 const duration = State.admin.mining.session_duration_ms;
                 await update(ref(database, `users/${State.userId}`), {
                     miningStartTime: now,
@@ -1323,16 +1663,15 @@
                     miningAdsWatched: 0
                 });
 
-                // Anti-Cheat Referral Reward Trigger: Upon completing/starting 1st Mining
+                // Anti-Cheat Referral Reward Trigger
                 if (!State.firstMiningCompleted) {
                     await update(ref(database, `users/${State.userId}`), { firstMiningCompleted: true });
                     this.processReferralCommission();
                 }
 
-                this.toast("Mining Started! Sit back & earn coins.", "success");
+                this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
             },
 
-            // Gives Referrer +200 Coins after Refer User Starts First Mining
             processReferralCommission: async function() {
                 const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
                 if (bindingSnap.exists()) {
@@ -1341,19 +1680,16 @@
                         const referrerUid = binding.referrerUid;
                         const reward = State.admin.referral.reward_coins || 200;
 
-                        // Atomically reward the referrer
                         await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
                             return (parseFloat(curr) || 0) + reward;
                         });
 
-                        // Record reward history in referrer profile
                         await push(ref(database, `users/${referrerUid}/coin_history`), {
                             amount: reward,
                             reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
                             timestamp: Date.now()
                         });
 
-                        // Mark binding as qualified
                         await update(ref(database, `referral_bindings/${State.userId}`), {
                             status: 'Qualified',
                             rewardedCoins: reward,
@@ -1367,24 +1703,32 @@
                 setInterval(() => {
                     const now = Date.now();
                     const timerText = document.getElementById('mining-timer-display');
-                    const badge = document.getElementById('mining-status-badge');
-                    const circle = document.getElementById('dial-progress-circle');
-                    const dial = document.getElementById('mining-dial-element');
+                    const rigCard = document.getElementById('mining-rig-wrapper');
+                    const led = document.getElementById('rig-status-led');
+                    const stateLabel = document.getElementById('rig-state-label');
+                    const hashVal = document.getElementById('rig-hashrate-val');
+                    const laserBar = document.getElementById('rig-progress-laser');
 
                     if (State.miningEndTime > now) {
                         const remaining = State.miningEndTime - now;
                         const mins = Math.floor(remaining / 60000);
                         const secs = Math.floor((remaining % 60000) / 1000);
                         timerText.innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                        badge.className = "badge badge-active";
-                        badge.innerText = "MINING ACTIVE";
 
-                        dial.classList.add('active-mining');
+                        // Activate Rig Visuals
+                        rigCard.classList.add('active-rig');
+                        led.classList.add('active');
+                        stateLabel.innerText = "MINING (ACTIVE)";
+                        stateLabel.style.color = "var(--accent-green)";
 
-                        const progress = 1 - (remaining / State.admin.mining.session_duration_ms);
-                        circle.style.strokeDashoffset = 534 - (534 * progress);
+                        // Dynamic fluctuating hashrate
+                        const liveHash = (48.4 + Math.random() * 2.2).toFixed(1);
+                        hashVal.innerText = `${liveHash} MH/s`;
 
-                        // Spawn floating coin particles every 2 seconds
+                        const progress = (1 - (remaining / State.admin.mining.session_duration_ms)) * 100;
+                        laserBar.style.width = `${progress}%`;
+
+                        // Floating coin particles every 2 seconds
                         if (Math.floor(remaining / 1000) % 2 === 0) {
                             this.spawnMiningParticle();
                             runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
@@ -1393,10 +1737,12 @@
                         }
                     } else {
                         timerText.innerText = "01:00:00";
-                        badge.className = "badge badge-idle";
-                        badge.innerText = "READY";
-                        dial.classList.remove('active-mining');
-                        circle.style.strokeDashoffset = 534;
+                        rigCard.classList.remove('active-rig');
+                        led.classList.remove('active');
+                        stateLabel.innerText = "STANDBY";
+                        stateLabel.style.color = "var(--accent-cyan)";
+                        hashVal.innerText = "0.0 MH/s";
+                        laserBar.style.width = "0%";
                     }
                 }, 1000);
             },
@@ -1407,8 +1753,8 @@
                 const particle = document.createElement('div');
                 particle.className = 'sparkle-coin';
                 particle.innerText = '+0.15 🪙';
-                particle.style.left = `${30 + Math.random() * 40}%`;
-                particle.style.top = `${40 + Math.random() * 20}%`;
+                particle.style.left = `${25 + Math.random() * 50}%`;
+                particle.style.top = `${30 + Math.random() * 30}%`;
                 container.appendChild(particle);
                 setTimeout(() => particle.remove(), 1600);
             },
@@ -1417,22 +1763,23 @@
                 const now = Date.now();
                 const btnLabel = document.getElementById('btn-mine-label');
                 const reqAds = State.admin.mining.ads_required;
-                document.getElementById('mining-ads-status').innerText = `${State.miningAdsWatched}/${reqAds}`;
+                document.getElementById('mining-ads-status').innerText = `ADS: ${State.miningAdsWatched}/${reqAds}`;
 
                 if (State.miningEndTime > now) {
-                    btnLabel.innerText = "Mining In Progress...";
+                    btnLabel.innerText = "Rig Power Active (Turbofans ON)";
                     document.getElementById('btn-mine-action').disabled = true;
                 } else if (State.miningAdsWatched < reqAds) {
-                    btnLabel.innerText = `Watch Ads to Unlock Mining (${State.miningAdsWatched}/${reqAds})`;
+                    btnLabel.innerText = `Watch Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
                     document.getElementById('btn-mine-action').disabled = false;
                 } else {
-                    btnLabel.innerText = "Start 1-Hour Mining";
+                    btnLabel.innerText = "Start 1-Hour Quantum Mining";
                     document.getElementById('btn-mine-action').disabled = false;
                 }
             },
 
             // ================= REWARDED ADS =================
             watchNativeRewardedAd: function() {
+                SoundFX.playClick();
                 const now = Date.now();
                 if (now - State.lastAdWatchTime < 12000) {
                     this.toast("Please wait 12s between ad views", "info");
@@ -1453,6 +1800,7 @@
             },
 
             watchWebAd: function() {
+                SoundFX.playClick();
                 if (typeof window.show_9969043 === 'function') {
                     try { window.show_9969043(); } catch(e){}
                 }
@@ -1469,6 +1817,7 @@
                     reason: reason,
                     timestamp: Date.now()
                 });
+                SoundFX.playCoin();
                 this.toast(`+${amount} Coins Credited!`, "success");
             },
 
@@ -1483,6 +1832,7 @@
             },
 
             triggerCoinExchange: async function() {
+                SoundFX.playClick();
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
                 const target = document.getElementById('swap-target-currency').value;
                 const minSwap = State.admin.exchange.min_swap_coins;
@@ -1496,7 +1846,6 @@
                     return;
                 }
 
-                // Gated by Admin Configured Ad requirement
                 if (State.admin.exchange.ads_required > 0) {
                     try {
                         this.toast("Loading required sponsor ad before swap...", "info");
@@ -1517,16 +1866,19 @@
 
                 document.getElementById('swap-coins-input').value = '';
                 document.getElementById('swap-output-preview').value = '';
+                SoundFX.playCoin();
                 this.toast("Coins swapped successfully!", "success");
             },
 
             // ================= WITHDRAWALS =================
             openWithdrawModal: function() {
+                SoundFX.playClick();
                 document.getElementById('modal-withdraw').classList.add('open');
                 this.selectPayoutMethod('UPI');
             },
 
             selectPayoutMethod: function(method) {
+                SoundFX.playClick();
                 State.selectedPayoutMethod = method;
                 const tabUpi = document.getElementById('tab-upi');
                 const tabTon = document.getElementById('tab-ton');
@@ -1553,6 +1905,7 @@
             },
 
             submitPayoutRequest: async function() {
+                SoundFX.playClick();
                 const dest = document.getElementById('withdraw-dest-input').value.trim();
                 const amount = parseFloat(document.getElementById('withdraw-amount-input').value) || 0;
                 const method = State.selectedPayoutMethod;
@@ -1603,6 +1956,7 @@
                 });
 
                 this.closeModals();
+                SoundFX.playSuccess();
                 this.toast("Withdrawal submitted! Processed in 12-24h.", "success");
             },
 
@@ -1686,7 +2040,7 @@
 
                         card.innerHTML = `
                             <div class="task-card-top">
-                                <img class="task-icon" src="${t.logoUrl || 'https://via.placeholder.com/46'}">
+                                <img class="task-icon" src="${t.logoUrl || 'https://via.placeholder.com/48'}">
                                 <div class="task-info">
                                     <div class="task-name">${t.name}</div>
                                     <div class="task-meta">
@@ -1696,7 +2050,7 @@
                                 </div>
                             </div>
                             ${instructionsHtml}
-                            <button class="btn-primary" onclick="window.open('${t.link || '#'}', '_blank')">Complete Task</button>
+                            <button class="btn-primary" onclick="SoundFX.playClick(); window.open('${t.link || '#'}', '_blank')">Complete Task</button>
                         `;
                         c.appendChild(card);
                     });
@@ -1704,6 +2058,7 @@
             },
 
             switchTab: function(viewId) {
+                SoundFX.playClick();
                 document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
                 document.getElementById(viewId)?.classList.add('active');
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -1712,9 +2067,11 @@
             },
 
             copyReferralLink: function() {
+                SoundFX.playClick();
                 const origin = window.location.origin + window.location.pathname;
                 const link = `${origin}?ref=${State.userId}`;
                 navigator.clipboard.writeText(link).then(() => {
+                    SoundFX.playCoin();
                     this.toast("Unique invite link copied to clipboard!", "success");
                 }).catch(() => {
                     this.toast(`Code: ${State.userId}`, "info");
@@ -1722,14 +2079,17 @@
             },
 
             openProfileModal: function() {
+                SoundFX.playClick();
                 document.getElementById('modal-profile').classList.add('open');
             },
 
             openSupportLink: function() {
+                SoundFX.playClick();
                 window.open("https://t.me/MiningFatherhelp", "_blank");
             },
 
             closeModals: function() {
+                SoundFX.playClick();
                 document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
             },
 
@@ -1751,6 +2111,7 @@
                 runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                     return (parseInt(curr) || 0) + 1;
                 });
+                SoundFX.playCoin();
                 App.toast("Ad completed! Step added toward mining session.", "success");
             } else {
                 App.creditCoins(50, "Native Android Video Ad");
