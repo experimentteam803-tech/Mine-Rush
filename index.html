@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
-    <title>MineRush - NextGen Quantum Cloud Mining</title>
+    <title>MineRush - NextGen Cloud Rewards</title>
 
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Ad Provider SDKs -->
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-    <script src="//libtl.com/sdk.js" data-zone="9969043" data-sdk="show_9969043" async></script>
 
     <style>
         :root {
@@ -144,7 +140,7 @@
         .section-view.active { display: flex; }
         @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        /* Ultra Balance Hero */
+        /* Portfolio Balance Card */
         .balance-hero {
             background: linear-gradient(135deg, rgba(20, 30, 56, 0.9), rgba(11, 16, 32, 0.96));
             border: 1px solid rgba(0, 242, 254, 0.2);
@@ -348,7 +344,7 @@
             box-shadow: 0 0 14px var(--accent-cyan);
         }
 
-        /* Machine Telemetry Display Matrix */
+        /* Telemetry Display Matrix */
         .rig-matrix-display {
             background: rgba(4, 7, 17, 0.9);
             border: 1px solid rgba(0, 242, 254, 0.2);
@@ -918,7 +914,6 @@
         <main>
             <!-- 🏠 HOME SECTION -->
             <section id="view-home" class="section-view active">
-                <!-- Portfolio Card -->
                 <div class="balance-hero">
                     <div class="balance-label">
                         <span>Total Portfolio</span>
@@ -1029,7 +1024,7 @@
                     </div>
 
                     <button class="btn-primary" id="btn-mine-action" onclick="App.handleMiningAction()">
-                        <span>⚡</span> <span id="btn-mine-label">Watch Ads to Power Up (0/5)</span>
+                        <span>⚡</span> <span id="btn-mine-label">Watch AdMob Ads to Power Up (0/5)</span>
                     </button>
                 </div>
             </section>
@@ -1051,38 +1046,55 @@
                 <div id="tasks-container" style="display:flex; flex-direction:column; gap:12px;"></div>
             </section>
 
-            <!-- 📺 WATCH & EARN -->
+            <!-- 📺 WATCH & EARN (100% PURE ADMOB ENGINE) -->
             <section id="view-watch" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Watch & Earn</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">View native HD ads & claim real coin rewards.</p>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">View official AdMob rewarded video ads & claim instant coins.</p>
                 </div>
 
+                <!-- AdMob Rewarded Card 1 -->
                 <div class="ad-network-card">
                     <div class="ad-card-top">
                         <div>
-                            <div style="font-size: 15px; font-weight: 800;">Native Rewarded Video</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">Direct High-Paying Sponsor Ad</div>
+                            <div style="font-size: 15px; font-weight: 800;">AdMob Super Video</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">Direct Rewarded Video Sponsor</div>
                         </div>
                         <span class="status-pill status-approved">+50 Coins</span>
                     </div>
-                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Watch a full 15-30 second sponsor video. Coins are credited instantly after completion.</p>
-                    <button class="btn-primary btn-gold" onclick="App.watchNativeRewardedAd()">
-                        🎬 Watch Video Ad (+50 Coins)
+                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Watch a full rewarded video advertisement. Coins are credited instantly after completion.</p>
+                    <button class="btn-primary btn-gold" onclick="App.showAdmobRewarded({ type: 'ad_task', reward: 50, title: 'Super Video' })">
+                        🎬 Watch Video (+50 Coins)
                     </button>
                 </div>
 
+                <!-- AdMob Rewarded Card 2 -->
                 <div class="ad-network-card">
                     <div class="ad-card-top">
                         <div>
-                            <div style="font-size: 15px; font-weight: 800;">Interactive Sponsor Task</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">Fast Bonus Sponsor Task</div>
+                            <div style="font-size: 15px; font-weight: 800;">AdMob Power Bonus</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">High-Yield Partner Promotion</div>
                         </div>
-                        <span class="status-pill status-approved">+30 Coins</span>
+                        <span class="status-pill status-approved">+75 Coins</span>
                     </div>
-                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Check quick sponsor deals & interact to claim your coins.</p>
-                    <button class="btn-primary" onclick="App.watchWebAd()">
-                        ⚡ Complete Sponsor Task (+30 Coins)
+                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Engage with partner video offer and claim high coin yield.</p>
+                    <button class="btn-primary" onclick="App.showAdmobRewarded({ type: 'ad_task', reward: 75, title: 'Power Bonus' })">
+                        ⚡ Watch Video (+75 Coins)
+                    </button>
+                </div>
+
+                <!-- AdMob Rewarded Card 3 -->
+                <div class="ad-network-card">
+                    <div class="ad-card-top">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 800;">AdMob Instant Boost</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">Quick Reward Interstitial Video</div>
+                        </div>
+                        <span class="status-pill status-approved">+35 Coins</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Short video sponsor interaction with instant coin deposit.</p>
+                    <button class="btn-primary btn-outline" onclick="App.showAdmobRewarded({ type: 'ad_task', reward: 35, title: 'Instant Boost' })">
+                        💎 Watch Video (+35 Coins)
                     </button>
                 </div>
             </section>
@@ -1113,7 +1125,7 @@
                 <div class="swap-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h4 style="font-size:14px; font-weight:800;">💱 Convert & Swap</h4>
-                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires 1 Ad</span>
+                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires AdMob Ad</span>
                     </div>
 
                     <div class="swap-input-group">
@@ -1341,7 +1353,6 @@
                 this.init();
                 if (!this.ctx) return;
                 const now = this.ctx.currentTime;
-                // Double harmonic coin chime
                 [1800, 2400].forEach((freq, idx) => {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
@@ -1359,7 +1370,6 @@
                 this.init();
                 if (!this.ctx) return;
                 const now = this.ctx.currentTime;
-                // Major triad fanfare
                 [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
                     const osc = this.ctx.createOscillator();
                     const gain = this.ctx.createGain();
@@ -1409,12 +1419,12 @@
                 referral: { reward_coins: 200 }
             },
             selectedPayoutMethod: 'UPI',
+            currentAdTarget: null,
             lastAdWatchTime: 0
         };
 
         window.App = {
             init: function() {
-                // Auto-fill Referral Code from URL Query if available (?ref=UID)
                 const urlParams = new URLSearchParams(window.location.search);
                 const refCodeParam = urlParams.get('ref') || urlParams.get('startapp') || '';
                 if (refCodeParam) {
@@ -1422,10 +1432,8 @@
                     if (refInput) refInput.value = refCodeParam.replace('ref_', '').trim();
                 }
 
-                // Listen to Admin Panel Settings in Realtime
                 this.listenToAdminSettings();
 
-                // Listen to Firebase Auth State Change
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         State.user = user;
@@ -1440,8 +1448,6 @@
                 });
 
                 this.startMiningClock();
-
-                // Initialize audio context on first screen tap
                 document.body.addEventListener('click', () => SoundFX.init(), { once: true });
             },
 
@@ -1514,7 +1520,6 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     const user = userCredential.user;
 
-                    // Initialize Profile with Welcome Gift (100 Coins)
                     await set(ref(database, `users/${user.uid}`), {
                         uid: user.uid,
                         email: email,
@@ -1529,7 +1534,6 @@
                         createdAt: Date.now()
                     });
 
-                    // Log referral binding if user entered referral code
                     if (refCode && refCode !== 'DIRECT') {
                         await set(ref(database, `referral_bindings/${user.uid}`), {
                             referrerUid: refCode,
@@ -1604,7 +1608,6 @@
                 document.getElementById('profile-email-display').innerText = email;
                 document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
 
-                // Generate Unique Referral Link
                 const origin = window.location.origin + window.location.pathname;
                 const refLink = `${origin}?ref=${uid}`;
                 document.getElementById('user-ref-link-display').innerText = refLink;
@@ -1639,6 +1642,108 @@
                 document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
             },
 
+            // ================= UNIFIED ADMOB REWARDED ENGINE =================
+            showAdmobRewarded: function(target) {
+                SoundFX.playClick();
+                const now = Date.now();
+                if (now - State.lastAdWatchTime < 8000) {
+                    this.toast("Please wait 8 seconds between ads", "info");
+                    return;
+                }
+
+                State.currentAdTarget = target; // Track which action triggered the ad
+
+                // 1. Agar Android APK me chal raha ho (WebIntoApp AdMob Bridge)
+                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
+                    window.AndroidBridge.showRewardedAd();
+                    return;
+                } else if (window.Android && typeof window.Android.showAd === 'function') {
+                    window.Android.showAd();
+                    return;
+                }
+
+                // 2. Official AdMob Styled Simulation for Web & Browser Testing
+                this.showAdmobSimulator();
+            },
+
+            showAdmobSimulator: function() {
+                const existing = document.getElementById('admob-test-modal');
+                if (existing) existing.remove();
+
+                const modal = document.createElement('div');
+                modal.id = 'admob-test-modal';
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                    background: #000; z-index: 9999; display: flex; flex-direction: column;
+                    align-items: center; justify-content: space-between; padding: 25px 20px;
+                    animation: viewFadeIn 0.25s ease;
+                `;
+
+                modal.innerHTML = `
+                    <div style="width:100%; display:flex; justify-content:space-between; align-items:center; color:#FFF;">
+                        <div style="background:rgba(255,255,255,0.18); border-radius:6px; padding:4px 8px; font-size:11px; font-weight:800; letter-spacing:0.5px;">
+                            Google AdMob Video
+                        </div>
+                        <div id="admob-timer-badge" style="background:#FFD200; color:#000; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:800;">
+                            Reward in 15s
+                        </div>
+                    </div>
+
+                    <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px;">
+                        <div style="width:80px; height:80px; border-radius:22px; background:linear-gradient(135deg, #00F2FE, #3B82F6); display:flex; align-items:center; justify-content:center; font-size:40px; box-shadow:0 0 30px rgba(0,242,254,0.4);">
+                            🎬
+                        </div>
+                        <h3 style="color:#FFF; font-size:20px; font-weight:800;">Google AdMob Rewarded Video</h3>
+                        <p style="color:#94A3B8; font-size:13px; max-width:280px; line-height:1.5;">
+                            Please watch this video ad to claim your reward or power up your mining session.
+                        </p>
+                    </div>
+
+                    <div style="width:100%;">
+                        <div style="width:100%; height:4px; background:rgba(255,255,255,0.15); border-radius:4px; overflow:hidden; margin-bottom:12px;">
+                            <div id="admob-progress-bar" style="width:0%; height:100%; background:#00F2FE; transition:width 1s linear;"></div>
+                        </div>
+                        <button id="admob-close-btn" disabled style="width:100%; padding:14px; border-radius:14px; border:none; font-weight:800; font-size:14px; background:#1C2740; color:#64748B; cursor:not-allowed;">
+                            Please wait 15s to claim reward...
+                        </button>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                let timeLeft = 15;
+                const timerBadge = document.getElementById('admob-timer-badge');
+                const progressBar = document.getElementById('admob-progress-bar');
+                const closeBtn = document.getElementById('admob-close-btn');
+
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const progress = ((15 - timeLeft) / 15) * 100;
+                    progressBar.style.width = `${progress}%`;
+
+                    if (timeLeft > 0) {
+                        timerBadge.innerText = `Reward in ${timeLeft}s`;
+                        closeBtn.innerText = `Please wait ${timeLeft}s to claim reward...`;
+                    } else {
+                        clearInterval(interval);
+                        timerBadge.innerText = "Reward Granted! ✅";
+                        timerBadge.style.background = "#10B981";
+                        timerBadge.style.color = "#FFF";
+
+                        closeBtn.disabled = false;
+                        closeBtn.innerText = "Claim Reward & Close";
+                        closeBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
+                        closeBtn.style.color = "#040711";
+                        closeBtn.style.cursor = "pointer";
+
+                        closeBtn.onclick = () => {
+                            modal.remove();
+                            window.onNativeAdRewarded();
+                        };
+                    }
+                }, 1000);
+            },
+
             // ================= MINING RIG CONTROLLER =================
             handleMiningAction: async function() {
                 SoundFX.playClick();
@@ -1650,11 +1755,10 @@
 
                 const requiredAds = State.admin.mining.ads_required;
                 if (State.miningAdsWatched < requiredAds) {
-                    this.watchNativeRewardedAd();
+                    this.showAdmobRewarded('mining');
                     return;
                 }
 
-                // Power up sound and start 1-hour session
                 SoundFX.playPowerUp();
                 const duration = State.admin.mining.session_duration_ms;
                 await update(ref(database, `users/${State.userId}`), {
@@ -1663,7 +1767,6 @@
                     miningAdsWatched: 0
                 });
 
-                // Anti-Cheat Referral Reward Trigger
                 if (!State.firstMiningCompleted) {
                     await update(ref(database, `users/${State.userId}`), { firstMiningCompleted: true });
                     this.processReferralCommission();
@@ -1715,20 +1818,17 @@
                         const secs = Math.floor((remaining % 60000) / 1000);
                         timerText.innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
 
-                        // Activate Rig Visuals
                         rigCard.classList.add('active-rig');
                         led.classList.add('active');
                         stateLabel.innerText = "MINING (ACTIVE)";
                         stateLabel.style.color = "var(--accent-green)";
 
-                        // Dynamic fluctuating hashrate
                         const liveHash = (48.4 + Math.random() * 2.2).toFixed(1);
                         hashVal.innerText = `${liveHash} MH/s`;
 
                         const progress = (1 - (remaining / State.admin.mining.session_duration_ms)) * 100;
                         laserBar.style.width = `${progress}%`;
 
-                        // Floating coin particles every 2 seconds
                         if (Math.floor(remaining / 1000) % 2 === 0) {
                             this.spawnMiningParticle();
                             runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
@@ -1769,51 +1869,12 @@
                     btnLabel.innerText = "Rig Power Active (Turbofans ON)";
                     document.getElementById('btn-mine-action').disabled = true;
                 } else if (State.miningAdsWatched < reqAds) {
-                    btnLabel.innerText = `Watch Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
+                    btnLabel.innerText = `Watch AdMob Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
                     document.getElementById('btn-mine-action').disabled = false;
                 } else {
                     btnLabel.innerText = "Start 1-Hour Quantum Mining";
                     document.getElementById('btn-mine-action').disabled = false;
                 }
-            },
-
-            // ================= REWARDED ADS =================
-            // ================= SMART ADMOB REWARDED TRIGGER =================
-            watchNativeRewardedAd: function() {
-                SoundFX.playClick();
-                const now = Date.now();
-                if (now - State.lastAdWatchTime < 10000) {
-                    this.toast("Please wait 10s between ad views", "info");
-                    return;
-                }
-
-                // 1. Agar WebIntoApp / Android APK ke andar hai (Native AdMob)
-                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
-                    window.AndroidBridge.showRewardedAd();
-                    return;
-                } else if (window.Android && typeof window.Android.showAd === 'function') {
-                    window.Android.showAd();
-                    return;
-                }
-
-                // 2. Browser Testing Fallback (Agar Chrome me test kar rahe hon)
-                if (window.Adsgram) {
-                    window.Adsgram.init({ blockId: "19245" }).show()
-                        .then(() => window.onNativeAdRewarded())
-                        .catch(() => this.toast("Ad unavailable. Try again in a moment.", "error"));
-                } else {
-                    // Quick test simulation for browser
-                    this.toast("Simulating Ad View (1.5s)...", "info");
-                    setTimeout(() => window.onNativeAdRewarded(), 1500);
-                }
-            },
-
-            watchWebAd: function() {
-                SoundFX.playClick();
-                if (typeof window.show_9969043 === 'function') {
-                    try { window.show_9969043(); } catch(e){}
-                }
-                this.creditCoins(30, "Sponsor Offer Reward");
             },
 
             creditCoins: async function(amount, reason) {
@@ -1843,7 +1904,6 @@
             triggerCoinExchange: async function() {
                 SoundFX.playClick();
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
-                const target = document.getElementById('swap-target-currency').value;
                 const minSwap = State.admin.exchange.min_swap_coins;
 
                 if (coinsToSwap < minSwap) {
@@ -1855,16 +1915,18 @@
                     return;
                 }
 
+                // Gated by AdMob Ad Requirement
                 if (State.admin.exchange.ads_required > 0) {
-                    try {
-                        this.toast("Loading required sponsor ad before swap...", "info");
-                        if (window.Adsgram) await window.Adsgram.init({ blockId: "19245" }).show();
-                    } catch(e) {
-                        this.toast("You must watch the ad to complete currency swap", "error");
-                        return;
-                    }
+                    this.toast("Watch required AdMob ad before swapping...", "info");
+                    this.showAdmobRewarded('swap');
+                    return;
                 }
 
+                await this.executeSwap(coinsToSwap);
+            },
+
+            executeSwap: async function(coinsToSwap) {
+                const target = document.getElementById('swap-target-currency').value;
                 await runTransaction(ref(database, `users/${State.userId}`), (u) => {
                     if (!u || u.coins < coinsToSwap) return;
                     u.coins -= coinsToSwap;
@@ -2113,18 +2175,37 @@
             }
         };
 
-        // Android Native Bridge Callback
+        // ================= UNIFIED ADMOB REWARD CALLBACK =================
         window.onNativeAdRewarded = function() {
-            const reqMiningAds = State.admin.mining.ads_required;
-            if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
-                runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
-                    return (parseInt(curr) || 0) + 1;
-                });
-                SoundFX.playCoin();
-                App.toast("Ad completed! Step added toward mining session.", "success");
-            } else {
-                App.creditCoins(50, "Native Android Video Ad");
+            State.lastAdWatchTime = Date.now();
+            const target = State.currentAdTarget;
+
+            // 1. Agar Mining ke liye ad dekha gaya tha
+            if (target === 'mining') {
+                const reqMiningAds = State.admin.mining.ads_required;
+                if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
+                    runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
+                        return (parseInt(curr) || 0) + 1;
+                    });
+                    SoundFX.playCoin();
+                    App.toast("AdMob Ad Complete! Power step added.", "success");
+                }
+            } 
+            // 2. Agar Currency Swap ke liye ad dekha gaya tha
+            else if (target === 'swap') {
+                const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
+                App.executeSwap(coinsToSwap);
+            } 
+            // 3. Agar Watch & Earn (Ad Task) ke liye ad dekha gaya tha
+            else if (target && target.type === 'ad_task') {
+                const reward = target.reward || 50;
+                App.creditCoins(reward, `AdMob ${target.title} Reward`);
+            } 
+            else {
+                App.creditCoins(50, "AdMob Video Reward");
             }
+
+            State.currentAdTarget = null; // Reset target
         };
 
         document.addEventListener('DOMContentLoaded', () => App.init());
