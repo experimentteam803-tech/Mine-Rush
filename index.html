@@ -1841,33 +1841,34 @@
                 }
             },
 
-            // ================= 100% RELIABLE AD TRIGGER & REWARD SYSTEM =================
+            // ================= 3-WAY ADMOB DISPATCHER =================
             triggerRewardedAd: function() {
                 const now = Date.now();
                 if (now - State.lastAdWatchTime < 5000) {
-                    this.toast("Please wait a few seconds before watching another ad", "info");
+                    this.toast("Please wait a few seconds before next ad", "info");
                     return;
                 }
 
-                this.toast("Loading AdMob rewarded ad...", "info");
+                const target = State.pendingAdReward;
+                this.toast("Loading AdMob ad...", "info");
 
-                // Check for Native AndroidBridge (from our GitHub Actions APK)
-                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
-                    try {
+                // CASE 1: Mining -> Calls Rewarded Ad
+                if (target && target.type === 'mining') {
+                    if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
                         window.AndroidBridge.showRewardedAd();
                         return;
-                    } catch(e) {
-                        console.error("Bridge call error:", e);
                     }
                 }
-                if (window.Android && typeof window.Android.showRewardedAd === 'function') {
-                    try { window.Android.showRewardedAd(); return; } catch(e) {}
-                }
-                if (window.Android && typeof window.Android.showAd === 'function') {
-                    try { window.Android.showAd(); return; } catch(e) {}
+                // CASE 2: Tasks & Swap -> Calls Rewarded Interstitial Ad
+                else if (target && (target.type === 'coins' || target.type === 'swap')) {
+                    const tag = target.type === 'coins' ? `coins_${target.amount}_${target.title}` : 'swap';
+                    if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
+                        window.AndroidBridge.showRewardedInterstitialAd(tag);
+                        return;
+                    }
                 }
 
-                // Browser / Fallback Testing Simulator
+                // Fallback Simulator (Browser testing ke liye)
                 this.showAdMobSimulator();
             },
 
@@ -2254,30 +2255,37 @@
             }
         };
 
-        // ================= UNIFIED GUARANTEED REWARD CALLBACK =================
-        window.onNativeAdRewarded = async function() {
+        // ================= UNIVERSAL REWARD RECEIVER =================
+        window.onNativeAdRewarded = async function(rawTarget) {
             State.lastAdWatchTime = Date.now();
             const reward = State.pendingAdReward;
-            State.pendingAdReward = null; // Consume reward target
+            State.pendingAdReward = null;
 
-            // 1. Agar Mining ke liye ad dekha gaya tha
-            if (!reward || reward.type === 'mining') {
+            // 1. Mining Reward Handler
+            if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
                 const reqMiningAds = State.admin.mining.ads_required;
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                         return (parseInt(curr) || 0) + 1;
                     });
                     SoundFX.playCoin();
-                    App.toast("Ad Completed! Step added toward mining session.", "success");
+                    App.toast("Ad Completed! Power step added.", "success");
                 }
             }
-            // 2. Agar Watch & Earn (Ad Task) ke liye ad dekha gaya tha
-            else if (reward.type === 'coins') {
-                await App.creditCoins(reward.amount || 50, reward.title || "AdMob Video Ad");
+            // 2. Coin Swap Reward Handler
+            else if (rawTarget === 'swap' || (reward && reward.type === 'swap')) {
+                const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
+                await App.executeSwap(coinsToSwap);
             }
-            // 3. Agar Currency Swap ke liye ad dekha gaya tha
-            else if (reward.type === 'swap') {
-                await App.executeSwap(reward.coinsToSwap);
+            // 3. Task Rewarded Interstitial Coins Handler
+            else if (rawTarget && rawTarget.startsWith('coins_')) {
+                const parts = rawTarget.split('_');
+                const coins = parseFloat(parts[1]) || 50;
+                const title = parts.slice(2).join(' ') || 'AdMob Video';
+                await App.creditCoins(coins, title);
+            }
+            else if (reward && reward.type === 'coins') {
+                await App.creditCoins(reward.amount || 50, reward.title || "AdMob Video Ad");
             }
         };
 
