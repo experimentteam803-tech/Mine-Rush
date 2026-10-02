@@ -5,13 +5,731 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <title>MineRush - NextGen Quantum Cloud Mining</title>
 
-    <!-- Google Font -->
+    <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Modular CSS File -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --bg-base: #040711;
+            --bg-card: rgba(13, 20, 38, 0.78);
+            --bg-card-subtle: rgba(22, 34, 60, 0.65);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(0, 242, 254, 0.45);
+
+            --accent-cyan: #00F2FE;
+            --accent-blue: #3B82F6;
+            --accent-purple: #8B5CF6;
+            --accent-gold: #FFD200;
+            --accent-green: #10B981;
+            --accent-red: #EF4444;
+
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(ellipse 90% 50% at 50% -10%, rgba(0, 242, 254, 0.16), transparent),
+                radial-gradient(ellipse 70% 40% at 50% 105%, rgba(139, 92, 246, 0.12), transparent);
+            color: var(--text-primary);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App Reveal Animation */
+        #app {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(0.97) translateY(12px);
+            transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        #app.app-revealed {
+            opacity: 1;
+            filter: blur(0px);
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Header */
+        header {
+            padding: calc(var(--safe-top) + 12px) 18px 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 16, 32, 0.85);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .header-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+
+        .profile-glow-ring {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            padding: 2px;
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+        }
+
+        .profile-glow-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--bg-base);
+        }
+
+        .header-user-info { display: flex; flex-direction: column; }
+        .header-user-name { font-size: 14px; font-weight: 800; color: #FFF; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-user-tag { font-size: 11px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: #FFF;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 17px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .icon-btn:active { transform: scale(0.9); background: rgba(0, 242, 254, 0.15); border-color: var(--accent-cyan); }
+
+        /* Main Views */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px 16px calc(var(--safe-bottom) + 84px) 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scrollbar-width: none;
+        }
+        main::-webkit-scrollbar { display: none; }
+
+        .section-view { display: none; flex-direction: column; gap: 16px; animation: viewFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .section-view.active { display: flex; }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* VIBRANT HOLOGRAPHIC BALANCE CARD */
+        .balance-hero {
+            background: linear-gradient(135deg, rgba(16, 32, 70, 0.95) 0%, rgba(30, 20, 56, 0.95) 50%, rgba(10, 16, 34, 0.98) 100%);
+            border: 1.5px solid var(--accent-cyan);
+            border-radius: 26px;
+            padding: 24px 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 242, 254, 0.25);
+        }
+
+        .balance-hero::after {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.35), transparent 70%);
+            pointer-events: none;
+        }
+
+        .balance-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .primary-balance { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+        .primary-balance .coin-val { font-size: 40px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 30px rgba(255, 210, 0, 0.45); letter-spacing: -0.5px; }
+        .primary-balance .coin-symbol { font-size: 15px; font-weight: 800; color: var(--text-secondary); }
+
+        .secondary-currencies {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .curr-box {
+            background: rgba(4, 7, 17, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 10px 14px;
+            backdrop-filter: blur(8px);
+        }
+        .curr-box .curr-title { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .curr-box .curr-amount { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
+
+        /* Quick Action Bar (3 Actions on Home) */
+        .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .quick-action-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 14px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+        .quick-action-btn:active { transform: translateY(2px) scale(0.95); background: var(--bg-card-subtle); border-color: var(--accent-cyan); }
+        .quick-action-btn .btn-icon { font-size: 22px; filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.3)); }
+        .quick-action-btn .btn-text { font-size: 11px; font-weight: 800; color: var(--text-secondary); }
+
+        /* Mining Rig Card */
+        .mining-rig-card {
+            background: linear-gradient(180deg, rgba(16, 24, 46, 0.95) 0%, rgba(8, 13, 26, 0.98) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.22);
+            border-radius: 26px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .rig-top-bar { display: flex; justify-content: space-between; align-items: center; }
+        .rig-id-badge { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: #FFF; }
+
+        .rig-level-chip {
+            background: rgba(255, 210, 0, 0.15);
+            border: 1px solid rgba(255, 210, 0, 0.35);
+            color: var(--accent-gold);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .rig-level-chip:active { transform: scale(0.95); }
+
+        .rig-led-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            box-shadow: 0 0 6px var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .rig-led-dot.active {
+            background: var(--accent-green);
+            box-shadow: 0 0 12px var(--accent-green);
+            animation: ledBlink 1.2s infinite alternate;
+        }
+        @keyframes ledBlink { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .rig-chassis {
+            background: radial-gradient(circle at 50% 50%, rgba(26, 38, 70, 0.6) 0%, rgba(10, 16, 32, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .turbofan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .fan-housing {
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: #060A14;
+            border: 2px solid rgba(255, 255, 255, 0.07);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .fan-blades { width: 82%; height: 82%; position: relative; transform-origin: center; opacity: 0.45; transition: opacity 0.4s; }
+        .fan-blades svg { width: 100%; height: 100%; }
+
+        .mining-rig-card.active-rig .fan-housing { border-color: var(--accent-cyan); box-shadow: inset 0 0 25px rgba(0, 242, 254, 0.3), 0 0 20px rgba(0, 242, 254, 0.35); }
+        .mining-rig-card.active-rig .fan-blades { opacity: 1; animation: fanSpin 0.55s infinite linear; }
+        @keyframes fanSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .fan-center-core {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .mining-rig-card.active-rig .fan-center-core {
+            background: var(--accent-cyan);
+            color: #040711;
+            font-weight: 800;
+            box-shadow: 0 0 14px var(--accent-cyan);
+        }
+
+        .rig-matrix-display {
+            background: rgba(4, 7, 17, 0.9);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .matrix-param { display: flex; flex-direction: column; }
+        .matrix-title { font-size: 10px; font-weight: 800; color: var(--text-muted); letter-spacing: 0.5px; }
+        .matrix-val { font-size: 15px; font-weight: 800; color: #FFF; font-variant-numeric: tabular-nums; }
+
+        .rig-laser-gauge { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.06); border-radius: 4px; overflow: hidden; }
+        .rig-laser-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); box-shadow: 0 0 12px var(--accent-cyan); border-radius: 4px; transition: width 0.8s ease; }
+
+        .sparkle-container { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; }
+        .sparkle-coin {
+            position: absolute;
+            color: var(--accent-gold);
+            font-size: 14px;
+            font-weight: 800;
+            animation: floatSparkle 1.6s forwards ease-out;
+            text-shadow: 0 0 10px rgba(255, 210, 0, 0.7);
+        }
+        @keyframes floatSparkle { 0% { transform: translateY(0) scale(0.6); opacity: 1; } 100% { transform: translateY(-70px) scale(1.1); opacity: 0; } }
+
+        /* Dual Button Row on Mining Card */
+        .mining-action-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
+
+        /* Unified Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: #040711;
+            box-shadow: 0 4px 22px rgba(0, 242, 254, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-primary:active:not(:disabled) { transform: scale(0.97); }
+        .btn-primary:disabled { opacity: 0.5; background: #1C2740; color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
+        .btn-gold { background: linear-gradient(135deg, #FFD200 0%, #F59E0B 100%); color: #040711; box-shadow: 0 4px 22px rgba(255, 210, 0, 0.35); }
+        .btn-purple { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); color: #FFF; box-shadow: 0 4px 22px rgba(139, 92, 246, 0.35); }
+        .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
+
+        /* Filter Tabs & Cards */
+        .filter-scroller { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .filter-scroller::-webkit-scrollbar { display: none; }
+        .chip-tab { padding: 8px 16px; border-radius: 14px; font-size: 12px; font-weight: 800; white-space: nowrap; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .chip-tab.active { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
+
+        /* TOP REWARDED AD TASKS ON TASKS PAGE */
+        .top-ad-tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
+        @media (min-width: 480px) { .top-ad-tasks-grid { grid-template-columns: 1fr 1fr; } }
+
+        .ad-task-card {
+            background: linear-gradient(135deg, rgba(20, 30, 58, 0.88), rgba(10, 16, 32, 0.95));
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-task-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+        }
+
+        .ad-task-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .ad-task-title { font-size: 14px; font-weight: 800; color: #FFF; }
+        .ad-task-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .task-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .task-card-top { display: flex; justify-content: space-between; align-items: center; }
+        .task-icon { width: 48px; height: 48px; border-radius: 16px; object-fit: cover; border: 1px solid var(--border); background: var(--bg-card-subtle); flex-shrink: 0; }
+        .task-info { flex: 1; margin-left: 12px; min-width: 0; }
+        .task-name { font-size: 15px; font-weight: 800; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .task-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12px; }
+
+        .task-steps-box {
+            background: rgba(4, 7, 17, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .step-row { display: flex; gap: 10px; margin-bottom: 6px; }
+        .step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-cyan); color: #040711; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+
+        /* Wallet & Swap */
+        .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .wallet-card-cell { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 14px 10px; text-align: center; }
+        .wallet-card-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; }
+        .wallet-card-cell .val { font-size: 16px; font-weight: 800; color: #FFF; margin-top: 4px; word-break: break-all; }
+
+        .swap-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .swap-input-group {
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .swap-input-group input { background: transparent; border: none; color: #FFF; font-size: 18px; font-weight: 800; width: 60%; outline: none; }
+        .swap-input-group select { background: var(--bg-card-subtle); border: 1px solid var(--border); color: #FFF; padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; outline: none; }
+        .wallet-action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* History */
+        .history-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-item {
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-pill { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 8px; }
+        .status-pending { background: rgba(255, 210, 0, 0.15); color: var(--accent-gold); }
+        .status-approved { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); }
+
+        /* Referral Roadmap */
+        .refer-guide-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .guide-step { display: flex; gap: 14px; align-items: flex-start; }
+        .guide-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 242, 254, 0.25);
+        }
+        .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
+        .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
+
+        /* Modals & Backdrop */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(4, 7, 17, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 250;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .modal-backdrop.open { display: flex; opacity: 1; }
+
+        .modal-cyber-sheet {
+            background: linear-gradient(145deg, rgba(18, 27, 52, 0.98), rgba(9, 14, 28, 0.99));
+            border: 1px solid rgba(0, 242, 254, 0.35);
+            border-radius: 28px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 410px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            opacity: 0;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+        }
+
+        .modal-backdrop.open .modal-cyber-sheet { transform: scale(1) translateY(0); opacity: 1; }
+        .modal-cyber-sheet.auth-exit-anim {
+            transform: scale(1.08) translateY(-10px) !important;
+            opacity: 0 !important;
+            filter: blur(12px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
+        }
+
+        .auth-brand-logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 12px auto;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+            animation: authLogoFloat 3s ease-in-out infinite alternate;
+        }
+        @keyframes authLogoFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
+
+        .auth-nav-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(4, 7, 17, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 800;
+            padding: 11px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .auth-tab-btn.active {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(59, 130, 246, 0.22));
+            color: var(--accent-cyan);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .form-group-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 14px;
+            animation: fieldSlideUp 0.45s ease backwards;
+        }
+        .form-group-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-group-field:nth-child(2) { animation-delay: 0.16s; }
+        .form-group-field:nth-child(3) { animation-delay: 0.22s; }
+        .form-group-field:nth-child(4) { animation-delay: 0.28s; }
+        @keyframes fieldSlideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-label { font-size: 11px; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-icon { position: absolute; left: 14px; font-size: 16px; color: var(--text-muted); pointer-events: none; }
+
+        .form-input {
+            width: 100%;
+            background: rgba(4, 7, 17, 0.85);
+            border: 1px solid var(--border);
+            color: #FFF;
+            padding: 14px 14px 14px 42px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .form-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 16px rgba(0, 242, 254, 0.25); background: rgba(4, 7, 17, 1); }
+
+        .pw-toggle-btn { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
+
+        #btn-auth-register, #btn-auth-login {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
+            animation: pulseGlowBtn 2.4s infinite alternate;
+        }
+        @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.3); } 100% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.6); } }
+
+        /* Modal Sheets */
+        .modal-sheet {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-radius: 28px 28px 0 0;
+            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin-top: auto;
+        }
+
+        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
+        .payout-method-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .payout-tab { background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .payout-tab.selected { background: rgba(0, 242, 254, 0.12); border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(0, 242, 254, 0.22); }
+        .payout-tab .tab-title { font-size: 14px; font-weight: 800; }
+        .payout-tab .tab-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
+
+        /* 4-Tab Bottom Navigation */
+        nav.bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: calc(var(--safe-bottom) + 68px);
+            padding-bottom: var(--safe-bottom);
+            background: rgba(10, 16, 32, 0.94);
+            backdrop-filter: blur(18px);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 Tabs */
+            align-items: center;
+            z-index: 50;
+        }
+
+        .nav-tab {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 0;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-tab .tab-icon { font-size: 22px; transition: transform 0.2s; }
+        .nav-tab .tab-name { font-size: 10px; font-weight: 800; letter-spacing: 0.3px; }
+        .nav-tab.active { color: var(--accent-cyan); }
+        .nav-tab.active .tab-icon { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
+
+        /* Toasts */
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 350; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
+        .toast { background: rgba(13, 20, 38, 0.98); border: 1px solid var(--border); border-radius: 16px; padding: 14px 18px; font-size: 13px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); pointer-events: auto; }
+
+        /* Celebration Modal */
+        .celebration-modal {
+            background: linear-gradient(145deg, #162447, #0B1120);
+            border: 2px solid var(--accent-gold);
+            border-radius: 28px;
+            padding: 28px 22px;
+            text-align: center;
+            max-width: 340px;
+            width: 90%;
+            box-shadow: 0 0 60px rgba(255, 210, 0, 0.4);
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -31,6 +749,43 @@
             </div>
             <button class="btn-primary btn-gold" onclick="App.closeWelcomeModal()">
                 🎉 Claim & Start Mining
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= RIG POWER UPGRADE MODAL ================= -->
+    <div class="modal-backdrop" id="modal-upgrade" style="z-index: 300;">
+        <div class="modal-cyber-sheet">
+            <div style="text-align: center; margin-bottom: 18px;">
+                <div style="font-size: 42px; margin-bottom: 6px;">⚡</div>
+                <h2 style="font-size: 22px; font-weight: 800; color: #FFF;">Upgrade Mining Rig</h2>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                    Boost your hourly coin production rate permanently!
+                </p>
+            </div>
+
+            <div style="background: rgba(4, 7, 17, 0.85); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">CURRENT RIG:</span>
+                    <span style="font-size: 13px; font-weight: 800; color: var(--accent-cyan);" id="upgrade-cur-level">Level 1 (100 C/h)</span>
+                </div>
+                <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">UPGRADED RIG:</span>
+                    <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold);" id="upgrade-next-level">Level 2 (200 C/h)</span>
+                </div>
+                <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">UPGRADE COST:</span>
+                    <span style="font-size: 14px; font-weight: 800; color: #FFF;" id="upgrade-cost-text">300 Coins + 1 Ad</span>
+                </div>
+            </div>
+
+            <button class="btn-primary btn-purple" id="btn-confirm-upgrade" onclick="App.confirmRigUpgrade()">
+                ⚡ Watch Ad & Upgrade Machine
+            </button>
+            <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">
+                Cancel
             </button>
         </div>
     </div>
@@ -169,6 +924,7 @@
         <main>
             <!-- 🏠 HOME SECTION -->
             <section id="view-home" class="section-view active">
+                <!-- Highlighted Vibrant Portfolio Card -->
                 <div class="balance-hero">
                     <div class="balance-label">
                         <span>Total Portfolio</span>
@@ -190,14 +946,11 @@
                     </div>
                 </div>
 
+                <!-- Quick Action Bar (3 Quick Links) -->
                 <div class="quick-actions">
                     <div class="quick-action-btn" onclick="App.switchTab('view-tasks')">
                         <span class="btn-icon">📋</span>
-                        <span class="btn-text">Tasks</span>
-                    </div>
-                    <div class="quick-action-btn" onclick="App.switchTab('view-watch')">
-                        <span class="btn-icon">📺</span>
-                        <span class="btn-text">Watch Ads</span>
+                        <span class="btn-text">Tasks & Ads</span>
                     </div>
                     <div class="quick-action-btn" onclick="App.switchTab('view-wallet')">
                         <span class="btn-icon">💰</span>
@@ -209,16 +962,18 @@
                     </div>
                 </div>
 
-                <!-- Quantum Rig Card -->
+                <!-- Quantum Cloud Mining Machine Rig with Upgrade Option -->
                 <div class="mining-rig-card" id="mining-rig-wrapper">
                     <div class="sparkle-container" id="sparkle-container"></div>
                     
                     <div class="rig-top-bar">
                         <div class="rig-id-badge">
                             <div class="rig-led-dot" id="rig-status-led"></div>
-                            <span>ASIC RIG v4.8</span>
+                            <span>ASIC RIG</span>
                         </div>
-                        <span style="font-size: 11px; font-weight: 800; color: var(--accent-cyan);" id="rig-state-label">STANDBY</span>
+                        <div class="rig-level-chip" onclick="App.openUpgradeModal()" title="Upgrade Rig Power">
+                            <span>⚡</span> <span id="rig-level-display">Level 1</span>
+                        </div>
                     </div>
 
                     <div class="rig-chassis">
@@ -266,68 +1021,78 @@
                     </div>
 
                     <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--text-muted);">
-                        <span>RATE: +0.15/sec</span>
+                        <span id="mining-rate-text">RATE: ~100 C/h</span>
                         <span id="mining-ads-status">ADS: 0/5</span>
-                        <span>SESSION: +540 C</span>
+                        <span id="mining-session-yield">YIELD: +100 C</span>
                     </div>
 
-                    <button class="btn-primary" id="btn-mine-action" onclick="App.handleMiningAction()">
-                        <span>⚡</span> <span id="btn-mine-label">Watch Ads to Power Up (0/5)</span>
-                    </button>
+                    <div class="mining-action-row">
+                        <button class="btn-primary" id="btn-mine-action" onclick="App.handleMiningAction()">
+                            <span>⚡</span> <span id="btn-mine-label">Watch Ads to Power Up (0/5)</span>
+                        </button>
+                        <button class="btn-primary btn-purple" style="font-size: 13px; padding: 0 10px;" onclick="App.openUpgradeModal()">
+                            ⚡ Upgrade
+                        </button>
+                    </div>
                 </div>
             </section>
 
-            <!-- 📋 TASKS SECTION -->
+            <!-- 📋 TASKS & ADS SECTION (Combined) -->
             <section id="view-tasks" class="section-view">
                 <div>
-                    <h2 style="font-size:18px; font-weight:800;">Task Center</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Complete verified tasks with clear guidelines & earn coins.</p>
+                    <h2 style="font-size:18px; font-weight:800;">Earning & Task Center</h2>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Watch high-reward video ads & complete verified partner tasks.</p>
                 </div>
 
-                <div class="filter-scroller" id="task-category-chips">
-                    <div class="chip-tab active" onclick="App.filterTasks('all', this)">🔥 All</div>
-                    <div class="chip-tab" onclick="App.filterTasks('daily', this)">📅 Daily</div>
-                    <div class="chip-tab" onclick="App.filterTasks('social', this)">🎯 Social</div>
-                    <div class="chip-tab" onclick="App.filterTasks('app', this)">📱 App Installs</div>
+                <!-- TOP 2 REWARDED AD TASKS -->
+                <div class="top-ad-tasks-grid">
+                    <div class="ad-task-card">
+                        <div class="ad-task-card-top">
+                            <div>
+                                <div class="ad-task-title">⚡ AdMob Power Surge</div>
+                                <div class="ad-task-sub">High-Yield Video Sponsor</div>
+                            </div>
+                            <span class="status-pill status-approved">+50 Coins</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); font-weight:700;">
+                            <span id="ad-task-1-limit">Limit: 5/5 Daily</span>
+                            <span>AdMob Rewarded</span>
+                        </div>
+                        <button class="btn-primary btn-gold" style="padding: 12px; font-size: 13px;" id="btn-ad-task-1" onclick="App.watchTopAdTask(1, 50)">
+                            🎬 Watch Video (+50 C)
+                        </button>
+                    </div>
+
+                    <div class="ad-task-card">
+                        <div class="ad-task-card-top">
+                            <div>
+                                <div class="ad-task-title">🔥 AdMob Speed Boost</div>
+                                <div class="ad-task-sub">Quick Rewarded Interstitial</div>
+                            </div>
+                            <span class="status-pill status-approved">+30 Coins</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); font-weight:700;">
+                            <span id="ad-task-2-limit">Limit: 10/10 Daily</span>
+                            <span>AdMob Rewarded</span>
+                        </div>
+                        <button class="btn-primary" style="padding: 12px; font-size: 13px;" id="btn-ad-task-2" onclick="App.watchTopAdTask(2, 30)">
+                            🎬 Watch Video (+30 C)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PARTNER TASKS SECTION -->
+                <div style="margin-top: 8px;">
+                    <h3 style="font-size:15px; font-weight:800; margin-bottom: 10px;">📋 Partner & App Tasks</h3>
+                    <div class="filter-scroller" id="task-category-chips">
+                        <div class="chip-tab active" onclick="App.filterTasks('all', this)">🔥 All</div>
+                        <div class="chip-tab" onclick="App.filterTasks('daily', this)">📅 Daily</div>
+                        <div class="chip-tab" onclick="App.filterTasks('social', this)">🎯 Social</div>
+                        <div class="chip-tab" onclick="App.filterTasks('app', this)">📱 App Installs</div>
+                    </div>
                 </div>
 
                 <div id="tasks-container" style="display:flex; flex-direction:column; gap:12px;"></div>
-            </section>
-
-            <!-- 📺 WATCH & EARN -->
-            <section id="view-watch" class="section-view">
-                <div>
-                    <h2 style="font-size:18px; font-weight:800;">Watch & Earn</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">View official AdMob rewarded video ads & claim instant coins.</p>
-                </div>
-
-                <div class="ad-network-card">
-                    <div class="ad-card-top">
-                        <div>
-                            <div style="font-size: 15px; font-weight: 800;">AdMob Super Video</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">Direct Rewarded Video Sponsor</div>
-                        </div>
-                        <span class="status-pill status-approved">+50 Coins</span>
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Watch a full rewarded video advertisement. Coins are credited instantly after completion.</p>
-                    <button class="btn-primary btn-gold" onclick="App.watchTaskAd(50, 'AdMob Super Video')">
-                        🎬 Watch Video (+50 Coins)
-                    </button>
-                </div>
-
-                <div class="ad-network-card">
-                    <div class="ad-card-top">
-                        <div>
-                            <div style="font-size: 15px; font-weight: 800;">AdMob Power Bonus</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">High-Yield Partner Promotion</div>
-                        </div>
-                        <span class="status-pill status-approved">+30 Coins</span>
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-secondary); line-height:1.45;">Engage with partner video offer and claim high coin yield.</p>
-                    <button class="btn-primary" onclick="App.watchTaskAd(30, 'AdMob Power Bonus')">
-                        ⚡ Watch Video (+30 Coins)
-                    </button>
-                </div>
             </section>
 
             <!-- 💰 WALLET & WITHDRAWAL -->
@@ -462,6 +1227,7 @@
             </section>
         </main>
 
+        <!-- 4-Tab Bottom Nav (Watch Tab Removed) -->
         <nav class="bottom-nav">
             <button class="nav-tab active" onclick="App.switchTab('view-home')">
                 <span class="tab-icon">🏠</span>
@@ -470,10 +1236,6 @@
             <button class="nav-tab" onclick="App.switchTab('view-tasks')">
                 <span class="tab-icon">📋</span>
                 <span class="tab-name">Tasks</span>
-            </button>
-            <button class="nav-tab" onclick="App.switchTab('view-watch')">
-                <span class="tab-icon">📺</span>
-                <span class="tab-name">Watch</span>
             </button>
             <button class="nav-tab" onclick="App.switchTab('view-wallet')">
                 <span class="tab-icon">💰</span>
@@ -521,7 +1283,1039 @@
         </div>
     </div>
 
-    <!-- Modular JS File -->
-    <script type="module" src="app.js"></script>
+    <!-- ================= FIREBASE & APP LOGIC ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { 
+            getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+            signOut, onAuthStateChanged, sendPasswordResetEmail 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { 
+            getDatabase, ref, set, get, update, push, onValue, runTransaction, query, orderByChild, equalTo 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+        // Verified Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
+            authDomain: "mine-rush-f580a.firebaseapp.com",
+            projectId: "mine-rush-f580a",
+            storageBucket: "mine-rush-f580a.firebasestorage.app",
+            messagingSenderId: "250630688178",
+            appId: "1:250630688178:web:9f42ff370b129930a028ab",
+            measurementId: "G-4CDWDL6Z1J"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // Web Audio Synthesizer
+        const SoundFX = {
+            ctx: null,
+            init: function() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+            },
+            playClick: function() {
+                this.init();
+                if (!this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(350, this.ctx.currentTime + 0.04);
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.04);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+            },
+            playCoin: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                [1800, 2400].forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                    gain.gain.setValueAtTime(0.14, now + idx * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.07); osc.stop(now + idx * 0.07 + 0.25);
+                });
+            },
+            playSuccess: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.15, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.08); osc.stop(now + idx * 0.08 + 0.35);
+                });
+            },
+            playPowerUp: function() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(140, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.6);
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(now + 0.7);
+            }
+        };
+
+        // Rig Upgrade Definitions (Designed for High Owner Profit)
+        const RIG_TIERS = {
+            1: { name: "Starter Core", hourlyYield: 100, ratePerSec: 0.0277, costCoins: 0 },
+            2: { name: "Dual Turbo", hourlyYield: 200, ratePerSec: 0.0555, costCoins: 300 },
+            3: { name: "Quad Core", hourlyYield: 350, ratePerSec: 0.0972, costCoins: 800 },
+            4: { name: "Quantum Rig", hourlyYield: 550, ratePerSec: 0.1527, costCoins: 1800 },
+            5: { name: "Supercluster", hourlyYield: 850, ratePerSec: 0.2361, costCoins: 4000 }
+        };
+
+        // Core State
+        const State = {
+            user: null,
+            userId: null,
+            coins: 0,
+            inr: 0,
+            usdt: 0,
+            miningEndTime: 0,
+            miningAdsWatched: 0,
+            firstMiningCompleted: false,
+            rigLevel: 1,
+            adTask1Count: 0,
+            adTask2Count: 0,
+            admin: {
+                rates: { coin_to_inr: 100, coin_to_usdt: 9000 },
+                mining: { ads_required: 5, session_duration_ms: 3600000 },
+                exchange: { ads_required: 1, min_swap_coins: 100 },
+                withdrawals: { min_upi_inr: 50, min_ton_usdt: 5 },
+                referral: { reward_coins: 200 }
+            },
+            selectedPayoutMethod: 'UPI',
+            pendingAdReward: null,
+            lastAdWatchTime: 0
+        };
+
+        window.App = {
+            init: function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const refCodeParam = urlParams.get('ref') || urlParams.get('startapp') || '';
+                if (refCodeParam) {
+                    const refInput = document.getElementById('signup-ref-code');
+                    if (refInput) refInput.value = refCodeParam.replace('ref_', '').trim();
+                }
+
+                this.listenToAdminSettings();
+
+                onAuthStateChanged(auth, (user) => {
+                    const authModal = document.getElementById('modal-auth');
+                    const authCard = document.getElementById('auth-cyber-card');
+                    const appWrapper = document.getElementById('app');
+
+                    if (user) {
+                        State.user = user;
+                        State.userId = user.uid;
+
+                        if (authModal.classList.contains('open')) {
+                            authCard.classList.add('auth-exit-anim');
+                            setTimeout(() => {
+                                authModal.classList.remove('open');
+                                authCard.classList.remove('auth-exit-anim');
+                                appWrapper.classList.add('app-revealed');
+                            }, 380);
+                        } else {
+                            authModal.classList.remove('open');
+                            appWrapper.classList.add('app-revealed');
+                        }
+                        this.attachUserSession();
+                    } else {
+                        State.user = null;
+                        State.userId = null;
+                        appWrapper.classList.remove('app-revealed');
+                        authModal.classList.add('open');
+                    }
+                });
+
+                this.startMiningClock();
+                document.body.addEventListener('click', () => SoundFX.init(), { once: true });
+            },
+
+            listenToAdminSettings: function() {
+                onValue(ref(database, 'admin_settings'), (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        if (data.rates) State.admin.rates = { ...State.admin.rates, ...data.rates };
+                        if (data.mining) State.admin.mining = { ...State.admin.mining, ...data.mining };
+                        if (data.exchange) State.admin.exchange = { ...State.admin.exchange, ...data.exchange };
+                        if (data.withdrawals) State.admin.withdrawals = { ...State.admin.withdrawals, ...data.withdrawals };
+                        if (data.referral) State.admin.referral = { ...State.admin.referral, ...data.referral };
+                    }
+                    this.updateAdminDynamicUI();
+                });
+            },
+
+            updateAdminDynamicUI: function() {
+                document.getElementById('rate-badge').innerText = `${State.admin.rates.coin_to_inr} Coins = ₹1`;
+                document.getElementById('swap-req-ad-text').innerText = `Requires ${State.admin.exchange.ads_required} Ad`;
+                document.getElementById('payout-min-upi-text').innerText = `Min ₹${State.admin.withdrawals.min_upi_inr} (INR)`;
+                document.getElementById('payout-min-ton-text').innerText = `Min $${State.admin.withdrawals.min_ton_usdt} (TON Net)`;
+                this.updateMiningUI();
+            },
+
+            switchAuthTab: function(tab) {
+                SoundFX.playClick();
+                if (tab === 'signup') {
+                    document.getElementById('auth-signup-view').style.display = 'block';
+                    document.getElementById('auth-login-view').style.display = 'none';
+                    document.getElementById('tab-btn-signup').classList.add('active');
+                    document.getElementById('tab-btn-login').classList.remove('active');
+                } else {
+                    document.getElementById('auth-signup-view').style.display = 'none';
+                    document.getElementById('auth-login-view').style.display = 'block';
+                    document.getElementById('tab-btn-signup').classList.remove('active');
+                    document.getElementById('tab-btn-login').classList.add('active');
+                }
+            },
+
+            togglePasswordVisibility: function(inputId) {
+                SoundFX.playClick();
+                const input = document.getElementById(inputId);
+                input.type = input.type === 'password' ? 'text' : 'password';
+            },
+
+            handleRegister: async function() {
+                SoundFX.playClick();
+                const email = document.getElementById('signup-email').value.trim();
+                const pass = document.getElementById('signup-password').value.trim();
+                const confirmPass = document.getElementById('signup-confirm-password').value.trim();
+                const refCode = document.getElementById('signup-ref-code').value.trim();
+
+                if (!email || !email.includes('@')) {
+                    this.toast("Please enter a valid email address", "error");
+                    return;
+                }
+                if (pass.length < 6) {
+                    this.toast("Password must be at least 6 characters", "error");
+                    return;
+                }
+                if (pass !== confirmPass) {
+                    this.toast("Passwords do not match", "error");
+                    return;
+                }
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    const user = userCredential.user;
+
+                    await set(ref(database, `users/${user.uid}`), {
+                        uid: user.uid,
+                        email: email,
+                        coins: 100,
+                        welcomeBonusClaimed: true,
+                        inr_balance: 0,
+                        usdt_balance: 0,
+                        miningEndTime: 0,
+                        miningAdsWatched: 0,
+                        rigLevel: 1,
+                        firstMiningCompleted: false,
+                        referredBy: refCode || 'DIRECT',
+                        createdAt: Date.now()
+                    });
+
+                    if (refCode && refCode !== 'DIRECT') {
+                        await set(ref(database, `referral_bindings/${user.uid}`), {
+                            referrerUid: refCode,
+                            userUid: user.uid,
+                            userEmail: email,
+                            status: 'Pending First Mining',
+                            createdAt: Date.now()
+                        });
+                    }
+
+                    SoundFX.playSuccess();
+                    document.getElementById('modal-welcome').classList.add('open');
+                    this.toast("Account created successfully!", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
+
+            handleLogin: async function() {
+                SoundFX.playClick();
+                const email = document.getElementById('login-email').value.trim();
+                const pass = document.getElementById('login-password').value.trim();
+
+                if (!email || !pass) {
+                    this.toast("Please enter email & password", "error");
+                    return;
+                }
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    SoundFX.playSuccess();
+                    this.toast("Welcome back!", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
+
+            handleForgotPassword: async function() {
+                SoundFX.playClick();
+                const email = document.getElementById('login-email').value.trim();
+                if (!email) {
+                    this.toast("Enter your email above to reset password", "info");
+                    return;
+                }
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    this.toast("Password reset email sent! Check your inbox.", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
+
+            handleSignOut: async function() {
+                SoundFX.playClick();
+                await signOut(auth);
+                this.closeModals();
+                this.toast("Signed out successfully", "info");
+            },
+
+            closeWelcomeModal: function() {
+                SoundFX.playCoin();
+                document.getElementById('modal-welcome').classList.remove('open');
+            },
+
+            attachUserSession: function() {
+                const uid = State.userId;
+                const email = State.user.email;
+
+                document.getElementById('user-display-name').innerText = email.split('@')[0];
+                document.getElementById('profile-email-display').innerText = email;
+                document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
+
+                const origin = window.location.origin + window.location.pathname;
+                const refLink = `${origin}?ref=${uid}`;
+                document.getElementById('user-ref-link-display').innerText = refLink;
+
+                const userRef = ref(database, `users/${uid}`);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        State.coins = parseFloat(data.coins) || 0;
+                        State.inr = parseFloat(data.inr_balance) || 0;
+                        State.usdt = parseFloat(data.usdt_balance) || 0;
+                        State.miningEndTime = parseInt(data.miningEndTime) || 0;
+                        State.miningAdsWatched = parseInt(data.miningAdsWatched) || 0;
+                        State.rigLevel = parseInt(data.rigLevel) || 1;
+                        State.firstMiningCompleted = data.firstMiningCompleted || false;
+
+                        // Daily Task Limits
+                        const todayStr = new Date().toISOString().slice(0, 10);
+                        State.adTask1Count = data.adTasks?.[todayStr]?.task1 || 0;
+                        State.adTask2Count = data.adTasks?.[todayStr]?.task2 || 0;
+
+                        this.renderBalances();
+                        this.updateMiningUI();
+                        this.updateAdTaskLimits();
+                    }
+                });
+
+                this.listenToReferralStats();
+                this.listenToTasks();
+                this.listenToHistory();
+            },
+
+            renderBalances: function() {
+                document.getElementById('home-coin-balance').innerText = Math.floor(State.coins).toLocaleString();
+                document.getElementById('wallet-coins-val').innerText = Math.floor(State.coins).toLocaleString();
+                document.getElementById('home-inr-balance').innerText = `₹ ${State.inr.toFixed(2)}`;
+                document.getElementById('wallet-inr-val').innerText = `₹ ${State.inr.toFixed(2)}`;
+                document.getElementById('home-usdt-balance').innerText = `$ ${State.usdt.toFixed(2)}`;
+                document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
+            },
+
+            // ================= MINING RIG & UPGRADE CONTROLLER =================
+            updateMiningUI: function() {
+                const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
+                document.getElementById('rig-level-display').innerText = `Level ${State.rigLevel}`;
+                document.getElementById('mining-rate-text').innerText = `RATE: ~${tier.hourlyYield} C/h`;
+                document.getElementById('mining-session-yield').innerText = `YIELD: +${tier.hourlyYield} C`;
+
+                const reqAds = State.admin.mining.ads_required;
+                document.getElementById('mining-ads-status').innerText = `ADS: ${State.miningAdsWatched}/${reqAds}`;
+
+                const btnLabel = document.getElementById('btn-mine-label');
+                if (State.miningEndTime > Date.now()) {
+                    btnLabel.innerText = "Rig Power Active (Turbofans ON)";
+                    document.getElementById('btn-mine-action').disabled = true;
+                } else if (State.miningAdsWatched < reqAds) {
+                    btnLabel.innerText = `Watch Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
+                    document.getElementById('btn-mine-action').disabled = false;
+                } else {
+                    btnLabel.innerText = "Start 1-Hour Quantum Mining";
+                    document.getElementById('btn-mine-action').disabled = false;
+                }
+            },
+
+            openUpgradeModal: function() {
+                SoundFX.playClick();
+                const curLevel = State.rigLevel;
+                if (curLevel >= 5) {
+                    this.toast("Your Machine Rig is already at MAX Level 5!", "info");
+                    return;
+                }
+
+                const nextLevel = curLevel + 1;
+                const curTier = RIG_TIERS[curLevel];
+                const nextTier = RIG_TIERS[nextLevel];
+
+                document.getElementById('upgrade-cur-level').innerText = `Level ${curLevel} (${curTier.hourlyYield} C/h)`;
+                document.getElementById('upgrade-next-level').innerText = `Level ${nextLevel} (${nextTier.hourlyYield} C/h)`;
+                document.getElementById('upgrade-cost-text').innerText = `${nextTier.costCoins} Coins + 1 Ad`;
+
+                document.getElementById('modal-upgrade').classList.add('open');
+            },
+
+            confirmRigUpgrade: async function() {
+                SoundFX.playClick();
+                const nextLevel = State.rigLevel + 1;
+                const nextTier = RIG_TIERS[nextLevel];
+                if (!nextTier) return;
+
+                if (State.coins < nextTier.costCoins) {
+                    this.toast(`Insufficient Coins! Need ${nextTier.costCoins} Coins to upgrade.`, "error");
+                    return;
+                }
+
+                this.closeModals();
+                this.toast("Loading required AdMob ad for Machine Upgrade...", "info");
+
+                State.pendingAdReward = { type: 'upgrade', nextLevel: nextLevel, costCoins: nextTier.costCoins };
+                this.triggerRewardedAd();
+            },
+
+            handleMiningAction: async function() {
+                SoundFX.playClick();
+                const now = Date.now();
+                if (State.miningEndTime > now) {
+                    this.toast("Quantum Rig is currently mining!", "info");
+                    return;
+                }
+
+                const requiredAds = State.admin.mining.ads_required;
+                if (State.miningAdsWatched < requiredAds) {
+                    State.pendingAdReward = { type: 'mining' };
+                    this.triggerRewardedAd();
+                    return;
+                }
+
+                SoundFX.playPowerUp();
+                const duration = State.admin.mining.session_duration_ms;
+                await update(ref(database, `users/${State.userId}`), {
+                    miningStartTime: now,
+                    miningEndTime: now + duration,
+                    miningAdsWatched: 0
+                });
+
+                if (!State.firstMiningCompleted) {
+                    await update(ref(database, `users/${State.userId}`), { firstMiningCompleted: true });
+                    this.processReferralCommission();
+                }
+
+                this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
+            },
+
+            processReferralCommission: async function() {
+                const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
+                if (bindingSnap.exists()) {
+                    const binding = bindingSnap.val();
+                    if (binding.status === 'Pending First Mining') {
+                        const referrerUid = binding.referrerUid;
+                        const reward = State.admin.referral.reward_coins || 200;
+
+                        await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
+                            return (parseFloat(curr) || 0) + reward;
+                        });
+
+                        await push(ref(database, `users/${referrerUid}/coin_history`), {
+                            amount: reward,
+                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
+                            timestamp: Date.now()
+                        });
+
+                        await update(ref(database, `referral_bindings/${State.userId}`), {
+                            status: 'Qualified',
+                            rewardedCoins: reward,
+                            qualifiedAt: Date.now()
+                        });
+                    }
+                }
+            },
+
+            startMiningClock: function() {
+                setInterval(() => {
+                    const now = Date.now();
+                    const timerText = document.getElementById('mining-timer-display');
+                    const rigCard = document.getElementById('mining-rig-wrapper');
+                    const led = document.getElementById('rig-status-led');
+                    const hashVal = document.getElementById('rig-hashrate-val');
+                    const laserBar = document.getElementById('rig-progress-laser');
+
+                    if (State.miningEndTime > now) {
+                        const remaining = State.miningEndTime - now;
+                        const mins = Math.floor(remaining / 60000);
+                        const secs = Math.floor((remaining % 60000) / 1000);
+                        timerText.innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+                        rigCard.classList.add('active-rig');
+                        led.classList.add('active');
+
+                        const liveHash = (40 + State.rigLevel * 15 + Math.random() * 2).toFixed(1);
+                        hashVal.innerText = `${liveHash} MH/s`;
+
+                        const progress = (1 - (remaining / State.admin.mining.session_duration_ms)) * 100;
+                        laserBar.style.width = `${progress}%`;
+
+                        if (Math.floor(remaining / 1000) % 2 === 0) {
+                            this.spawnMiningParticle();
+                            const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
+                            const coinTick = tier.ratePerSec * 2;
+                            runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
+                                return (parseFloat(curr) || 0) + coinTick;
+                            });
+                        }
+                    } else {
+                        timerText.innerText = "01:00:00";
+                        rigCard.classList.remove('active-rig');
+                        led.classList.remove('active');
+                        hashVal.innerText = "0.0 MH/s";
+                        laserBar.style.width = "0%";
+                    }
+                }, 1000);
+            },
+
+            spawnMiningParticle: function() {
+                const container = document.getElementById('sparkle-container');
+                if (!container) return;
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-coin';
+                particle.innerText = '+🪙';
+                particle.style.left = `${25 + Math.random() * 50}%`;
+                particle.style.top = `${30 + Math.random() * 30}%`;
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), 1600);
+            },
+
+            // ================= TOP 2 AD TASKS ON TASKS PAGE =================
+            updateAdTaskLimits: function() {
+                const limit1 = 5;
+                const limit2 = 10;
+                const left1 = Math.max(0, limit1 - State.adTask1Count);
+                const left2 = Math.max(0, limit2 - State.adTask2Count);
+
+                document.getElementById('ad-task-1-limit').innerText = `Limit: ${left1}/${limit1} Daily`;
+                document.getElementById('ad-task-2-limit').innerText = `Limit: ${left2}/${limit2} Daily`;
+
+                document.getElementById('btn-ad-task-1').disabled = left1 <= 0;
+                document.getElementById('btn-ad-task-2').disabled = left2 <= 0;
+            },
+
+            watchTopAdTask: function(taskId, rewardCoins) {
+                SoundFX.playClick();
+                const limit = taskId === 1 ? 5 : 10;
+                const curCount = taskId === 1 ? State.adTask1Count : State.adTask2Count;
+
+                if (curCount >= limit) {
+                    this.toast("Daily limit reached for this ad task!", "info");
+                    return;
+                }
+
+                State.pendingAdReward = { 
+                    type: 'ad_task', 
+                    taskId: taskId, 
+                    amount: rewardCoins, 
+                    title: taskId === 1 ? 'AdMob Power Surge' : 'AdMob Speed Boost' 
+                };
+                this.triggerRewardedAd();
+            },
+
+            // ================= 3-WAY ADMOB DISPATCHER =================
+            triggerRewardedAd: function() {
+                const now = Date.now();
+                if (now - State.lastAdWatchTime < 5000) {
+                    this.toast("Please wait a few seconds before next ad", "info");
+                    return;
+                }
+
+                const target = State.pendingAdReward;
+                this.toast("Loading AdMob ad...", "info");
+
+                // CASE 1: Mining -> Calls Rewarded Ad
+                if (target && target.type === 'mining') {
+                    if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
+                        window.AndroidBridge.showRewardedAd();
+                        return;
+                    }
+                }
+                // CASE 2: Tasks, Swap, or Machine Upgrade -> Calls Rewarded Interstitial Ad
+                else if (target && (target.type === 'ad_task' || target.type === 'swap' || target.type === 'upgrade')) {
+                    const tag = target.type === 'ad_task' ? `adtask_${target.taskId}_${target.amount}` : (target.type === 'upgrade' ? 'upgrade' : 'swap');
+                    if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
+                        window.AndroidBridge.showRewardedInterstitialAd(tag);
+                        return;
+                    }
+                }
+
+                // Fallback Simulator (Browser testing ke liye)
+                this.showAdMobSimulator();
+            },
+
+            showAdMobSimulator: function() {
+                const existing = document.getElementById('admob-test-modal');
+                if (existing) existing.remove();
+
+                const modal = document.createElement('div');
+                modal.id = 'admob-test-modal';
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                    background: #040711; z-index: 99999; display: flex; flex-direction: column;
+                    align-items: center; justify-content: space-between; padding: 25px 20px;
+                    animation: viewFadeIn 0.25s ease;
+                `;
+
+                modal.innerHTML = `
+                    <div style="width:100%; display:flex; justify-content:space-between; align-items:center; color:#FFF;">
+                        <div style="background:rgba(0,242,254,0.18); color:#00F2FE; border:1px solid rgba(0,242,254,0.3); border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800;">
+                            ADMOB SPONSOR
+                        </div>
+                        <div id="admob-timer-badge" style="background:#FFD200; color:#000; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:800;">
+                            Reward in 15s
+                        </div>
+                    </div>
+
+                    <div style="text-align:center; color:#FFF; display:flex; flex-direction:column; align-items:center; gap:14px;">
+                        <div style="width:84px; height:84px; border-radius:24px; background:linear-gradient(135deg, #00F2FE, #8B5CF6); display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 0 35px rgba(0,242,254,0.35);">
+                            🎬
+                        </div>
+                        <h3 style="font-size:20px; font-weight:800;">Google AdMob Rewarded Ad</h3>
+                        <p style="font-size:13px; color:#94A3B8; max-width:280px; line-height:1.5;">
+                            Please watch this video completely to claim your coins or complete your upgrade.
+                        </p>
+                    </div>
+
+                    <div style="width:100%;">
+                        <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:4px; margin-bottom:12px; overflow:hidden;">
+                            <div id="admob-progress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #00F2FE, #8B5CF6); transition:width 1s linear;"></div>
+                        </div>
+                        <button id="admob-close-btn" disabled style="width:100%; padding:15px; border-radius:16px; border:none; font-weight:800; font-size:14px; background:#162238; color:#64748B; cursor:not-allowed;">
+                            Please wait 15s to claim reward...
+                        </button>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                let timeLeft = 15;
+                const timerBadge = document.getElementById('admob-timer-badge');
+                const progressBar = document.getElementById('admob-progress-bar');
+                const closeBtn = document.getElementById('admob-close-btn');
+
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const progress = ((15 - timeLeft) / 15) * 100;
+                    progressBar.style.width = `${progress}%`;
+
+                    if (timeLeft > 0) {
+                        timerBadge.innerText = `Reward in ${timeLeft}s`;
+                        closeBtn.innerText = `Please wait ${timeLeft}s to claim reward...`;
+                    } else {
+                        clearInterval(interval);
+                        timerBadge.innerText = "Reward Granted! ✅";
+                        timerBadge.style.background = "#10B981";
+                        timerBadge.style.color = "#FFF";
+
+                        closeBtn.disabled = false;
+                        closeBtn.innerText = "Claim Reward & Close";
+                        closeBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
+                        closeBtn.style.color = "#040711";
+                        closeBtn.style.cursor = "pointer";
+
+                        closeBtn.onclick = () => {
+                            modal.remove();
+                            window.onNativeAdRewarded(State.pendingAdReward ? State.pendingAdReward.type : 'mining');
+                        };
+                    }
+                }, 1000);
+            },
+
+            creditCoins: async function(amount, reason) {
+                State.lastAdWatchTime = Date.now();
+                await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
+                    return (parseFloat(curr) || 0) + amount;
+                });
+                push(ref(database, `users/${State.userId}/coin_history`), {
+                    amount: amount,
+                    reason: reason,
+                    timestamp: Date.now()
+                });
+                SoundFX.playCoin();
+                this.toast(`+${amount} Coins Credited!`, "success");
+            },
+
+            // ================= CONVERT / SWAP =================
+            calculateSwapPreview: function() {
+                const amount = parseFloat(document.getElementById('swap-coins-input').value) || 0;
+                const target = document.getElementById('swap-target-currency').value;
+                const out = document.getElementById('swap-output-preview');
+
+                if (target === 'INR') out.value = `₹ ${(amount / State.admin.rates.coin_to_inr).toFixed(2)}`;
+                else out.value = `$ ${(amount / State.admin.rates.coin_to_usdt).toFixed(3)}`;
+            },
+
+            triggerCoinExchange: async function() {
+                SoundFX.playClick();
+                const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
+                const minSwap = State.admin.exchange.min_swap_coins;
+
+                if (coinsToSwap < minSwap) {
+                    this.toast(`Minimum swap is ${minSwap} Coins`, "error");
+                    return;
+                }
+                if (coinsToSwap > State.coins) {
+                    this.toast("Insufficient coin balance", "error");
+                    return;
+                }
+
+                if (State.admin.exchange.ads_required > 0) {
+                    this.toast("Watch required AdMob ad before swapping...", "info");
+                    State.pendingAdReward = { type: 'swap', coinsToSwap: coinsToSwap };
+                    this.triggerRewardedAd();
+                    return;
+                }
+
+                await this.executeSwap(coinsToSwap);
+            },
+
+            executeSwap: async function(coinsToSwap) {
+                const target = document.getElementById('swap-target-currency').value;
+                await runTransaction(ref(database, `users/${State.userId}`), (u) => {
+                    if (!u || u.coins < coinsToSwap) return;
+                    u.coins -= coinsToSwap;
+                    if (target === 'INR') u.inr_balance = (parseFloat(u.inr_balance) || 0) + (coinsToSwap / State.admin.rates.coin_to_inr);
+                    else u.usdt_balance = (parseFloat(u.usdt_balance) || 0) + (coinsToSwap / State.admin.rates.coin_to_usdt);
+                    return u;
+                });
+
+                document.getElementById('swap-coins-input').value = '';
+                document.getElementById('swap-output-preview').value = '';
+                SoundFX.playCoin();
+                this.toast("Coins swapped successfully!", "success");
+            },
+
+            // ================= WITHDRAWALS =================
+            openWithdrawModal: function() {
+                SoundFX.playClick();
+                document.getElementById('modal-withdraw').classList.add('open');
+                this.selectPayoutMethod('UPI');
+            },
+
+            selectPayoutMethod: function(method) {
+                SoundFX.playClick();
+                State.selectedPayoutMethod = method;
+                const tabUpi = document.getElementById('tab-upi');
+                const tabTon = document.getElementById('tab-ton');
+                const labelDest = document.getElementById('withdraw-label-dest');
+                const inputDest = document.getElementById('withdraw-dest-input');
+                const warning = document.getElementById('ton-warning');
+
+                inputDest.value = '';
+                document.getElementById('withdraw-amount-input').value = '';
+
+                if (method === 'UPI') {
+                    tabUpi.classList.add('selected');
+                    tabTon.classList.remove('selected');
+                    labelDest.innerText = "YOUR UPI ID";
+                    inputDest.placeholder = "e.g. mobile@paytm or name@okhdfcbank";
+                    warning.style.display = "none";
+                } else {
+                    tabTon.classList.add('selected');
+                    tabUpi.classList.remove('selected');
+                    labelDest.innerText = "USDT (TON NETWORK) WALLET ADDRESS";
+                    inputDest.placeholder = "UQ... or EQ... (TON Address)";
+                    warning.style.display = "block";
+                }
+            },
+
+            submitPayoutRequest: async function() {
+                SoundFX.playClick();
+                const dest = document.getElementById('withdraw-dest-input').value.trim();
+                const amount = parseFloat(document.getElementById('withdraw-amount-input').value) || 0;
+                const method = State.selectedPayoutMethod;
+                const minUpi = State.admin.withdrawals.min_upi_inr;
+                const minTon = State.admin.withdrawals.min_ton_usdt;
+
+                if (!dest || amount <= 0) {
+                    this.toast("Enter valid details & amount", "error");
+                    return;
+                }
+
+                if (method === 'UPI') {
+                    if (amount < minUpi) {
+                        this.toast(`Minimum UPI withdrawal is ₹${minUpi}`, "error");
+                        return;
+                    }
+                    if (amount > State.inr) {
+                        this.toast("Insufficient INR balance. Swap coins first.", "error");
+                        return;
+                    }
+                } else {
+                    if (amount < minTon) {
+                        this.toast(`Minimum USDT (TON) withdrawal is $${minTon}`, "error");
+                        return;
+                    }
+                    if (amount > State.usdt) {
+                        this.toast("Insufficient USDT balance. Swap coins first.", "error");
+                        return;
+                    }
+                }
+
+                await runTransaction(ref(database, `users/${State.userId}`), (u) => {
+                    if (!u) return;
+                    if (method === 'UPI') u.inr_balance -= amount;
+                    else u.usdt_balance -= amount;
+                    return u;
+                });
+
+                await push(ref(database, 'withdrawals'), {
+                    userId: State.userId,
+                    userEmail: State.user.email,
+                    amount: amount,
+                    method: method === 'UPI' ? 'UPI' : 'USDT_TON',
+                    network: method === 'UPI' ? 'Bank' : 'TON',
+                    destination: dest,
+                    status: 'Pending',
+                    timestamp: Date.now()
+                });
+
+                this.closeModals();
+                SoundFX.playSuccess();
+                this.toast("Withdrawal submitted! Processed in 12-24h.", "success");
+            },
+
+            listenToHistory: function() {
+                const q = query(ref(database, 'withdrawals'), orderByChild('userId'), equalTo(State.userId));
+                onValue(q, (snapshot) => {
+                    const c = document.getElementById('tx-history-container');
+                    c.innerHTML = '';
+                    const data = snapshot.val();
+                    if (!data) {
+                        c.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center; padding:10px;">No withdrawal requests yet</p>`;
+                        return;
+                    }
+                    Object.values(data).sort((a,b) => b.timestamp - a.timestamp).forEach(item => {
+                        const el = document.createElement('div');
+                        el.className = 'history-item';
+                        const isUpi = item.method === 'UPI';
+                        const badgeClass = item.status === 'Approved' ? 'status-approved' : (item.status === 'Rejected' ? 'status-rejected' : 'status-pending');
+                        el.innerHTML = `
+                            <div>
+                                <div style="font-size:13px; font-weight:800;">${item.method === 'UPI' ? '🇮🇳 UPI Transfer' : '💎 USDT (TON)'}</div>
+                                <div style="font-size:11px; color:var(--text-muted);">${new Date(item.timestamp).toLocaleDateString()}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:14px; font-weight:800;">${isUpi ? '₹' : '$'}${item.amount}</div>
+                                <span class="status-pill ${badgeClass}">${item.status}</span>
+                            </div>
+                        `;
+                        c.appendChild(el);
+                    });
+                });
+            },
+
+            // ================= REALTIME REFERRAL STATS =================
+            listenToReferralStats: function() {
+                const q = query(ref(database, 'referral_bindings'), orderByChild('referrerUid'), equalTo(State.userId));
+                onValue(q, (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) {
+                        document.getElementById('ref-invited-count').innerText = "0";
+                        document.getElementById('ref-qualified-count').innerText = "0";
+                        document.getElementById('ref-commission-val').innerText = "0 C";
+                        return;
+                    }
+                    const list = Object.values(data);
+                    const totalInvited = list.length;
+                    const qualified = list.filter(item => item.status === 'Qualified').length;
+                    const totalEarned = qualified * (State.admin.referral.reward_coins || 200);
+
+                    document.getElementById('ref-invited-count').innerText = totalInvited;
+                    document.getElementById('ref-qualified-count').innerText = qualified;
+                    document.getElementById('ref-commission-val').innerText = `${totalEarned} C`;
+                });
+            },
+
+            // ================= TASKS LISTENER =================
+            listenToTasks: function() {
+                onValue(ref(database, 'tasks'), (snap) => {
+                    const c = document.getElementById('tasks-container');
+                    c.innerHTML = '';
+                    const tasks = snap.val();
+                    if (!tasks) {
+                        c.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center; padding:20px;">No partner tasks available today.</p>`;
+                        return;
+                    }
+                    Object.keys(tasks).forEach(id => {
+                        const t = tasks[id];
+                        const card = document.createElement('div');
+                        card.className = 'task-card';
+
+                        let instructionsHtml = '';
+                        if (t.instructions && Array.isArray(t.instructions)) {
+                            instructionsHtml = `<div class="task-steps-box">` + 
+                                t.instructions.map((step, idx) => `
+                                        <div class="step-row">
+                                            <div class="step-num">${idx + 1}</div>
+                                            <div>${step}</div>
+                                        </div>
+                                    `).join('') + `</div>`;
+                        }
+
+                        card.innerHTML = `
+                            <div class="task-card-top">
+                                <img class="task-icon" src="${t.logoUrl || 'https://via.placeholder.com/48'}">
+                                <div class="task-info">
+                                    <div class="task-name">${t.name}</div>
+                                    <div class="task-meta">
+                                        <span style="color:var(--accent-gold); font-weight:800;">+${t.reward || 100} Coins</span>
+                                        <span style="color:var(--text-muted);">⏱️ ~2 mins</span>
+                                    </div>
+                                </div>
+                            </div>
+                            ${instructionsHtml}
+                            <button class="btn-primary" onclick="SoundFX.playClick(); window.open('${t.link || '#'}', '_blank')">Complete Task</button>
+                        `;
+                        c.appendChild(card);
+                    });
+                });
+            },
+
+            switchTab: function(viewId) {
+                SoundFX.playClick();
+                document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
+                document.getElementById(viewId)?.classList.add('active');
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                const idx = ['view-home', 'view-tasks', 'view-wallet', 'view-refer'].indexOf(viewId);
+                if (idx >= 0) document.querySelectorAll('.bottom-nav .nav-tab')[idx].classList.add('active');
+            },
+
+            copyReferralLink: function() {
+                SoundFX.playClick();
+                const origin = window.location.origin + window.location.pathname;
+                const link = `${origin}?ref=${State.userId}`;
+                navigator.clipboard.writeText(link).then(() => {
+                    SoundFX.playCoin();
+                    this.toast("Unique invite link copied to clipboard!", "success");
+                }).catch(() => {
+                    this.toast(`Code: ${State.userId}`, "info");
+                });
+            },
+
+            openProfileModal: function() {
+                SoundFX.playClick();
+                document.getElementById('modal-profile').classList.add('open');
+            },
+
+            openSupportLink: function() {
+                SoundFX.playClick();
+                window.open("https://t.me/MiningFatherhelp", "_blank");
+            },
+
+            closeModals: function() {
+                SoundFX.playClick();
+                document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+            },
+
+            toast: function(msg, type = 'info') {
+                const c = document.getElementById('toast-container');
+                const t = document.createElement('div');
+                t.className = 'toast';
+                const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : 'ℹ️');
+                t.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+                c.appendChild(t);
+                setTimeout(() => t.remove(), 3200);
+            }
+        };
+
+        // ================= UNIVERSAL REWARD RECEIVER =================
+        window.onNativeAdRewarded = async function(rawTarget) {
+            State.lastAdWatchTime = Date.now();
+            const reward = State.pendingAdReward;
+            State.pendingAdReward = null;
+
+            // 1. Machine Rig Upgrade Handler (Coin Burn + Level Up)
+            if (rawTarget === 'upgrade' || (reward && reward.type === 'upgrade')) {
+                const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
+                const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
+
+                await runTransaction(ref(database, `users/${State.userId}`), (u) => {
+                    if (!u || u.coins < cost) return;
+                    u.coins -= cost;
+                    u.rigLevel = nextLevel;
+                    return u;
+                });
+
+                SoundFX.playPowerUp();
+                App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
+            }
+            // 2. Mining Power-Up Handler
+            else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
+                const reqMiningAds = State.admin.mining.ads_required;
+                if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
+                    await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
+                        return (parseInt(curr) || 0) + 1;
+                    });
+                    SoundFX.playCoin();
+                    App.toast("Ad Completed! Power step added.", "success");
+                }
+            }
+            // 3. Currency Swap Handler
+            else if (rawTarget === 'swap' || (reward && reward.type === 'swap')) {
+                const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
+                await App.executeSwap(coinsToSwap);
+            }
+            // 4. Tasks Page Top 2 Ad Tasks Handler
+            else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('adtask_')) || (reward && reward.type === 'ad_task')) {
+                let taskId = reward ? reward.taskId : (rawTarget.includes('1') ? 1 : 2);
+                let amount = reward ? reward.amount : (taskId === 1 ? 50 : 30);
+                let title = taskId === 1 ? 'AdMob Surge' : 'AdMob Boost';
+
+                const todayStr = new Date().toISOString().slice(0, 10);
+                await runTransaction(ref(database, `users/${State.userId}/adTasks/${todayStr}/task${taskId}`), (curr) => {
+                    return (parseInt(curr) || 0) + 1;
+                });
+
+                await App.creditCoins(amount, title);
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => App.init());
+    </script>
 </body>
 </html>
