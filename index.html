@@ -729,9 +729,96 @@
             box-shadow: 0 0 60px rgba(255, 210, 0, 0.4);
             margin: auto;
         }
+        /* ================= SPLASH OPENING ANIMATION ================= */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #040711;
+            background-image: radial-gradient(circle at 50% 40%, rgba(0, 242, 254, 0.22), transparent 60%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+        }
+
+        #splash-screen.splash-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-logo-box {
+            width: 80px; height: 80px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 42px;
+            box-shadow: 0 0 45px rgba(0, 242, 254, 0.5);
+            animation: splashPulse 1.8s infinite alternate ease-in-out;
+            margin-bottom: 16px;
+        }
+
+        @keyframes splashPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(0, 242, 254, 0.35); }
+            100% { transform: scale(1.06); box-shadow: 0 0 55px rgba(0, 242, 254, 0.75); }
+        }
+
+        .splash-brand-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #FFF;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .splash-brand-title span { color: var(--accent-cyan); }
+
+        .splash-tagline {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .splash-laser-loader {
+            width: 140px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .splash-laser-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 0 12px var(--accent-cyan);
+            border-radius: 4px;
+            animation: splashLoad 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes splashLoad {
+            0% { width: 0%; }
+            50% { width: 65%; }
+            100% { width: 100%; }
+        }
     </style>
 </head>
 <body>
+    <!-- ================= HIGH-TECH OPENING ANIMATION ================= -->
+    <div id="splash-screen">
+        <div class="splash-logo-box">⚡</div>
+        <h1 class="splash-brand-title">Mine<span>Rush</span></h1>
+        <p class="splash-tagline">QUANTUM CLOUD MINING</p>
+        <div class="splash-laser-loader">
+            <div class="splash-laser-fill"></div>
+        </div>
+        <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.0.0 • Secured by Cloud Vault</p>
+    </div>
 
     <div id="toast-container"></div>
 
@@ -1414,6 +1501,11 @@
 
         window.App = {
             init: function() {
+                // Splash Screen Hide Timer
+                setTimeout(() => {
+                    const splash = document.getElementById('splash-screen');
+                    if (splash) splash.classList.add('splash-hidden');
+                }, 2200);
                 const urlParams = new URLSearchParams(window.location.search);
                 const refCodeParam = urlParams.get('ref') || urlParams.get('startapp') || '';
                 if (refCodeParam) {
