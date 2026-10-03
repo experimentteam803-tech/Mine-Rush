@@ -13,7 +13,7 @@
     <style>
         :root {
             --bg-base: #040711;
-            --bg-card: rgba(13, 20, 38, 0.82);
+            --bg-card: rgba(13, 20, 38, 0.78);
             --bg-card-subtle: rgba(22, 34, 60, 0.65);
             --border: rgba(255, 255, 255, 0.08);
             --border-glow: rgba(0, 242, 254, 0.45);
@@ -46,7 +46,7 @@
             background-color: var(--bg-base);
             background-image: 
                 radial-gradient(ellipse 90% 50% at 50% -10%, rgba(0, 242, 254, 0.16), transparent),
-                radial-gradient(ellipse 70% 40% at 50% 105%, rgba(139, 92, 246, 0.14), transparent);
+                radial-gradient(ellipse 70% 40% at 50% 105%, rgba(139, 92, 246, 0.12), transparent);
             color: var(--text-primary);
             height: 100vh;
             width: 100vw;
@@ -79,13 +79,13 @@
             pointer-events: auto;
         }
 
-        /* Top Header */
+        /* Header */
         header {
             padding: calc(var(--safe-top) + 12px) 16px 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 16, 32, 0.88);
+            background: rgba(10, 16, 32, 0.85);
             backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border);
             z-index: 50;
@@ -113,14 +113,10 @@
         }
 
         .header-user-info { display: flex; flex-direction: column; }
-        .header-user-name { font-size: 13px; font-weight: 800; color: #FFF; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-user-name { font-size: 13px; font-weight: 800; color: #FFF; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .header-user-tag { font-size: 10px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
 
         /* 🎁 TOP COMPACT DAILY BONUS BUTTON */
         .daily-bonus-btn {
@@ -132,41 +128,11 @@
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            position: relative;
-            box-shadow: 0 0 15px rgba(255, 210, 0, 0.25);
+            box-shadow: 0 0 14px rgba(255, 210, 0, 0.22);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        .daily-bonus-btn:active {
-            transform: scale(0.94);
-        }
-
-        .bonus-icon { font-size: 14px; animation: bounceGift 2s infinite ease-in-out; }
-        @keyframes bounceGift {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-2px); }
-        }
-
-        .bonus-text {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--accent-gold);
-            letter-spacing: 0.3px;
-        }
-
-        .bonus-indicator {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            box-shadow: 0 0 8px var(--accent-green);
-            animation: indicatorPulse 1.4s infinite alternate;
-        }
-
-        @keyframes indicatorPulse {
-            0% { opacity: 0.4; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); }
-        }
+        .daily-bonus-btn:active { transform: scale(0.93); }
+        .bonus-text { font-size: 11px; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.3px; }
 
         .icon-btn {
             background: rgba(255, 255, 255, 0.05);
@@ -306,6 +272,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+        .rig-level-chip:active { transform: scale(0.95); }
 
         .rig-led-dot {
             width: 8px;
@@ -434,7 +401,7 @@
         .btn-purple { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); color: #FFF; box-shadow: 0 4px 22px rgba(139, 92, 246, 0.35); }
         .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
 
-        /* TOP REWARDED AD TASKS ON TASKS PAGE */
+        /* Top 2 Ad Tasks on Tasks Page */
         .top-ad-tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
         @media (min-width: 480px) { .top-ad-tasks-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -576,14 +543,8 @@
         .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
         .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
 
-        /* ================= 7-DAY STREAK MODAL ================= */
-        .streak-days-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-            margin: 16px 0;
-        }
-
+        /* 🎁 7-DAY STREAK MODAL */
+        .streak-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 16px 0; }
         .streak-day-cell {
             background: rgba(4, 7, 17, 0.7);
             border: 1px solid var(--border);
@@ -596,20 +557,17 @@
             text-align: center;
             transition: all 0.2s;
         }
-
         .streak-day-cell.active-day {
             border-color: var(--accent-gold);
             background: rgba(255, 210, 0, 0.14);
             box-shadow: 0 0 15px rgba(255, 210, 0, 0.3);
             transform: scale(1.05);
         }
-
         .streak-day-cell.claimed-day {
             border-color: var(--accent-green);
             background: rgba(16, 185, 129, 0.12);
             opacity: 0.75;
         }
-
         .streak-day-name { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
         .streak-day-coins { font-size: 11px; font-weight: 800; color: var(--accent-gold); }
 
@@ -751,30 +709,47 @@
         .nav-tab.active { color: var(--accent-cyan); }
         .nav-tab.active .tab-icon { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
 
-        /* Toasts */
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 350; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
         .toast { background: rgba(13, 20, 38, 0.98); border: 1px solid var(--border); border-radius: 16px; padding: 14px 18px; font-size: 13px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); pointer-events: auto; }
 
-        /* Modal Sheets */
-        .modal-sheet {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            border-radius: 28px 28px 0 0;
-            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            margin-top: auto;
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #040711;
+            background-image: radial-gradient(circle at 50% 40%, rgba(0, 242, 254, 0.22), transparent 60%);
+            z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
         }
 
-        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
-        .payout-method-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-        .payout-tab { background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
-        .payout-tab.selected { background: rgba(0, 242, 254, 0.12); border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(0, 242, 254, 0.22); }
-        .payout-tab .tab-title { font-size: 14px; font-weight: 800; }
-        .payout-tab .tab-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
+        #splash-screen.splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .splash-logo-box {
+            width: 80px; height: 80px; border-radius: 24px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex; align-items: center; justify-content: center; font-size: 42px;
+            box-shadow: 0 0 45px rgba(0, 242, 254, 0.5);
+            animation: splashPulse 1.8s infinite alternate ease-in-out;
+            margin-bottom: 16px;
+        }
+
+        @keyframes splashPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(0, 242, 254, 0.35); }
+            100% { transform: scale(1.06); box-shadow: 0 0 55px rgba(0, 242, 254, 0.75); }
+        }
+
+        .splash-brand-title { font-size: 28px; font-weight: 800; color: #FFF; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .splash-brand-title span { color: var(--accent-cyan); }
+        .splash-tagline { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 28px; }
+        .splash-laser-loader { width: 140px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; position: relative; }
+        .splash-laser-fill {
+            width: 0%; height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            box-shadow: 0 0 12px var(--accent-cyan); border-radius: 4px;
+            animation: splashLoad 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes splashLoad { 0% { width: 0%; } 100% { width: 100%; } }
 
         /* Force App Update Modal */
         #modal-app-update .modal-cyber-sheet {
@@ -798,7 +773,7 @@
         <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.0.0 • Secured by Cloud Vault</p>
     </div>
 
-    <!-- ================= 🎁 7-DAY STREAK CLAIM MODAL ================= -->
+    <!-- ================= 🎁 7-DAY STREAK CLAIM MODAL (TOTAL 1,000 COINS) ================= -->
     <div class="modal-backdrop" id="modal-daily-streak" style="z-index: 350;">
         <div class="modal-cyber-sheet">
             <div style="text-align: center; margin-bottom: 12px;">
@@ -959,7 +934,7 @@
                 <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 16px; font-size: 12px; color: var(--text-secondary); text-align: left;">
                     <input type="checkbox" id="signup-privacy-check" style="accent-color: var(--accent-cyan); width: 17px; height: 17px; cursor: pointer;">
                     <label for="signup-privacy-check" style="cursor: pointer; line-height: 1.4;">
-                        I agree to the <a href="https://mine-rush-fawn.vercel.app/privacy.html" target="_blank" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 700;">Privacy Policy</a> & Terms
+                        I agree to the <a href="https://mine-rush-fawn.vercel.app/privacy.html" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 700;">Privacy Policy</a> & Terms
                     </label>
                 </div>
 
@@ -1040,9 +1015,8 @@
             <div class="header-actions">
                 <!-- 🎁 TOP COMPACT DAILY BONUS BUTTON -->
                 <button class="daily-bonus-btn" onclick="App.openDailyStreakModal()" title="Daily Streak">
-                    <span class="bonus-icon">🎁</span>
+                    <span style="font-size: 14px;">🎁</span>
                     <span class="bonus-text">Daily</span>
-                    <span class="bonus-indicator" id="header-bonus-indicator"></span>
                 </button>
                 <button class="icon-btn" onclick="App.openSupportLink()" title="Help">🎧</button>
             </div>
@@ -1171,7 +1145,7 @@
                     <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Complete video sponsors (30-min cooldown) & partner tasks.</p>
                 </div>
 
-                <!-- TOP 2 ADS TASKS (ADMOB & APPLOVIN) WITH 30-MIN COOLDOWN -->
+                <!-- TOP 2 REWARDED AD TASKS (ADMOB & APPLOVIN) WITH 30-MIN COOLDOWN -->
                 <div class="top-ad-tasks-grid">
                     <div class="ad-task-card">
                         <div class="ad-task-card-top">
@@ -1561,8 +1535,6 @@
             dailyStreak: { currentDay: 1, lastClaimDate: "" },
             adTask1LastWatch: 0,
             adTask2LastWatch: 0,
-            navClickCount: 0,
-            lastAutoInterstitialTime: 0,
             admin: {
                 rates: { coin_to_inr: 100, coin_to_usdt: 9000 },
                 mining: { ads_required: 3, session_duration_ms: 3600000 },
@@ -1573,7 +1545,9 @@
             appUpdate: null,
             selectedPayoutMethod: 'UPI',
             pendingAdReward: null,
-            lastAdWatchTime: 0
+            lastAdWatchTime: 0,
+            navClickCount: 0,
+            lastAutoInterstitialTime: 0
         };
 
         window.App = {
@@ -1690,14 +1664,6 @@
                 const isClaimedToday = (streak.lastClaimDate === todayStr);
 
                 const claimBtn = document.getElementById('btn-claim-streak');
-                const indicator = document.getElementById('header-bonus-indicator');
-
-                // Update Header Indicator (glows if unclaimed)
-                if (isClaimedToday) {
-                    indicator.style.display = "none";
-                } else {
-                    indicator.style.display = "block";
-                }
 
                 for (let i = 1; i <= 7; i++) {
                     const cell = document.getElementById(`streak-cell-${i}`);
@@ -1712,7 +1678,7 @@
 
                 if (isClaimedToday) {
                     claimBtn.disabled = true;
-                    claimBtn.innerText = "✅ Today's Reward Claimed (Come Back Tomorrow)";
+                    claimBtn.innerText = "✅ Today's Reward Claimed";
                     claimBtn.style.background = "#1C2740";
                     claimBtn.style.color = "#64748B";
                 } else {
@@ -1747,34 +1713,38 @@
                     const diff1 = now - State.adTask1LastWatch;
                     const btn1 = document.getElementById('btn-ad-task-1');
                     const status1 = document.getElementById('ad-task-1-status');
-                    if (diff1 < COOLDOWN_MS) {
-                        const rem1 = Math.ceil((COOLDOWN_MS - diff1) / 1000);
-                        const m = Math.floor(rem1 / 60);
-                        const s = rem1 % 60;
-                        btn1.disabled = true;
-                        btn1.innerText = `⏳ Wait ${m}m ${s}s`;
-                        status1.innerText = `Cooldown: ${m}m ${s}s`;
-                    } else {
-                        btn1.disabled = false;
-                        btn1.innerText = "🎬 Watch AdMob (+50 C)";
-                        status1.innerText = "Ready to watch";
+                    if (btn1 && status1) {
+                        if (diff1 < COOLDOWN_MS) {
+                            const rem1 = Math.ceil((COOLDOWN_MS - diff1) / 1000);
+                            const m = Math.floor(rem1 / 60);
+                            const s = rem1 % 60;
+                            btn1.disabled = true;
+                            btn1.innerText = `⏳ Wait ${m}m ${s}s`;
+                            status1.innerText = `Cooldown: ${m}m ${s}s`;
+                        } else {
+                            btn1.disabled = false;
+                            btn1.innerText = "🎬 Watch AdMob (+50 C)";
+                            status1.innerText = "Ready to watch";
+                        }
                     }
 
                     // Task 2 (AppLovin)
                     const diff2 = now - State.adTask2LastWatch;
                     const btn2 = document.getElementById('btn-ad-task-2');
                     const status2 = document.getElementById('ad-task-2-status');
-                    if (diff2 < COOLDOWN_MS) {
-                        const rem2 = Math.ceil((COOLDOWN_MS - diff2) / 1000);
-                        const m = Math.floor(rem2 / 60);
-                        const s = rem2 % 60;
-                        btn2.disabled = true;
-                        btn2.innerText = `⏳ Wait ${m}m ${s}s`;
-                        status2.innerText = `Cooldown: ${m}m ${s}s`;
-                    } else {
-                        btn2.disabled = false;
-                        btn2.innerText = "🎬 Watch AppLovin (+50 C)";
-                        status2.innerText = "Ready to watch";
+                    if (btn2 && status2) {
+                        if (diff2 < COOLDOWN_MS) {
+                            const rem2 = Math.ceil((COOLDOWN_MS - diff2) / 1000);
+                            const m = Math.floor(rem2 / 60);
+                            const s = rem2 % 60;
+                            btn2.disabled = true;
+                            btn2.innerText = `⏳ Wait ${m}m ${s}s`;
+                            status2.innerText = `Cooldown: ${m}m ${s}s`;
+                        } else {
+                            btn2.disabled = false;
+                            btn2.innerText = "🎬 Watch AppLovin (+50 C)";
+                            status2.innerText = "Ready to watch";
+                        }
                     }
                 }, 1000);
             },
@@ -1797,7 +1767,6 @@
                     title: taskId === 1 ? 'AdMob Power Surge' : 'AppLovin Turbo Surge' 
                 };
 
-                // Task 1 uses AdMob, Task 2 uses AppLovin
                 this.triggerRewardedAd(taskId === 1 ? 'admob' : 'applovin');
             },
 
@@ -1810,31 +1779,28 @@
                 }
 
                 const target = State.pendingAdReward;
-                this.toast(`Loading ${preferredNetwork === 'applovin' ? 'AppLovin' : 'AdMob'} rewarded ad...`, "info");
+                this.toast(`Loading ${preferredNetwork === 'applovin' ? 'AppLovin' : 'AdMob'} ad...`, "info");
 
                 // Native AndroidBridge Dispatcher
                 if (window.AndroidBridge) {
-                    // 1. AppLovin Requests
                     if (preferredNetwork === 'applovin' && typeof window.AndroidBridge.showAppLovinRewarded === 'function') {
                         const tag = target ? (target.type === 'daily_streak' ? 'applovin_daily' : `applovin_task_${target.taskId}`) : 'applovin';
                         window.AndroidBridge.showAppLovinRewarded(tag);
                         return;
                     }
-                    // 2. AdMob Rewarded Interstitial (Mining, Upgrade, Swap)
                     if (target && (target.type === 'mining' || target.type === 'upgrade' || target.type === 'swap')) {
                         if (typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
                             window.AndroidBridge.showRewardedInterstitialAd(target.type);
                             return;
                         }
                     }
-                    // 3. AdMob Standard Rewarded Video (Task 1)
                     if (typeof window.AndroidBridge.showRewardedAd === 'function') {
                         window.AndroidBridge.showRewardedAd();
                         return;
                     }
                 }
 
-                // Browser Test Fallback Simulation
+                // Browser Test Simulation
                 this.showAdMobSimulator();
             },
 
@@ -2283,7 +2249,7 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     const user = userCredential.user;
 
-                    // Initialize Profile
+                    // Initialize Profile (NO Welcome Bonus - User earns via daily streak)
                     await set(ref(database, `users/${user.uid}`), {
                         uid: user.uid,
                         email: email,
@@ -2310,7 +2276,7 @@
                     }
 
                     SoundFX.playSuccess();
-                    this.toast("Account created! Tap 🎁 Daily at top to claim Day 1.", "success");
+                    this.toast("Account created! Tap 🎁 Daily at top to claim Day 1 reward.", "success");
                 } catch (error) {
                     this.toast(error.message.replace("Firebase: ", ""), "error");
                 }
@@ -2391,7 +2357,6 @@
 
                         this.renderBalances();
                         this.updateMiningUI();
-                        this.renderDailyStreak();
                     }
                 });
 
@@ -2489,11 +2454,11 @@
                         if (t.instructions && Array.isArray(t.instructions)) {
                             instructionsHtml = `<div class="task-steps-box">` + 
                                 t.instructions.map((step, idx) => `
-                                    <div class="step-row">
-                                        <div class="step-num">${idx + 1}</div>
-                                        <div>${step}</div>
-                                    </div>
-                                `).join('') + `</div>`;
+                                        <div class="step-row">
+                                            <div class="step-num">${idx + 1}</div>
+                                            <div>${step}</div>
+                                        </div>
+                                    `).join('') + `</div>`;
                         }
 
                         card.innerHTML = `
@@ -2595,7 +2560,7 @@
             }
             // 2. Mining Step (AdMob Rewarded Interstitial - 3 Ads Required)
             else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
-                const reqMiningAds = State.admin.mining.ads_required;
+                const reqMiningAds = State.admin.mining.ads_required; // 3 Ads
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                         return (parseInt(curr) || 0) + 1;
@@ -2615,7 +2580,7 @@
                 const earnedAmount = reward ? reward.amount : (STREAK_VALUES[State.dailyStreak.currentDay - 1] || 50);
 
                 let nextDay = State.dailyStreak.currentDay + 1;
-                if (nextDay > 7) nextDay = 1; // Cycle restart
+                if (nextDay > 7) nextDay = 1;
 
                 await update(ref(database, `users/${State.userId}/dailyStreak`), {
                     currentDay: nextDay,
