@@ -81,7 +81,7 @@
 
         /* Header */
         header {
-            padding: calc(var(--safe-top) + 12px) 16px 12px 16px;
+            padding: calc(var(--safe-top) + 12px) 18px 12px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -92,12 +92,12 @@
             flex-shrink: 0;
         }
 
-        .header-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .header-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
 
         .profile-glow-ring {
             position: relative;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             padding: 2px;
@@ -113,40 +113,24 @@
         }
 
         .header-user-info { display: flex; flex-direction: column; }
-        .header-user-name { font-size: 13px; font-weight: 800; color: #FFF; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .header-user-tag { font-size: 10px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
+        .header-user-name { font-size: 14px; font-weight: 800; color: #FFF; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-user-tag { font-size: 11px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
 
         .header-actions { display: flex; align-items: center; gap: 8px; }
-
-        /* 🎁 TOP COMPACT DAILY BONUS BUTTON */
-        .daily-bonus-btn {
-            background: linear-gradient(135deg, rgba(255, 210, 0, 0.16), rgba(245, 158, 11, 0.22));
-            border: 1px solid rgba(255, 210, 0, 0.45);
-            border-radius: 20px;
-            padding: 6px 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 0 14px rgba(255, 210, 0, 0.22);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .daily-bonus-btn:active { transform: scale(0.93); }
-        .bonus-text { font-size: 11px; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.3px; }
 
         .icon-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: #FFF;
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s;
+            font-size: 17px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .icon-btn:active { transform: scale(0.9); background: rgba(0, 242, 254, 0.15); border-color: var(--accent-cyan); }
 
@@ -155,7 +139,7 @@
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 16px 16px calc(var(--safe-bottom) + 84px) 16px;
+            padding: 14px 16px calc(var(--safe-bottom) + 84px) 16px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -167,12 +151,49 @@
         .section-view.active { display: flex; }
         @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px) scale(0.99); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
+        /* DAILY CLAIM MINI-STRIP */
+        .daily-streak-btn {
+            background: linear-gradient(135deg, rgba(255, 210, 0, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+            border: 1px solid rgba(255, 210, 0, 0.35);
+            border-radius: 16px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+        }
+        .daily-streak-btn:active { transform: scale(0.98); border-color: var(--accent-gold); }
+        .streak-info-left { display: flex; align-items: center; gap: 10px; }
+        .streak-icon-box {
+            width: 34px; height: 34px; border-radius: 10px;
+            background: linear-gradient(135deg, #FFD200, #F59E0B);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: #000;
+            box-shadow: 0 0 14px rgba(255, 210, 0, 0.4);
+        }
+        .streak-tag { font-size: 10px; font-weight: 800; color: var(--accent-gold); letter-spacing: 0.6px; text-transform: uppercase; }
+        .streak-title { font-size: 13px; font-weight: 800; color: #FFF; }
+        .streak-badge {
+            background: rgba(255, 210, 0, 0.18);
+            border: 1px solid rgba(255, 210, 0, 0.4);
+            color: var(--accent-gold);
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* VIBRANT HOLOGRAPHIC BALANCE CARD */
         .balance-hero {
             background: linear-gradient(135deg, rgba(16, 32, 70, 0.95) 0%, rgba(30, 20, 56, 0.95) 50%, rgba(10, 16, 34, 0.98) 100%);
             border: 1.5px solid var(--accent-cyan);
             border-radius: 26px;
-            padding: 24px 22px;
+            padding: 22px 20px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 242, 254, 0.25);
@@ -201,7 +222,7 @@
         }
 
         .primary-balance { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
-        .primary-balance .coin-val { font-size: 40px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 30px rgba(255, 210, 0, 0.45); letter-spacing: -0.5px; }
+        .primary-balance .coin-val { font-size: 38px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 30px rgba(255, 210, 0, 0.45); letter-spacing: -0.5px; }
         .primary-balance .coin-symbol { font-size: 15px; font-weight: 800; color: var(--text-secondary); }
 
         .secondary-currencies {
@@ -222,7 +243,7 @@
         .curr-box .curr-title { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
         .curr-box .curr-amount { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
 
-        /* Quick Action Bar (3 Actions on Home) */
+        /* Quick Action Bar */
         .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .quick-action-btn {
             background: var(--bg-card);
@@ -401,7 +422,13 @@
         .btn-purple { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); color: #FFF; box-shadow: 0 4px 22px rgba(139, 92, 246, 0.35); }
         .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
 
-        /* Top 2 Ad Tasks on Tasks Page */
+        /* Filter Tabs & Cards */
+        .filter-scroller { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .filter-scroller::-webkit-scrollbar { display: none; }
+        .chip-tab { padding: 8px 16px; border-radius: 14px; font-size: 12px; font-weight: 800; white-space: nowrap; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; transition: all 0.2s; }
+        .chip-tab.active { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
+
+        /* TOP REWARDED AD TASKS ON TASKS PAGE */
         .top-ad-tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
         @media (min-width: 480px) { .top-ad-tasks-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -429,6 +456,16 @@
         .ad-task-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
         .ad-task-title { font-size: 14px; font-weight: 800; color: #FFF; }
         .ad-task-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+        .cooldown-badge {
+            background: rgba(239, 68, 68, 0.14);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #F87171;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
 
         .task-card {
             background: var(--bg-card);
@@ -543,39 +580,14 @@
         .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
         .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
 
-        /* 🎁 7-DAY STREAK MODAL */
-        .streak-days-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 16px 0; }
-        .streak-day-cell {
-            background: rgba(4, 7, 17, 0.7);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .streak-day-cell.active-day {
-            border-color: var(--accent-gold);
-            background: rgba(255, 210, 0, 0.14);
-            box-shadow: 0 0 15px rgba(255, 210, 0, 0.3);
-            transform: scale(1.05);
-        }
-        .streak-day-cell.claimed-day {
-            border-color: var(--accent-green);
-            background: rgba(16, 185, 129, 0.12);
-            opacity: 0.75;
-        }
-        .streak-day-name { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .streak-day-coins { font-size: 11px; font-weight: 800; color: var(--accent-gold); }
-
         /* Modals & Backdrop */
         .modal-backdrop {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(4, 7, 17, 0.95);
             backdrop-filter: blur(20px);
             z-index: 250;
@@ -611,10 +623,13 @@
         }
 
         .auth-brand-logo {
-            width: 58px; height: 58px;
+            width: 58px;
+            height: 58px;
             border-radius: 18px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 28px;
             margin: 0 auto 12px auto;
             box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
@@ -681,12 +696,78 @@
             transition: all 0.2s;
         }
         .form-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 16px rgba(0, 242, 254, 0.25); background: rgba(4, 7, 17, 1); }
+
         .pw-toggle-btn { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
+
+        #btn-auth-register, #btn-auth-login {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
+            animation: pulseGlowBtn 2.4s infinite alternate;
+        }
+        @keyframes pulseGlowBtn { 0% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.3); } 100% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.6); } }
+
+        /* Modal Sheets */
+        .modal-sheet {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-radius: 28px 28px 0 0;
+            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin-top: auto;
+        }
+
+        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
+        .payout-method-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .payout-tab { background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .payout-tab.selected { background: rgba(0, 242, 254, 0.12); border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(0, 242, 254, 0.22); }
+        .payout-tab .tab-title { font-size: 14px; font-weight: 800; }
+        .payout-tab .tab-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
+
+        /* 7-DAY CALENDAR MODAL GRID */
+        .daily-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .day-box {
+            background: rgba(4, 7, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px 4px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+        }
+        .day-box.claimed {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .day-box.active-today {
+            border-color: var(--accent-gold);
+            background: rgba(255, 210, 0, 0.15);
+            box-shadow: 0 0 14px rgba(255, 210, 0, 0.3);
+        }
+        .day-label { font-size: 10px; font-weight: 800; color: var(--text-muted); }
+        .day-reward { font-size: 12px; font-weight: 800; color: var(--accent-gold); }
+        .day-icon { font-size: 16px; margin: 2px 0; }
+        .day-box.claimed .day-reward { color: var(--accent-green); }
+        .day-box:nth-child(7) { grid-column: span 2; } /* Day 7 Mega Box */
 
         /* 4-Tab Bottom Navigation */
         nav.bottom-nav {
             position: fixed;
-            bottom: 0; left: 0; width: 100%;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             height: calc(var(--safe-bottom) + 68px);
             padding-bottom: var(--safe-bottom);
             background: rgba(10, 16, 32, 0.94);
@@ -699,9 +780,15 @@
         }
 
         .nav-tab {
-            background: none; border: none; color: var(--text-muted);
-            display: flex; flex-direction: column; align-items: center;
-            gap: 4px; cursor: pointer; padding: 8px 0;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 0;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-tab .tab-icon { font-size: 22px; transition: transform 0.2s; }
@@ -709,26 +796,36 @@
         .nav-tab.active { color: var(--accent-cyan); }
         .nav-tab.active .tab-icon { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
 
+        /* Toasts */
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 350; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
         .toast { background: rgba(13, 20, 38, 0.98); border: 1px solid var(--border); border-radius: 16px; padding: 14px 18px; font-size: 13px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); pointer-events: auto; }
 
-        /* Splash Screen */
+        /* ================= SPLASH OPENING ANIMATION ================= */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: #040711;
             background-image: radial-gradient(circle at 50% 40%, rgba(0, 242, 254, 0.22), transparent 60%);
             z-index: 99999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
         }
 
-        #splash-screen.splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        #splash-screen.splash-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
         .splash-logo-box {
-            width: 80px; height: 80px; border-radius: 24px;
+            width: 80px; height: 80px;
+            border-radius: 24px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            display: flex; align-items: center; justify-content: center; font-size: 42px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 42px;
             box-shadow: 0 0 45px rgba(0, 242, 254, 0.5);
             animation: splashPulse 1.8s infinite alternate ease-in-out;
             margin-bottom: 16px;
@@ -739,30 +836,51 @@
             100% { transform: scale(1.06); box-shadow: 0 0 55px rgba(0, 242, 254, 0.75); }
         }
 
-        .splash-brand-title { font-size: 28px; font-weight: 800; color: #FFF; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .splash-brand-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #FFF;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
         .splash-brand-title span { color: var(--accent-cyan); }
-        .splash-tagline { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 28px; }
-        .splash-laser-loader { width: 140px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; position: relative; }
+
+        .splash-tagline {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .splash-laser-loader {
+            width: 140px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
         .splash-laser-fill {
-            width: 0%; height: 100%;
+            width: 0%;
+            height: 100%;
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 0 12px var(--accent-cyan); border-radius: 4px;
+            box-shadow: 0 0 12px var(--accent-cyan);
+            border-radius: 4px;
             animation: splashLoad 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
         }
-        @keyframes splashLoad { 0% { width: 0%; } 100% { width: 100%; } }
 
-        /* Force App Update Modal */
-        #modal-app-update .modal-cyber-sheet {
-            border-color: var(--accent-gold);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(255, 210, 0, 0.3);
+        @keyframes splashLoad {
+            0% { width: 0%; }
+            50% { width: 65%; }
+            100% { width: 100%; }
         }
     </style>
 </head>
 <body>
-
-    <div id="toast-container"></div>
-
-    <!-- ================= OPENING SPLASH ANIMATION ================= -->
+    <!-- ================= SPLASH OPENING ================= -->
     <div id="splash-screen">
         <div class="splash-logo-box">⚡</div>
         <h1 class="splash-brand-title">Mine<span>Rush</span></h1>
@@ -770,74 +888,55 @@
         <div class="splash-laser-loader">
             <div class="splash-laser-fill"></div>
         </div>
-        <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.0.0 • Secured by Cloud Vault</p>
+        <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.1.0 • Secured by Cloud Vault</p>
     </div>
 
-    <!-- ================= 🎁 7-DAY STREAK CLAIM MODAL (TOTAL 1,000 COINS) ================= -->
-    <div class="modal-backdrop" id="modal-daily-streak" style="z-index: 350;">
-        <div class="modal-cyber-sheet">
-            <div style="text-align: center; margin-bottom: 12px;">
-                <div style="font-size: 44px; margin-bottom: 4px;">🎁</div>
-                <h2 style="font-size: 20px; font-weight: 800; color: #FFF;">7-Day Login Streak</h2>
-                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
-                    Claim daily rewards & collect 1,000 total free coins!
-                </p>
-            </div>
+    <div id="toast-container"></div>
 
-            <div class="streak-days-grid" id="streak-grid">
-                <div class="streak-day-cell" id="streak-cell-1">
-                    <span class="streak-day-name">D1</span>
-                    <span class="streak-day-coins">+50</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-2">
-                    <span class="streak-day-name">D2</span>
-                    <span class="streak-day-coins">+75</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-3">
-                    <span class="streak-day-name">D3</span>
-                    <span class="streak-day-coins">+100</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-4">
-                    <span class="streak-day-name">D4</span>
-                    <span class="streak-day-coins">+125</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-5">
-                    <span class="streak-day-name">D5</span>
-                    <span class="streak-day-coins">+150</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-6">
-                    <span class="streak-day-name">D6</span>
-                    <span class="streak-day-coins">+200</span>
-                </div>
-                <div class="streak-day-cell" id="streak-cell-7">
-                    <span class="streak-day-name">D7</span>
-                    <span class="streak-day-coins">+300</span>
-                </div>
-            </div>
+    <!-- ================= LIVE IN-APP UPDATE MODAL ================= -->
+    <div class="modal-backdrop" id="modal-app-update" style="z-index: 500;">
+        <div class="modal-cyber-sheet" style="text-align: center;">
+            <div style="font-size: 52px; margin-bottom: 10px;">🚀</div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #FFF;" id="update-modal-title">New Update Available!</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin: 8px 0 20px 0; line-height: 1.5;" id="update-modal-desc">
+                A newer version of MineRush is available with high mining speed, bug fixes, and new rewards!
+            </p>
 
-            <button class="btn-primary btn-gold" id="btn-claim-streak" onclick="App.claimDailyStreak()">
-                🎁 Watch Video & Claim Today's Reward
+            <button class="btn-primary btn-gold" id="btn-update-download" onclick="App.openUpdateLink()">
+                ⚡ Update Now
             </button>
-            <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">
-                Close
+            <button class="btn-primary btn-outline" id="btn-update-dismiss" style="margin-top: 10px; display: none;" onclick="App.dismissUpdateModal()">
+                Later
             </button>
         </div>
     </div>
 
-    <!-- ================= FORCE APP UPDATE POPUP ================= -->
-    <div class="modal-backdrop" id="modal-app-update" style="z-index: 500;">
-        <div class="modal-cyber-sheet" style="text-align: center;">
-            <div style="font-size: 46px; margin-bottom: 8px;">🚀</div>
-            <h2 style="font-size: 20px; font-weight: 800; color: #FFF;" id="update-modal-title">New Update Available!</h2>
-            <p style="font-size: 12px; color: var(--text-secondary); margin: 6px 0 16px 0;" id="update-modal-desc">
-                A new version of MineRush is available with high-speed mining and bug fixes.
-            </p>
-            <div style="background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 14px; padding: 12px; margin-bottom: 18px;">
-                <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">LATEST VERSION</div>
-                <div style="font-size: 16px; font-weight: 800; color: var(--accent-cyan); margin-top: 2px;" id="update-modal-version">v1.0.1</div>
+    <!-- ================= 7-DAYS DAILY CLAIM REWARD MODAL ================= -->
+    <div class="modal-backdrop" id="modal-daily-claim" style="z-index: 400;">
+        <div class="modal-cyber-sheet">
+            <div style="text-align: center; margin-bottom: 16px;">
+                <div style="font-size: 42px; margin-bottom: 6px;">🎁</div>
+                <h2 style="font-size: 22px; font-weight: 800; color: #FFF;">7-Day Reward Streak</h2>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                    Claim coins daily! Earn up to <span style="color:var(--accent-gold); font-weight:800;">1,000 Coins</span> in 7 days.
+                </p>
             </div>
-            <button class="btn-primary btn-gold" id="btn-download-update" onclick="App.downloadLatestUpdate()">
-                📥 Download & Update Now
+
+            <!-- 7-Day Matrix -->
+            <div class="daily-grid" id="daily-streak-grid">
+                <!-- Dynamically rendered -->
+            </div>
+
+            <div style="background: rgba(4, 7, 17, 0.7); border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between;">
+                <span>Sponsor: <strong style="color:var(--accent-cyan);">AppLovin Rewarded</strong></span>
+                <span id="daily-claim-status-sub">Ready to claim</span>
+            </div>
+
+            <button class="btn-primary btn-gold" id="btn-confirm-daily-claim" onclick="App.claimDailyReward()">
+                🎁 Claim Today's Bonus
+            </button>
+            <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">
+                Close
             </button>
         </div>
     </div>
@@ -866,12 +965,12 @@
                 <div style="height: 1px; background: rgba(255,255,255,0.08);"></div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">UPGRADE COST:</span>
-                    <span style="font-size: 14px; font-weight: 800; color: #FFF;" id="upgrade-cost-text">300 Coins + 1 Ad</span>
+                    <span style="font-size: 14px; font-weight: 800; color: #FFF;" id="upgrade-cost-text">300 Coins + 1 AdMob Ad</span>
                 </div>
             </div>
 
             <button class="btn-primary btn-purple" id="btn-confirm-upgrade" onclick="App.confirmRigUpgrade()">
-                ⚡ Watch Ad & Upgrade Machine
+                ⚡ Watch AdMob Interstitial & Upgrade
             </button>
             <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">
                 Cancel
@@ -879,7 +978,7 @@
         </div>
     </div>
 
-    <!-- ================= ULTRA-SLEEK FIREBASE AUTH MODAL ================= -->
+    <!-- ================= FIREBASE AUTH MODAL ================= -->
     <div class="modal-backdrop" id="modal-auth">
         <div class="modal-cyber-sheet" id="auth-cyber-card">
             <div class="auth-brand-logo">⚡</div>
@@ -930,14 +1029,13 @@
                         <input type="text" class="form-input" id="signup-ref-code" placeholder="Auto-fills from invite link">
                     </div>
                 </div>
-
+                
                 <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 16px; font-size: 12px; color: var(--text-secondary); text-align: left;">
                     <input type="checkbox" id="signup-privacy-check" style="accent-color: var(--accent-cyan); width: 17px; height: 17px; cursor: pointer;">
                     <label for="signup-privacy-check" style="cursor: pointer; line-height: 1.4;">
                         I agree to the <a href="https://mine-rush-fawn.vercel.app/privacy.html" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 700;">Privacy Policy</a> & Terms
                     </label>
                 </div>
-
                 <button class="btn-primary" id="btn-auth-register" onclick="App.handleRegister()">
                     🚀 Create Free Account
                 </button>
@@ -1013,11 +1111,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <!-- 🎁 TOP COMPACT DAILY BONUS BUTTON -->
-                <button class="daily-bonus-btn" onclick="App.openDailyStreakModal()" title="Daily Streak">
-                    <span style="font-size: 14px;">🎁</span>
-                    <span class="bonus-text">Daily</span>
-                </button>
+                <button class="icon-btn" onclick="App.openDailyClaimModal()" title="Daily Bonus Streak">🎁</button>
                 <button class="icon-btn" onclick="App.openSupportLink()" title="Help">🎧</button>
             </div>
         </header>
@@ -1025,6 +1119,21 @@
         <main>
             <!-- 🏠 HOME SECTION -->
             <section id="view-home" class="section-view active">
+                
+                <!-- SLEEK TOP 7-DAYS DAILY STREAK BANNER -->
+                <div class="daily-streak-btn" onclick="App.openDailyClaimModal()">
+                    <div class="streak-info-left">
+                        <div class="streak-icon-box">🎁</div>
+                        <div>
+                            <div class="streak-tag">Daily Bonus Streak</div>
+                            <div class="streak-title" id="home-streak-status-text">Day 1: +50 Coins Available</div>
+                        </div>
+                    </div>
+                    <div class="streak-badge" id="home-streak-badge-btn">
+                        <span>⚡ Claim</span>
+                    </div>
+                </div>
+
                 <!-- Highlighted Vibrant Portfolio Card -->
                 <div class="balance-hero">
                     <div class="balance-label">
@@ -1047,7 +1156,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Action Bar (3 Quick Links) -->
+                <!-- Quick Action Bar -->
                 <div class="quick-actions">
                     <div class="quick-action-btn" onclick="App.switchTab('view-tasks')">
                         <span class="btn-icon">📋</span>
@@ -1063,7 +1172,7 @@
                     </div>
                 </div>
 
-                <!-- Quantum Cloud Mining Machine Rig with Upgrade Option -->
+                <!-- Quantum Cloud Mining Machine Rig (AdMob Rewarded Interstitial Powered) -->
                 <div class="mining-rig-card" id="mining-rig-wrapper">
                     <div class="sparkle-container" id="sparkle-container"></div>
                     
@@ -1138,15 +1247,16 @@
                 </div>
             </section>
 
-            <!-- 📋 TASKS & ADS SECTION (Combined) -->
+            <!-- 📋 TASKS & ADS SECTION -->
             <section id="view-tasks" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Earning & Task Center</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Complete video sponsors (30-min cooldown) & partner tasks.</p>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Safe 30-min rate limited video sponsors & partner tasks.</p>
                 </div>
 
-                <!-- TOP 2 REWARDED AD TASKS (ADMOB & APPLOVIN) WITH 30-MIN COOLDOWN -->
+                <!-- TOP 2 REWARDED AD TASKS: 1 ADMOB + 1 APPLOVIN (30 MIN COOLDOWN) -->
                 <div class="top-ad-tasks-grid">
+                    <!-- TASK 1: GOOGLE ADMOB REWARDED -->
                     <div class="ad-task-card">
                         <div class="ad-task-card-top">
                             <div>
@@ -1156,28 +1266,29 @@
                             <span class="status-pill status-approved">+50 Coins</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); font-weight:700;">
-                            <span id="ad-task-1-status">Ready to watch</span>
-                            <span>Cooldown: 30m</span>
+                            <span id="admob-task-timer" class="cooldown-badge" style="display:none;">⏳ Ready in 30m</span>
+                            <span>Network: AdMob</span>
                         </div>
-                        <button class="btn-primary btn-gold" style="padding: 12px; font-size: 13px;" id="btn-ad-task-1" onclick="App.watchTopAdTask(1, 50)">
-                            🎬 Watch AdMob (+50 C)
+                        <button class="btn-primary btn-gold" style="padding: 12px; font-size: 13px;" id="btn-ad-task-1" onclick="App.watchTaskAd(1, 50, 'admob')">
+                            🎬 Watch Video (+50 C)
                         </button>
                     </div>
 
+                    <!-- TASK 2: APPLOVIN REWARDED -->
                     <div class="ad-task-card">
                         <div class="ad-task-card-top">
                             <div>
-                                <div class="ad-task-title">🔥 AppLovin Turbo Surge</div>
+                                <div class="ad-task-title">🔥 AppLovin Turbo Boost</div>
                                 <div class="ad-task-sub">AppLovin MAX Rewarded Video</div>
                             </div>
-                            <span class="status-pill status-approved">+50 Coins</span>
+                            <span class="status-pill status-approved">+40 Coins</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-muted); font-weight:700;">
-                            <span id="ad-task-2-status">Ready to watch</span>
-                            <span>Cooldown: 30m</span>
+                            <span id="applovin-task-timer" class="cooldown-badge" style="display:none;">⏳ Ready in 30m</span>
+                            <span>Network: AppLovin</span>
                         </div>
-                        <button class="btn-primary btn-purple" style="padding: 12px; font-size: 13px;" id="btn-ad-task-2" onclick="App.watchTopAdTask(2, 50)">
-                            🎬 Watch AppLovin (+50 C)
+                        <button class="btn-primary" style="padding: 12px; font-size: 13px;" id="btn-ad-task-2" onclick="App.watchTaskAd(2, 40, 'applovin')">
+                            🎬 Watch Video (+40 C)
                         </button>
                     </div>
                 </div>
@@ -1218,11 +1329,11 @@
                     </div>
                 </div>
 
-                <!-- Swap Card -->
+                <!-- Swap Card (AdMob Rewarded Interstitial) -->
                 <div class="swap-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h4 style="font-size:14px; font-weight:800;">💱 Convert & Swap</h4>
-                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires 1 Ad</span>
+                        <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires AdMob Interstitial</span>
                     </div>
 
                     <div class="swap-input-group">
@@ -1328,7 +1439,7 @@
             </section>
         </main>
 
-        <!-- 4-Tab Bottom Nav -->
+        <!-- 4-Tab Bottom Navigation -->
         <nav class="bottom-nav">
             <button class="nav-tab active" onclick="App.switchTab('view-home')">
                 <span class="tab-icon">🏠</span>
@@ -1395,7 +1506,10 @@
             getDatabase, ref, set, get, update, push, onValue, runTransaction, query, orderByChild, equalTo 
         } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-        // Verified Firebase Config
+        // Current App Version (for in-app live update system)
+        const APP_VERSION_CODE = 1;
+
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
             authDomain: "mine-rush-f580a.firebaseapp.com",
@@ -1409,9 +1523,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
-
-        // App Version
-        const CURRENT_APP_VERSION = "1.0.0";
 
         // Web Audio Synthesizer
         const SoundFX = {
@@ -1478,7 +1589,8 @@
                 gain.gain.setValueAtTime(0.18, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
                 osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); osc.stop(now + 0.7);
+                osc.start();
+                osc.stop(now + 0.7);
             },
             playStartupSound: function() {
                 this.init();
@@ -1492,8 +1604,10 @@
                 gainSub.gain.setValueAtTime(0.001, now);
                 gainSub.gain.linearRampToValueAtTime(0.22, now + 0.3);
                 gainSub.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-                oscSub.connect(gainSub); gainSub.connect(this.ctx.destination);
-                oscSub.start(now); oscSub.stop(now + 1.2);
+                oscSub.connect(gainSub);
+                gainSub.connect(this.ctx.destination);
+                oscSub.start(now);
+                oscSub.stop(now + 1.2);
 
                 [587.33, 739.99, 880.00, 1174.66].forEach((freq, idx) => {
                     const osc = this.ctx.createOscillator();
@@ -1503,13 +1617,15 @@
                     gain.gain.setValueAtTime(0.001, now + 0.35 + (idx * 0.08));
                     gain.gain.linearRampToValueAtTime(0.15, now + 0.38 + (idx * 0.08));
                     gain.gain.exponentialRampToValueAtTime(0.001, now + 1.9);
-                    osc.connect(gain); gain.connect(this.ctx.destination);
-                    osc.start(now + 0.35 + (idx * 0.08)); osc.stop(now + 1.9);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + 0.35 + (idx * 0.08));
+                    osc.stop(now + 1.9);
                 });
             }
         };
 
-        // Rig Tiers Configuration
+        // Rig Upgrade Definitions
         const RIG_TIERS = {
             1: { name: "Starter Core", hourlyYield: 100, ratePerSec: 0.0277, costCoins: 0 },
             2: { name: "Dual Turbo", hourlyYield: 200, ratePerSec: 0.0555, costCoins: 300 },
@@ -1518,10 +1634,10 @@
             5: { name: "Supercluster", hourlyYield: 850, ratePerSec: 0.2361, costCoins: 4000 }
         };
 
-        // 7-Day Streak Values (Total = 1,000 Coins)
-        const STREAK_VALUES = [50, 75, 100, 125, 150, 200, 300];
+        // 7 Days Rewards Schedule (Sum = 50+75+100+125+175+225+250 = 1000 Coins)
+        const DAILY_REWARDS = [50, 75, 100, 125, 175, 225, 250];
 
-        // State Machine
+        // Core State
         const State = {
             user: null,
             userId: null,
@@ -1532,30 +1648,38 @@
             miningAdsWatched: 0,
             firstMiningCompleted: false,
             rigLevel: 1,
-            dailyStreak: { currentDay: 1, lastClaimDate: "" },
-            adTask1LastWatch: 0,
-            adTask2LastWatch: 0,
+            // 30-min Cooldown Timestamps
+            lastTask1Time: 0,
+            lastTask2Time: 0,
+            // 7 Days Streak state
+            streakDay: 1,
+            lastClaimDate: null,
+            canClaimToday: true,
+            // Admin Settings
             admin: {
                 rates: { coin_to_inr: 100, coin_to_usdt: 9000 },
-                mining: { ads_required: 3, session_duration_ms: 3600000 },
+                mining: { ads_required: 3, session_duration_ms: 3600000 }, // Default 3 ads
                 exchange: { ads_required: 1, min_swap_coins: 100 },
                 withdrawals: { min_upi_inr: 50, min_ton_usdt: 5 },
-                referral: { reward_coins: 200 }
+                referral: { reward_coins: 200 },
+                version_control: {
+                    version_code: 1,
+                    update_url: "https://mine-rush-fawn.vercel.app",
+                    force_update: false,
+                    title: "🚀 App Update Available!",
+                    message: "A new version of MineRush is available with high mining performance and new rewards."
+                }
             },
-            appUpdate: null,
             selectedPayoutMethod: 'UPI',
             pendingAdReward: null,
             lastAdWatchTime: 0,
             navClickCount: 0,
-            lastAutoInterstitialTime: 0
+            lastInterstitialTime: 0,
         };
 
         window.App = {
             init: function() {
-                // Play Sci-Fi Startup Sound
                 SoundFX.playStartupSound();
-
-                // Dismiss Splash Screen after 2.2 seconds
                 setTimeout(() => {
                     const splash = document.getElementById('splash-screen');
                     if (splash) splash.classList.add('splash-hidden');
@@ -1569,7 +1693,6 @@
                 }
 
                 this.listenToAdminSettings();
-                this.listenForAppUpdates();
 
                 onAuthStateChanged(auth, (user) => {
                     const authModal = document.getElementById('modal-auth');
@@ -1601,34 +1724,11 @@
                 });
 
                 this.startMiningClock();
-                this.startTaskCooldownTicker();
+                this.startCooldownTimers();
                 document.body.addEventListener('click', () => SoundFX.init(), { once: true });
             },
 
-            // ================= LIVE FORCE-UPDATE ENGINE =================
-            listenForAppUpdates: function() {
-                onValue(ref(database, 'admin_settings/app_update'), (snap) => {
-                    const updateData = snap.val();
-                    if (updateData && updateData.enabled) {
-                        State.appUpdate = updateData;
-                        if (updateData.latest_version && updateData.latest_version !== CURRENT_APP_VERSION) {
-                            document.getElementById('update-modal-version').innerText = `v${updateData.latest_version}`;
-                            if (updateData.title) document.getElementById('update-modal-title').innerText = updateData.title;
-                            if (updateData.desc) document.getElementById('update-modal-desc').innerText = updateData.desc;
-                            document.getElementById('modal-app-update').classList.add('open');
-                        }
-                    }
-                });
-            },
-
-            downloadLatestUpdate: function() {
-                if (State.appUpdate && State.appUpdate.apk_url) {
-                    window.open(State.appUpdate.apk_url, '_blank');
-                } else {
-                    this.toast("Update URL not configured by admin.", "error");
-                }
-            },
-
+            // ================= REALTIME ADMIN SYNC & LIVE UPDATE =================
             listenToAdminSettings: function() {
                 onValue(ref(database, 'admin_settings'), (snapshot) => {
                     const data = snapshot.val();
@@ -1638,251 +1738,389 @@
                         if (data.exchange) State.admin.exchange = { ...State.admin.exchange, ...data.exchange };
                         if (data.withdrawals) State.admin.withdrawals = { ...State.admin.withdrawals, ...data.withdrawals };
                         if (data.referral) State.admin.referral = { ...State.admin.referral, ...data.referral };
+                        if (data.version_control) {
+                            State.admin.version_control = { ...State.admin.version_control, ...data.version_control };
+                            this.checkAppVersionUpdate();
+                        }
                     }
                     this.updateAdminDynamicUI();
                 });
             },
 
+            checkAppVersionUpdate: function() {
+                const vc = State.admin.version_control;
+                if (!vc) return;
+
+                if (parseInt(vc.version_code) > APP_VERSION_CODE) {
+                    const updateModal = document.getElementById('modal-app-update');
+                    document.getElementById('update-modal-title').innerText = vc.title || "New Update Available!";
+                    document.getElementById('update-modal-desc').innerText = vc.message || "Please update to continue using MineRush.";
+                    
+                    const dismissBtn = document.getElementById('btn-update-dismiss');
+                    if (vc.force_update) {
+                        dismissBtn.style.display = 'none';
+                    } else {
+                        dismissBtn.style.display = 'block';
+                    }
+                    updateModal.classList.add('open');
+                }
+            },
+
+            openUpdateLink: function() {
+                SoundFX.playClick();
+                const url = State.admin.version_control.update_url || "https://mine-rush-fawn.vercel.app";
+                window.open(url, '_blank');
+            },
+
+            dismissUpdateModal: function() {
+                SoundFX.playClick();
+                document.getElementById('modal-app-update').classList.remove('open');
+            },
+
             updateAdminDynamicUI: function() {
                 document.getElementById('rate-badge').innerText = `${State.admin.rates.coin_to_inr} Coins = ₹1`;
-                document.getElementById('swap-req-ad-text').innerText = `Requires ${State.admin.exchange.ads_required} Ad`;
+                document.getElementById('swap-req-ad-text').innerText = `Requires AdMob Interstitial`;
                 document.getElementById('payout-min-upi-text').innerText = `Min ₹${State.admin.withdrawals.min_upi_inr} (INR)`;
                 document.getElementById('payout-min-ton-text').innerText = `Min $${State.admin.withdrawals.min_ton_usdt} (TON Net)`;
                 this.updateMiningUI();
             },
 
-            // ================= 7-DAY STREAK CLAIM SYSTEM =================
-            openDailyStreakModal: function() {
+            switchAuthTab: function(tab) {
                 SoundFX.playClick();
-                this.renderDailyStreak();
-                document.getElementById('modal-daily-streak').classList.add('open');
-            },
-
-            renderDailyStreak: function() {
-                const streak = State.dailyStreak;
-                const todayStr = new Date().toISOString().slice(0, 10);
-                const isClaimedToday = (streak.lastClaimDate === todayStr);
-
-                const claimBtn = document.getElementById('btn-claim-streak');
-
-                for (let i = 1; i <= 7; i++) {
-                    const cell = document.getElementById(`streak-cell-${i}`);
-                    cell.className = 'streak-day-cell';
-                    if (i < streak.currentDay) {
-                        cell.classList.add('claimed-day');
-                    } else if (i === streak.currentDay) {
-                        if (isClaimedToday) cell.classList.add('claimed-day');
-                        else cell.classList.add('active-day');
-                    }
-                }
-
-                if (isClaimedToday) {
-                    claimBtn.disabled = true;
-                    claimBtn.innerText = "✅ Today's Reward Claimed";
-                    claimBtn.style.background = "#1C2740";
-                    claimBtn.style.color = "#64748B";
+                if (tab === 'signup') {
+                    document.getElementById('auth-signup-view').style.display = 'block';
+                    document.getElementById('auth-login-view').style.display = 'none';
+                    document.getElementById('tab-btn-signup').classList.add('active');
+                    document.getElementById('tab-btn-login').classList.remove('active');
                 } else {
-                    const todayReward = STREAK_VALUES[streak.currentDay - 1] || 50;
-                    claimBtn.disabled = false;
-                    claimBtn.innerText = `🎁 Watch Video & Claim Day ${streak.currentDay} (+${todayReward} C)`;
-                    claimBtn.style.background = "linear-gradient(135deg, #FFD200, #F59E0B)";
-                    claimBtn.style.color = "#040711";
+                    document.getElementById('auth-signup-view').style.display = 'none';
+                    document.getElementById('auth-login-view').style.display = 'block';
+                    document.getElementById('tab-btn-signup').classList.remove('active');
+                    document.getElementById('tab-btn-login').classList.add('active');
                 }
             },
 
-            claimDailyStreak: function() {
+            togglePasswordVisibility: function(inputId) {
                 SoundFX.playClick();
-                const todayStr = new Date().toISOString().slice(0, 10);
-                if (State.dailyStreak.lastClaimDate === todayStr) {
-                    this.toast("Already claimed today!", "info");
+                const input = document.getElementById(inputId);
+                input.type = input.type === 'password' ? 'text' : 'password';
+            },
+
+            handleRegister: async function() {
+                const privacyChecked = document.getElementById('signup-privacy-check')?.checked;
+                if (!privacyChecked) {
+                    this.toast("Please read & accept Privacy Policy to register", "error");
+                    return;
+                }
+                SoundFX.playClick();
+                const email = document.getElementById('signup-email').value.trim();
+                const pass = document.getElementById('signup-password').value.trim();
+                const confirmPass = document.getElementById('signup-confirm-password').value.trim();
+                const refCode = document.getElementById('signup-ref-code').value.trim();
+
+                if (!email || !email.includes('@')) {
+                    this.toast("Please enter a valid email address", "error");
+                    return;
+                }
+                if (pass.length < 6) {
+                    this.toast("Password must be at least 6 characters", "error");
+                    return;
+                }
+                if (pass !== confirmPass) {
+                    this.toast("Passwords do not match", "error");
                     return;
                 }
 
-                const todayReward = STREAK_VALUES[State.dailyStreak.currentDay - 1] || 50;
-                State.pendingAdReward = { type: 'daily_streak', amount: todayReward };
-                this.triggerRewardedAd('applovin');
-            },
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    const user = userCredential.user;
 
-            // ================= 30-MIN COOLDOWN TICKER FOR AD TASKS =================
-            startTaskCooldownTicker: function() {
-                setInterval(() => {
-                    const now = Date.now();
-                    const COOLDOWN_MS = 30 * 60 * 1000;
+                    // WELCOME BONUS REMOVED: Initial coins set to 0
+                    await set(ref(database, `users/${user.uid}`), {
+                        uid: user.uid,
+                        email: email,
+                        coins: 0,
+                        inr_balance: 0,
+                        usdt_balance: 0,
+                        miningEndTime: 0,
+                        miningAdsWatched: 0,
+                        rigLevel: 1,
+                        firstMiningCompleted: false,
+                        referredBy: refCode || 'DIRECT',
+                        streakDay: 1,
+                        lastClaimDate: "",
+                        createdAt: Date.now()
+                    });
 
-                    // Task 1 (AdMob)
-                    const diff1 = now - State.adTask1LastWatch;
-                    const btn1 = document.getElementById('btn-ad-task-1');
-                    const status1 = document.getElementById('ad-task-1-status');
-                    if (btn1 && status1) {
-                        if (diff1 < COOLDOWN_MS) {
-                            const rem1 = Math.ceil((COOLDOWN_MS - diff1) / 1000);
-                            const m = Math.floor(rem1 / 60);
-                            const s = rem1 % 60;
-                            btn1.disabled = true;
-                            btn1.innerText = `⏳ Wait ${m}m ${s}s`;
-                            status1.innerText = `Cooldown: ${m}m ${s}s`;
-                        } else {
-                            btn1.disabled = false;
-                            btn1.innerText = "🎬 Watch AdMob (+50 C)";
-                            status1.innerText = "Ready to watch";
-                        }
+                    if (refCode && refCode !== 'DIRECT') {
+                        await set(ref(database, `referral_bindings/${user.uid}`), {
+                            referrerUid: refCode,
+                            userUid: user.uid,
+                            userEmail: email,
+                            status: 'Pending First Mining',
+                            createdAt: Date.now()
+                        });
                     }
 
-                    // Task 2 (AppLovin)
-                    const diff2 = now - State.adTask2LastWatch;
-                    const btn2 = document.getElementById('btn-ad-task-2');
-                    const status2 = document.getElementById('ad-task-2-status');
-                    if (btn2 && status2) {
-                        if (diff2 < COOLDOWN_MS) {
-                            const rem2 = Math.ceil((COOLDOWN_MS - diff2) / 1000);
-                            const m = Math.floor(rem2 / 60);
-                            const s = rem2 % 60;
-                            btn2.disabled = true;
-                            btn2.innerText = `⏳ Wait ${m}m ${s}s`;
-                            status2.innerText = `Cooldown: ${m}m ${s}s`;
-                        } else {
-                            btn2.disabled = false;
-                            btn2.innerText = "🎬 Watch AppLovin (+50 C)";
-                            status2.innerText = "Ready to watch";
-                        }
-                    }
-                }, 1000);
+                    SoundFX.playSuccess();
+                    this.toast("Account created! Start your mining journey.", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
             },
 
-            watchTopAdTask: function(taskId, rewardCoins) {
+            handleLogin: async function() {
                 SoundFX.playClick();
-                const now = Date.now();
-                const COOLDOWN_MS = 30 * 60 * 1000;
-                const lastWatch = taskId === 1 ? State.adTask1LastWatch : State.adTask2LastWatch;
+                const email = document.getElementById('login-email').value.trim();
+                const pass = document.getElementById('login-password').value.trim();
 
-                if (now - lastWatch < COOLDOWN_MS) {
-                    this.toast("This task is on 30-minute cooldown!", "info");
+                if (!email || !pass) {
+                    this.toast("Please enter email & password", "error");
                     return;
                 }
 
-                State.pendingAdReward = { 
-                    type: 'ad_task', 
-                    taskId: taskId, 
-                    amount: rewardCoins, 
-                    title: taskId === 1 ? 'AdMob Power Surge' : 'AppLovin Turbo Surge' 
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    SoundFX.playSuccess();
+                    this.toast("Welcome back!", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
+
+            handleForgotPassword: async function() {
+                SoundFX.playClick();
+                const email = document.getElementById('login-email').value.trim();
+                if (!email) {
+                    this.toast("Enter your email above to reset password", "info");
+                    return;
+                }
+                try {
+                    await sendPasswordResetEmail(auth, email);
+                    this.toast("Password reset email sent! Check your inbox.", "success");
+                } catch (error) {
+                    this.toast(error.message.replace("Firebase: ", ""), "error");
+                }
+            },
+
+            handleSignOut: async function() {
+                SoundFX.playClick();
+                await signOut(auth);
+                this.closeModals();
+                this.toast("Signed out successfully", "info");
+            },
+
+            attachUserSession: function() {
+                const uid = State.userId;
+                const email = State.user.email;
+
+                document.getElementById('user-display-name').innerText = email.split('@')[0];
+                document.getElementById('profile-email-display').innerText = email;
+                document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
+
+                const origin = window.location.origin + window.location.pathname;
+                const refLink = `${origin}?ref=${uid}`;
+                document.getElementById('user-ref-link-display').innerText = refLink;
+
+                const userRef = ref(database, `users/${uid}`);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        State.coins = parseFloat(data.coins) || 0;
+                        State.inr = parseFloat(data.inr_balance) || 0;
+                        State.usdt = parseFloat(data.usdt_balance) || 0;
+                        State.miningEndTime = parseInt(data.miningEndTime) || 0;
+                        State.miningAdsWatched = parseInt(data.miningAdsWatched) || 0;
+                        State.rigLevel = parseInt(data.rigLevel) || 1;
+                        State.firstMiningCompleted = data.firstMiningCompleted || false;
+
+                        // 30-Min Cooldown Data
+                        State.lastTask1Time = parseInt(data.lastTask1Time) || 0;
+                        State.lastTask2Time = parseInt(data.lastTask2Time) || 0;
+
+                        // Daily Streak Data
+                        State.streakDay = parseInt(data.streakDay) || 1;
+                        State.lastClaimDate = data.lastClaimDate || "";
+                        this.evaluateDailyStreakStatus();
+
+                        this.renderBalances();
+                        this.updateMiningUI();
+                    }
+                });
+
+                this.listenToReferralStats();
+                this.listenToTasks();
+                this.listenToHistory();
+            },
+
+            renderBalances: function() {
+                document.getElementById('home-coin-balance').innerText = Math.floor(State.coins).toLocaleString();
+                document.getElementById('wallet-coins-val').innerText = Math.floor(State.coins).toLocaleString();
+                document.getElementById('home-inr-balance').innerText = `₹ ${State.inr.toFixed(2)}`;
+                document.getElementById('wallet-inr-val').innerText = `₹ ${State.inr.toFixed(2)}`;
+                document.getElementById('home-usdt-balance').innerText = `$ ${State.usdt.toFixed(2)}`;
+                document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
+            },
+
+            // ================= 7-DAY REWARD STREAK LOGIC (1000 COINS TOTAL) =================
+            evaluateDailyStreakStatus: function() {
+                const today = new Date().toISOString().slice(0, 10);
+                const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+                if (State.lastClaimDate === today) {
+                    State.canClaimToday = false;
+                } else {
+                    State.canClaimToday = true;
+                    // If missed a day (last claimed was before yesterday), reset streak to 1
+                    if (State.lastClaimDate && State.lastClaimDate !== yesterday) {
+                        State.streakDay = 1;
+                    }
+                }
+
+                // UI Updates for Top Streak Banner
+                const homeStatus = document.getElementById('home-streak-status-text');
+                const homeBadge = document.getElementById('home-streak-badge-btn');
+
+                if (State.canClaimToday) {
+                    const todayReward = DAILY_REWARDS[State.streakDay - 1] || 50;
+                    homeStatus.innerHTML = `Day ${State.streakDay}: <strong style="color:var(--accent-gold);">+${todayReward} Coins</strong> Available`;
+                    homeBadge.innerHTML = "⚡ Claim";
+                    homeBadge.style.background = "rgba(255, 210, 0, 0.22)";
+                } else {
+                    homeStatus.innerHTML = `Day ${State.streakDay} Claimed! Next tomorrow`;
+                    homeBadge.innerHTML = "✅ Claimed";
+                    homeBadge.style.background = "rgba(16, 185, 129, 0.2)";
+                }
+            },
+
+            openDailyClaimModal: function() {
+                SoundFX.playClick();
+                this.renderDailyStreakGrid();
+                const btn = document.getElementById('btn-confirm-daily-claim');
+                const sub = document.getElementById('daily-claim-status-sub');
+
+                if (State.canClaimToday) {
+                    btn.disabled = false;
+                    const amount = DAILY_REWARDS[State.streakDay - 1] || 50;
+                    btn.innerText = `🎁 Claim Day ${State.streakDay} (+${amount} Coins)`;
+                    sub.innerText = "Sponsor: AppLovin Rewarded Ad";
+                } else {
+                    btn.disabled = true;
+                    btn.innerText = "✅ Today's Bonus Already Claimed";
+                    sub.innerText = "Next bonus unlocks tomorrow!";
+                }
+
+                document.getElementById('modal-daily-claim').classList.add('open');
+            },
+
+            renderDailyStreakGrid: function() {
+                const grid = document.getElementById('daily-streak-grid');
+                grid.innerHTML = '';
+
+                DAILY_REWARDS.forEach((coins, idx) => {
+                    const dayNum = idx + 1;
+                    const box = document.createElement('div');
+                    box.className = 'day-box';
+
+                    if (dayNum < State.streakDay || (!State.canClaimToday && dayNum === State.streakDay)) {
+                        box.classList.add('claimed');
+                    } else if (dayNum === State.streakDay && State.canClaimToday) {
+                        box.classList.add('active-today');
+                    }
+
+                    box.innerHTML = `
+                        <div class="day-label">Day ${dayNum}</div>
+                        <div class="day-icon">${dayNum === 7 ? '👑' : '🪙'}</div>
+                        <div class="day-reward">+${coins}</div>
+                    `;
+                    grid.appendChild(box);
+                });
+            },
+
+            claimDailyReward: function() {
+                if (!State.canClaimToday) {
+                    this.toast("You have already claimed today's reward!", "info");
+                    return;
+                }
+
+                SoundFX.playClick();
+                const day = State.streakDay;
+                const rewardCoins = DAILY_REWARDS[day - 1] || 50;
+
+                this.closeModals();
+                this.toast("Loading AppLovin ad for Daily Bonus...", "info");
+
+                State.pendingAdReward = {
+                    type: 'daily_claim',
+                    day: day,
+                    amount: rewardCoins,
+                    network: 'applovin'
                 };
 
-                this.triggerRewardedAd(taskId === 1 ? 'admob' : 'applovin');
+                // Trigger AppLovin Rewarded Ad for Daily Claim
+                this.triggerAppLovinRewardedAd('daily_claim');
             },
 
-            // ================= DUAL AD NETWORK DISPATCHER =================
-            triggerRewardedAd: function(preferredNetwork = 'admob') {
-                const now = Date.now();
-                if (now - State.lastAdWatchTime < 5000) {
-                    this.toast("Please wait a few seconds before next ad", "info");
+            // ================= MINING RIG & UPGRADE CONTROLLER =================
+            updateMiningUI: function() {
+                const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
+                document.getElementById('rig-level-display').innerText = `Level ${State.rigLevel}`;
+                document.getElementById('mining-rate-text').innerText = `RATE: ~${tier.hourlyYield} C/h`;
+                document.getElementById('mining-session-yield').innerText = `YIELD: +${tier.hourlyYield} C`;
+
+                const reqAds = State.admin.mining.ads_required;
+                document.getElementById('mining-ads-status').innerText = `ADS: ${State.miningAdsWatched}/${reqAds}`;
+
+                const btnLabel = document.getElementById('btn-mine-label');
+                if (State.miningEndTime > Date.now()) {
+                    btnLabel.innerText = "Rig Power Active (Turbofans ON)";
+                    document.getElementById('btn-mine-action').disabled = true;
+                } else if (State.miningAdsWatched < reqAds) {
+                    btnLabel.innerText = `Watch Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
+                    document.getElementById('btn-mine-action').disabled = false;
+                } else {
+                    btnLabel.innerText = "Start 1-Hour Quantum Mining";
+                    document.getElementById('btn-mine-action').disabled = false;
+                }
+            },
+
+            openUpgradeModal: function() {
+                SoundFX.playClick();
+                const curLevel = State.rigLevel;
+                if (curLevel >= 5) {
+                    this.toast("Your Machine Rig is already at MAX Level 5!", "info");
                     return;
                 }
 
-                const target = State.pendingAdReward;
-                this.toast(`Loading ${preferredNetwork === 'applovin' ? 'AppLovin' : 'AdMob'} ad...`, "info");
+                const nextLevel = curLevel + 1;
+                const curTier = RIG_TIERS[curLevel];
+                const nextTier = RIG_TIERS[nextLevel];
 
-                // Native AndroidBridge Dispatcher
-                if (window.AndroidBridge) {
-                    if (preferredNetwork === 'applovin' && typeof window.AndroidBridge.showAppLovinRewarded === 'function') {
-                        const tag = target ? (target.type === 'daily_streak' ? 'applovin_daily' : `applovin_task_${target.taskId}`) : 'applovin';
-                        window.AndroidBridge.showAppLovinRewarded(tag);
-                        return;
-                    }
-                    if (target && (target.type === 'mining' || target.type === 'upgrade' || target.type === 'swap')) {
-                        if (typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
-                            window.AndroidBridge.showRewardedInterstitialAd(target.type);
-                            return;
-                        }
-                    }
-                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
-                        window.AndroidBridge.showRewardedAd();
-                        return;
-                    }
+                document.getElementById('upgrade-cur-level').innerText = `Level ${curLevel} (${curTier.hourlyYield} C/h)`;
+                document.getElementById('upgrade-next-level').innerText = `Level ${nextLevel} (${nextTier.hourlyYield} C/h)`;
+                document.getElementById('upgrade-cost-text').innerText = `${nextTier.costCoins} Coins + 1 AdMob Interstitial`;
+
+                document.getElementById('modal-upgrade').classList.add('open');
+            },
+
+            confirmRigUpgrade: async function() {
+                SoundFX.playClick();
+                const nextLevel = State.rigLevel + 1;
+                const nextTier = RIG_TIERS[nextLevel];
+                if (!nextTier) return;
+
+                if (State.coins < nextTier.costCoins) {
+                    this.toast(`Insufficient Coins! Need ${nextTier.costCoins} Coins to upgrade.`, "error");
+                    return;
                 }
 
-                // Browser Test Simulation
-                this.showAdMobSimulator();
+                this.closeModals();
+                this.toast("Loading AdMob Rewarded Interstitial...", "info");
+
+                State.pendingAdReward = { type: 'upgrade', nextLevel: nextLevel, costCoins: nextTier.costCoins };
+                this.triggerAdMobRewardedInterstitial('upgrade');
             },
 
-            showAdMobSimulator: function() {
-                const existing = document.getElementById('admob-test-modal');
-                if (existing) existing.remove();
-
-                const modal = document.createElement('div');
-                modal.id = 'admob-test-modal';
-                modal.style.cssText = `
-                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                    background: #040711; z-index: 99999; display: flex; flex-direction: column;
-                    align-items: center; justify-content: space-between; padding: 25px 20px;
-                    animation: viewFadeIn 0.25s ease;
-                `;
-
-                modal.innerHTML = `
-                    <div style="width:100%; display:flex; justify-content:space-between; align-items:center; color:#FFF;">
-                        <div style="background:rgba(0,242,254,0.18); color:#00F2FE; border:1px solid rgba(0,242,254,0.3); border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800;">
-                            SPONSOR REWARD AD
-                        </div>
-                        <div id="admob-timer-badge" style="background:#FFD200; color:#000; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:800;">
-                            Reward in 15s
-                        </div>
-                    </div>
-
-                    <div style="text-align:center; color:#FFF; display:flex; flex-direction:column; align-items:center; gap:14px;">
-                        <div style="width:84px; height:84px; border-radius:24px; background:linear-gradient(135deg, #00F2FE, #8B5CF6); display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 0 35px rgba(0,242,254,0.35);">
-                            🎬
-                        </div>
-                        <h3 style="font-size:20px; font-weight:800;">Sponsored Video Ad</h3>
-                        <p style="font-size:13px; color:#94A3B8; max-width:280px; line-height:1.5;">
-                            Watch this video completely to claim your coins or power up your cloud rig.
-                        </p>
-                    </div>
-
-                    <div style="width:100%;">
-                        <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:4px; margin-bottom:12px; overflow:hidden;">
-                            <div id="admob-progress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #00F2FE, #8B5CF6); transition:width 1s linear;"></div>
-                        </div>
-                        <button id="admob-close-btn" disabled style="width:100%; padding:15px; border-radius:16px; border:none; font-weight:800; font-size:14px; background:#162238; color:#64748B; cursor:not-allowed;">
-                            Please wait 15s to claim reward...
-                        </button>
-                    </div>
-                `;
-
-                document.body.appendChild(modal);
-
-                let timeLeft = 15;
-                const timerBadge = document.getElementById('admob-timer-badge');
-                const progressBar = document.getElementById('admob-progress-bar');
-                const closeBtn = document.getElementById('admob-close-btn');
-
-                const interval = setInterval(() => {
-                    timeLeft--;
-                    const progress = ((15 - timeLeft) / 15) * 100;
-                    progressBar.style.width = `${progress}%`;
-
-                    if (timeLeft > 0) {
-                        timerBadge.innerText = `Reward in ${timeLeft}s`;
-                        closeBtn.innerText = `Please wait ${timeLeft}s to claim reward...`;
-                    } else {
-                        clearInterval(interval);
-                        timerBadge.innerText = "Reward Granted! ✅";
-                        timerBadge.style.background = "#10B981";
-                        timerBadge.style.color = "#FFF";
-
-                        closeBtn.disabled = false;
-                        closeBtn.innerText = "Claim Reward & Close";
-                        closeBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
-                        closeBtn.style.color = "#040711";
-                        closeBtn.style.cursor = "pointer";
-
-                        closeBtn.onclick = () => {
-                            modal.remove();
-                            window.onNativeAdRewarded(State.pendingAdReward ? State.pendingAdReward.type : 'mining');
-                        };
-                    }
-                }, 1000);
-            },
-
-            // ================= MINING CONTROLLER =================
             handleMiningAction: async function() {
                 SoundFX.playClick();
                 const now = Date.now();
@@ -1891,10 +2129,11 @@
                     return;
                 }
 
-                const requiredAds = State.admin.mining.ads_required; // 3 Ads
+                const requiredAds = State.admin.mining.ads_required;
                 if (State.miningAdsWatched < requiredAds) {
                     State.pendingAdReward = { type: 'mining' };
-                    this.triggerRewardedAd('admob');
+                    // Mining pe Admob ka Rewarded Interstitial ad
+                    this.triggerAdMobRewardedInterstitial('mining');
                     return;
                 }
 
@@ -1914,62 +2153,30 @@
                 this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
             },
 
-            openUpgradeModal: function() {
-                SoundFX.playClick();
-                const curLevel = State.rigLevel;
-                if (curLevel >= 5) {
-                    this.toast("Your Machine Rig is already at MAX Level 5!", "info");
-                    return;
-                }
+            processReferralCommission: async function() {
+                const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
+                if (bindingSnap.exists()) {
+                    const binding = bindingSnap.val();
+                    if (binding.status === 'Pending First Mining') {
+                        const referrerUid = binding.referrerUid;
+                        const reward = State.admin.referral.reward_coins || 200;
 
-                const nextLevel = curLevel + 1;
-                const curTier = RIG_TIERS[curLevel];
-                const nextTier = RIG_TIERS[nextLevel];
+                        await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
+                            return (parseFloat(curr) || 0) + reward;
+                        });
 
-                document.getElementById('upgrade-cur-level').innerText = `Level ${curLevel} (${curTier.hourlyYield} C/h)`;
-                document.getElementById('upgrade-next-level').innerText = `Level ${nextLevel} (${nextTier.hourlyYield} C/h)`;
-                document.getElementById('upgrade-cost-text').innerText = `${nextTier.costCoins} Coins + 1 Ad`;
+                        await push(ref(database, `users/${referrerUid}/coin_history`), {
+                            amount: reward,
+                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
+                            timestamp: Date.now()
+                        });
 
-                document.getElementById('modal-upgrade').classList.add('open');
-            },
-
-            confirmRigUpgrade: async function() {
-                SoundFX.playClick();
-                const nextLevel = State.rigLevel + 1;
-                const nextTier = RIG_TIERS[nextLevel];
-                if (!nextTier) return;
-
-                if (State.coins < nextTier.costCoins) {
-                    this.toast(`Insufficient Coins! Need ${nextTier.costCoins} Coins to upgrade.`, "error");
-                    return;
-                }
-
-                this.closeModals();
-                this.toast("Loading AdMob ad for Machine Upgrade...", "info");
-
-                State.pendingAdReward = { type: 'upgrade', nextLevel: nextLevel, costCoins: nextTier.costCoins };
-                this.triggerRewardedAd('admob');
-            },
-
-            updateMiningUI: function() {
-                const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
-                document.getElementById('rig-level-display').innerText = `Level ${State.rigLevel}`;
-                document.getElementById('mining-rate-text').innerText = `RATE: ~${tier.hourlyYield} C/h`;
-                document.getElementById('mining-session-yield').innerText = `YIELD: +${tier.hourlyYield} C`;
-
-                const reqAds = State.admin.mining.ads_required;
-                document.getElementById('mining-ads-status').innerText = `ADS: ${State.miningAdsWatched}/${reqAds}`;
-
-                const btnLabel = document.getElementById('btn-mine-label');
-                if (State.miningEndTime > Date.now()) {
-                    btnLabel.innerText = "Rig Power Active (Turbofans ON)";
-                    document.getElementById('btn-mine-action').disabled = true;
-                } else if (State.miningAdsWatched < reqAds) {
-                    btnLabel.innerText = `Watch AdMob Ads (${State.miningAdsWatched}/${reqAds})`;
-                    document.getElementById('btn-mine-action').disabled = false;
-                } else {
-                    btnLabel.innerText = "Start 1-Hour Quantum Mining";
-                    document.getElementById('btn-mine-action').disabled = false;
+                        await update(ref(database, `referral_bindings/${State.userId}`), {
+                            status: 'Qualified',
+                            rewardedCoins: reward,
+                            qualifiedAt: Date.now()
+                        });
+                    }
                 }
             },
 
@@ -2027,6 +2234,211 @@
                 setTimeout(() => particle.remove(), 1600);
             },
 
+            // ================= 30-MINUTE COOLDOWN FOR AD TASKS =================
+            startCooldownTimers: function() {
+                const COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+
+                setInterval(() => {
+                    const now = Date.now();
+
+                    // Task 1: AdMob Rewarded
+                    const diff1 = now - State.lastTask1Time;
+                    const btn1 = document.getElementById('btn-ad-task-1');
+                    const timer1 = document.getElementById('admob-task-timer');
+
+                    if (diff1 < COOLDOWN_MS) {
+                        btn1.disabled = true;
+                        timer1.style.display = 'inline-block';
+                        const rem = COOLDOWN_MS - diff1;
+                        const m = Math.floor(rem / 60000);
+                        const s = Math.floor((rem % 60000) / 1000);
+                        timer1.innerText = `⏳ In ${m}m ${s}s`;
+                    } else {
+                        btn1.disabled = false;
+                        timer1.style.display = 'none';
+                    }
+
+                    // Task 2: AppLovin Rewarded
+                    const diff2 = now - State.lastTask2Time;
+                    const btn2 = document.getElementById('btn-ad-task-2');
+                    const timer2 = document.getElementById('applovin-task-timer');
+
+                    if (diff2 < COOLDOWN_MS) {
+                        btn2.disabled = true;
+                        timer2.style.display = 'inline-block';
+                        const rem = COOLDOWN_MS - diff2;
+                        const m = Math.floor(rem / 60000);
+                        const s = Math.floor((rem % 60000) / 1000);
+                        timer2.innerText = `⏳ In ${m}m ${s}s`;
+                    } else {
+                        btn2.disabled = false;
+                        timer2.style.display = 'none';
+                    }
+                }, 1000);
+            },
+
+            watchTaskAd: function(taskId, coins, network) {
+                SoundFX.playClick();
+                const now = Date.now();
+                const COOLDOWN_MS = 30 * 60 * 1000;
+                const lastTime = taskId === 1 ? State.lastTask1Time : State.lastTask2Time;
+
+                if (now - lastTime < COOLDOWN_MS) {
+                    this.toast("Please wait for the 30-minute cooldown timer to end!", "error");
+                    return;
+                }
+
+                State.pendingAdReward = {
+                    type: 'ad_task',
+                    taskId: taskId,
+                    amount: coins,
+                    network: network
+                };
+
+                if (network === 'admob') {
+                    // Task 1: AdMob Rewarded Video
+                    this.triggerAdMobRewardedAd(`task_${taskId}`);
+                } else {
+                    // Task 2: AppLovin Rewarded Video
+                    this.triggerAppLovinRewardedAd(`task_${taskId}`);
+                }
+            },
+
+            // ================= MULTI-NETWORK ADS DISPATCHER =================
+
+            // 1. AdMob Rewarded Interstitial (Mining, Upgrade, Swap)
+            triggerAdMobRewardedInterstitial: function(tag) {
+                this.toast("Loading Google AdMob Rewarded Interstitial...", "info");
+                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
+                    window.AndroidBridge.showRewardedInterstitialAd(tag);
+                    return;
+                }
+                this.showAdSimulator("Google AdMob", "Rewarded Interstitial", tag);
+            },
+
+            // 2. AdMob Rewarded Video (Task 1)
+            triggerAdMobRewardedAd: function(tag) {
+                this.toast("Loading Google AdMob Rewarded Video...", "info");
+                if (window.AndroidBridge && typeof window.AndroidBridge.showAdMobRewardedAd === 'function') {
+                    window.AndroidBridge.showAdMobRewardedAd(tag);
+                    return;
+                }
+                this.showAdSimulator("Google AdMob", "Rewarded Video", tag);
+            },
+
+            // 3. AppLovin Rewarded Video (Task 2 & Daily Claim)
+            triggerAppLovinRewardedAd: function(tag) {
+                this.toast("Loading AppLovin MAX Rewarded Video...", "info");
+                if (window.AndroidBridge && typeof window.AndroidBridge.showAppLovinRewardedAd === 'function') {
+                    window.AndroidBridge.showAppLovinRewardedAd(tag);
+                    return;
+                }
+                this.showAdSimulator("AppLovin MAX", "Rewarded Video", tag);
+            },
+
+            // 4. AppLovin Automatic Fullscreen Interstitial (Tab changes)
+            triggerAppLovinInterstitialAd: function() {
+                if (window.AndroidBridge && typeof window.AndroidBridge.showAppLovinInterstitialAd === 'function') {
+                    window.AndroidBridge.showAppLovinInterstitialAd();
+                }
+            },
+
+            // Browser Fallback Ad Simulator
+            showAdSimulator: function(networkName, adType, tag) {
+                const existing = document.getElementById('admob-test-modal');
+                if (existing) existing.remove();
+
+                const isAppLovin = networkName.includes("AppLovin");
+                const badgeColor = isAppLovin ? "#8B5CF6" : "#00F2FE";
+
+                const modal = document.createElement('div');
+                modal.id = 'admob-test-modal';
+                modal.style.cssText = `
+                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                    background: #040711; z-index: 99999; display: flex; flex-direction: column;
+                    align-items: center; justify-content: space-between; padding: 25px 20px;
+                    animation: viewFadeIn 0.25s ease;
+                `;
+
+                modal.innerHTML = `
+                    <div style="width:100%; display:flex; justify-content:space-between; align-items:center; color:#FFF;">
+                        <div style="background:rgba(255,255,255,0.1); color:${badgeColor}; border:1px solid ${badgeColor}; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800;">
+                            ${networkName.toUpperCase()} • ${adType.toUpperCase()}
+                        </div>
+                        <div id="sim-timer-badge" style="background:#FFD200; color:#000; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:800;">
+                            Reward in 15s
+                        </div>
+                    </div>
+
+                    <div style="text-align:center; color:#FFF; display:flex; flex-direction:column; align-items:center; gap:14px;">
+                        <div style="width:84px; height:84px; border-radius:24px; background:linear-gradient(135deg, ${badgeColor}, #3B82F6); display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 0 35px rgba(0,242,254,0.35);">
+                            🎬
+                        </div>
+                        <h3 style="font-size:20px; font-weight:800;">${networkName} Sponsor Video</h3>
+                        <p style="font-size:13px; color:#94A3B8; max-width:280px; line-height:1.5;">
+                            Watch this video completely to claim your coins or finish your request.
+                        </p>
+                    </div>
+
+                    <div style="width:100%;">
+                        <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:4px; margin-bottom:12px; overflow:hidden;">
+                            <div id="sim-progress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #00F2FE, #8B5CF6); transition:width 1s linear;"></div>
+                        </div>
+                        <button id="sim-close-btn" disabled style="width:100%; padding:15px; border-radius:16px; border:none; font-weight:800; font-size:14px; background:#162238; color:#64748B; cursor:not-allowed;">
+                            Please wait 15s to claim reward...
+                        </button>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                let timeLeft = 15;
+                const timerBadge = document.getElementById('sim-timer-badge');
+                const progressBar = document.getElementById('sim-progress-bar');
+                const closeBtn = document.getElementById('sim-close-btn');
+
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    const progress = ((15 - timeLeft) / 15) * 100;
+                    progressBar.style.width = `${progress}%`;
+
+                    if (timeLeft > 0) {
+                        timerBadge.innerText = `Reward in ${timeLeft}s`;
+                        closeBtn.innerText = `Please wait ${timeLeft}s to claim reward...`;
+                    } else {
+                        clearInterval(interval);
+                        timerBadge.innerText = "Reward Granted! ✅";
+                        timerBadge.style.background = "#10B981";
+                        timerBadge.style.color = "#FFF";
+
+                        closeBtn.disabled = false;
+                        closeBtn.innerText = "Claim Reward & Close";
+                        closeBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
+                        closeBtn.style.color = "#040711";
+                        closeBtn.style.cursor = "pointer";
+
+                        closeBtn.onclick = () => {
+                            modal.remove();
+                            window.onNativeAdRewarded(State.pendingAdReward ? State.pendingAdReward.type : tag);
+                        };
+                    }
+                }, 1000);
+            },
+
+            creditCoins: async function(amount, reason) {
+                State.lastAdWatchTime = Date.now();
+                await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
+                    return (parseFloat(curr) || 0) + amount;
+                });
+                push(ref(database, `users/${State.userId}/coin_history`), {
+                    amount: amount,
+                    reason: reason,
+                    timestamp: Date.now()
+                });
+                SoundFX.playCoin();
+                this.toast(`+${amount} Coins Credited!`, "success");
+            },
+
             // ================= CONVERT / SWAP =================
             calculateSwapPreview: function() {
                 const amount = parseFloat(document.getElementById('swap-coins-input').value) || 0;
@@ -2051,14 +2463,10 @@
                     return;
                 }
 
-                if (State.admin.exchange.ads_required > 0) {
-                    this.toast("Watch required AdMob ad before swapping...", "info");
-                    State.pendingAdReward = { type: 'swap', coinsToSwap: coinsToSwap };
-                    this.triggerRewardedAd('admob');
-                    return;
-                }
-
-                await this.executeSwap(coinsToSwap);
+                // Currency Convert par AdMob Rewarded Interstitial
+                this.toast("Watch AdMob Interstitial to swap...", "info");
+                State.pendingAdReward = { type: 'swap', coinsToSwap: coinsToSwap };
+                this.triggerAdMobRewardedInterstitial('swap');
             },
 
             executeSwap: async function(coinsToSwap) {
@@ -2197,224 +2605,7 @@
                 });
             },
 
-            // ================= AUTH & USER SESSION =================
-            switchAuthTab: function(tab) {
-                SoundFX.playClick();
-                if (tab === 'signup') {
-                    document.getElementById('auth-signup-view').style.display = 'block';
-                    document.getElementById('auth-login-view').style.display = 'none';
-                    document.getElementById('tab-btn-signup').classList.add('active');
-                    document.getElementById('tab-btn-login').classList.remove('active');
-                } else {
-                    document.getElementById('auth-signup-view').style.display = 'none';
-                    document.getElementById('auth-login-view').style.display = 'block';
-                    document.getElementById('tab-btn-signup').classList.remove('active');
-                    document.getElementById('tab-btn-login').classList.add('active');
-                }
-            },
-
-            togglePasswordVisibility: function(inputId) {
-                SoundFX.playClick();
-                const input = document.getElementById(inputId);
-                input.type = input.type === 'password' ? 'text' : 'password';
-            },
-
-            handleRegister: async function() {
-                const privacyChecked = document.getElementById('signup-privacy-check')?.checked;
-                if (!privacyChecked) {
-                    this.toast("Please read & accept Privacy Policy to register", "error");
-                    return;
-                }
-
-                SoundFX.playClick();
-                const email = document.getElementById('signup-email').value.trim();
-                const pass = document.getElementById('signup-password').value.trim();
-                const confirmPass = document.getElementById('signup-confirm-password').value.trim();
-                const refCode = document.getElementById('signup-ref-code').value.trim();
-
-                if (!email || !email.includes('@')) {
-                    this.toast("Please enter a valid email address", "error");
-                    return;
-                }
-                if (pass.length < 6) {
-                    this.toast("Password must be at least 6 characters", "error");
-                    return;
-                }
-                if (pass !== confirmPass) {
-                    this.toast("Passwords do not match", "error");
-                    return;
-                }
-
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                    const user = userCredential.user;
-
-                    // Initialize Profile (NO Welcome Bonus - User earns via daily streak)
-                    await set(ref(database, `users/${user.uid}`), {
-                        uid: user.uid,
-                        email: email,
-                        coins: 0,
-                        inr_balance: 0,
-                        usdt_balance: 0,
-                        miningEndTime: 0,
-                        miningAdsWatched: 0,
-                        rigLevel: 1,
-                        firstMiningCompleted: false,
-                        dailyStreak: { currentDay: 1, lastClaimDate: "" },
-                        referredBy: refCode || 'DIRECT',
-                        createdAt: Date.now()
-                    });
-
-                    if (refCode && refCode !== 'DIRECT') {
-                        await set(ref(database, `referral_bindings/${user.uid}`), {
-                            referrerUid: refCode,
-                            userUid: user.uid,
-                            userEmail: email,
-                            status: 'Pending First Mining',
-                            createdAt: Date.now()
-                        });
-                    }
-
-                    SoundFX.playSuccess();
-                    this.toast("Account created! Tap 🎁 Daily at top to claim Day 1 reward.", "success");
-                } catch (error) {
-                    this.toast(error.message.replace("Firebase: ", ""), "error");
-                }
-            },
-
-            handleLogin: async function() {
-                SoundFX.playClick();
-                const email = document.getElementById('login-email').value.trim();
-                const pass = document.getElementById('login-password').value.trim();
-
-                if (!email || !pass) {
-                    this.toast("Please enter email & password", "error");
-                    return;
-                }
-
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                    SoundFX.playSuccess();
-                    this.toast("Welcome back!", "success");
-                } catch (error) {
-                    this.toast(error.message.replace("Firebase: ", ""), "error");
-                }
-            },
-
-            handleForgotPassword: async function() {
-                SoundFX.playClick();
-                const email = document.getElementById('login-email').value.trim();
-                if (!email) {
-                    this.toast("Enter your email above to reset password", "info");
-                    return;
-                }
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    this.toast("Password reset email sent! Check your inbox.", "success");
-                } catch (error) {
-                    this.toast(error.message.replace("Firebase: ", ""), "error");
-                }
-            },
-
-            handleSignOut: async function() {
-                SoundFX.playClick();
-                await signOut(auth);
-                this.closeModals();
-                this.toast("Signed out successfully", "info");
-            },
-
-            attachUserSession: function() {
-                const uid = State.userId;
-                const email = State.user.email;
-
-                document.getElementById('user-display-name').innerText = email.split('@')[0];
-                document.getElementById('profile-email-display').innerText = email;
-                document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
-
-                const origin = window.location.origin + window.location.pathname;
-                const refLink = `${origin}?ref=${uid}`;
-                document.getElementById('user-ref-link-display').innerText = refLink;
-
-                const userRef = ref(database, `users/${uid}`);
-                onValue(userRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        State.coins = parseFloat(data.coins) || 0;
-                        State.inr = parseFloat(data.inr_balance) || 0;
-                        State.usdt = parseFloat(data.usdt_balance) || 0;
-                        State.miningEndTime = parseInt(data.miningEndTime) || 0;
-                        State.miningAdsWatched = parseInt(data.miningAdsWatched) || 0;
-                        State.rigLevel = parseInt(data.rigLevel) || 1;
-                        State.firstMiningCompleted = data.firstMiningCompleted || false;
-
-                        if (data.dailyStreak) {
-                            State.dailyStreak = data.dailyStreak;
-                        }
-
-                        // Last Watch Times for 30m Cooldowns
-                        State.adTask1LastWatch = data.adTask1LastWatch || 0;
-                        State.adTask2LastWatch = data.adTask2LastWatch || 0;
-
-                        this.renderBalances();
-                        this.updateMiningUI();
-                    }
-                });
-
-                this.listenToReferralStats();
-                this.listenToTasks();
-                this.listenToHistory();
-            },
-
-            renderBalances: function() {
-                document.getElementById('home-coin-balance').innerText = Math.floor(State.coins).toLocaleString();
-                document.getElementById('wallet-coins-val').innerText = Math.floor(State.coins).toLocaleString();
-                document.getElementById('home-inr-balance').innerText = `₹ ${State.inr.toFixed(2)}`;
-                document.getElementById('wallet-inr-val').innerText = `₹ ${State.inr.toFixed(2)}`;
-                document.getElementById('home-usdt-balance').innerText = `$ ${State.usdt.toFixed(2)}`;
-                document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
-            },
-
-            processReferralCommission: async function() {
-                const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
-                if (bindingSnap.exists()) {
-                    const binding = bindingSnap.val();
-                    if (binding.status === 'Pending First Mining') {
-                        const referrerUid = binding.referrerUid;
-                        const reward = State.admin.referral.reward_coins || 200;
-
-                        await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
-                            return (parseFloat(curr) || 0) + reward;
-                        });
-
-                        await push(ref(database, `users/${referrerUid}/coin_history`), {
-                            amount: reward,
-                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
-                            timestamp: Date.now()
-                        });
-
-                        await update(ref(database, `referral_bindings/${State.userId}`), {
-                            status: 'Qualified',
-                            rewardedCoins: reward,
-                            qualifiedAt: Date.now()
-                        });
-                    }
-                }
-            },
-
-            creditCoins: async function(amount, reason) {
-                State.lastAdWatchTime = Date.now();
-                await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
-                    return (parseFloat(curr) || 0) + amount;
-                });
-                push(ref(database, `users/${State.userId}/coin_history`), {
-                    amount: amount,
-                    reason: reason,
-                    timestamp: Date.now()
-                });
-                SoundFX.playCoin();
-                this.toast(`+${amount} Coins Credited!`, "success");
-            },
-
+            // ================= REALTIME REFERRAL STATS =================
             listenToReferralStats: function() {
                 const q = query(ref(database, 'referral_bindings'), orderByChild('referrerUid'), equalTo(State.userId));
                 onValue(q, (snapshot) => {
@@ -2436,6 +2627,7 @@
                 });
             },
 
+            // ================= TASKS LISTENER =================
             listenToTasks: function() {
                 onValue(ref(database, 'tasks'), (snap) => {
                     const c = document.getElementById('tasks-container');
@@ -2480,6 +2672,7 @@
                 });
             },
 
+            // ================= TAB NAVIGATION & APPLOVIN INTERSTITIAL =================
             switchTab: function(viewId) {
                 SoundFX.playClick();
                 document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
@@ -2488,15 +2681,13 @@
                 const idx = ['view-home', 'view-tasks', 'view-wallet', 'view-refer'].indexOf(viewId);
                 if (idx >= 0) document.querySelectorAll('.bottom-nav .nav-tab')[idx].classList.add('active');
 
-                // ⚡ AUTOMATIC APPLOVIN INTERSTITIAL AD ON BROWSING TABS
+                // AUTOMATIC APPLOVIN FULLSCREEN VIDEO AD
                 State.navClickCount++;
                 const now = Date.now();
-                if (State.navClickCount >= 3 && (now - State.lastAutoInterstitialTime > 45000)) {
+                if (State.navClickCount >= 3 && (now - State.lastInterstitialTime > 45000)) {
                     State.navClickCount = 0;
-                    State.lastAutoInterstitialTime = now;
-                    if (window.AndroidBridge && typeof window.AndroidBridge.showAppLovinInterstitial === 'function') {
-                        window.AndroidBridge.showAppLovinInterstitial();
-                    }
+                    State.lastInterstitialTime = now;
+                    this.triggerAppLovinInterstitialAd();
                 }
             },
 
@@ -2524,7 +2715,7 @@
 
             closeModals: function() {
                 SoundFX.playClick();
-                document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+                document.querySelectorAll('.modal-backdrop:not(#modal-app-update)').forEach(m => m.classList.remove('open'));
             },
 
             toast: function(msg, type = 'info') {
@@ -2538,13 +2729,13 @@
             }
         };
 
-        // ================= UNIVERSAL REWARD CALLBACK =================
+        // ================= UNIVERSAL NATIVE REWARD RECEIVER =================
         window.onNativeAdRewarded = async function(rawTarget) {
             State.lastAdWatchTime = Date.now();
             const reward = State.pendingAdReward;
             State.pendingAdReward = null;
 
-            // 1. Machine Rig Upgrade
+            // 1. Rig Upgrade Handler (AdMob Interstitial)
             if (rawTarget === 'upgrade' || (reward && reward.type === 'upgrade')) {
                 const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
                 const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
@@ -2555,47 +2746,55 @@
                     u.rigLevel = nextLevel;
                     return u;
                 });
+
                 SoundFX.playPowerUp();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
             }
-            // 2. Mining Step (AdMob Rewarded Interstitial - 3 Ads Required)
+            // 2. Mining Power-Up Handler (AdMob Interstitial)
             else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
-                const reqMiningAds = State.admin.mining.ads_required; // 3 Ads
+                const reqMiningAds = State.admin.mining.ads_required;
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                         return (parseInt(curr) || 0) + 1;
                     });
                     SoundFX.playCoin();
-                    App.toast("Ad Completed! Power step added toward mining session.", "success");
+                    App.toast("Ad completed! Power step added.", "success");
                 }
             }
-            // 3. Currency Swap (AdMob Rewarded Interstitial)
+            // 3. Currency Swap Handler (AdMob Interstitial)
             else if (rawTarget === 'swap' || (reward && reward.type === 'swap')) {
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
                 await App.executeSwap(coinsToSwap);
             }
-            // 4. 7-Day Daily Streak Reward (AppLovin Rewarded Video)
-            else if (rawTarget === 'applovin_daily' || (reward && reward.type === 'daily_streak')) {
-                const todayStr = new Date().toISOString().slice(0, 10);
-                const earnedAmount = reward ? reward.amount : (STREAK_VALUES[State.dailyStreak.currentDay - 1] || 50);
+            // 4. 7-Day Daily Claim Handler (AppLovin Rewarded)
+            else if (rawTarget === 'daily_claim' || (reward && reward.type === 'daily_claim')) {
+                const day = reward ? reward.day : State.streakDay;
+                const coins = reward ? reward.amount : DAILY_REWARDS[day - 1];
+                const today = new Date().toISOString().slice(0, 10);
+                const nextDay = (day % 7) + 1;
 
-                let nextDay = State.dailyStreak.currentDay + 1;
-                if (nextDay > 7) nextDay = 1;
-
-                await update(ref(database, `users/${State.userId}/dailyStreak`), {
-                    currentDay: nextDay,
-                    lastClaimDate: todayStr
+                await update(ref(database, `users/${State.userId}`), {
+                    lastClaimDate: today,
+                    streakDay: nextDay
                 });
 
-                App.closeModals();
-                await App.creditCoins(earnedAmount, `Day ${State.dailyStreak.currentDay} Streak Claim`);
+                await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
+                SoundFX.playSuccess();
+                App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
             }
-            // 5. Tasks Page 30-min Ad Tasks (Task 1 AdMob / Task 2 AppLovin)
-            else if (reward && reward.type === 'ad_task') {
-                const updates = {};
-                updates[`adTask${reward.taskId}LastWatch`] = Date.now();
-                await update(ref(database, `users/${State.userId}`), updates);
-                await App.creditCoins(reward.amount || 50, reward.title);
+            // 5. Ad Tasks (30-Minute Cooldown Recorded)
+            else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('task_')) || (reward && reward.type === 'ad_task')) {
+                let taskId = reward ? reward.taskId : (rawTarget.includes('1') ? 1 : 2);
+                let amount = reward ? reward.amount : (taskId === 1 ? 50 : 40);
+                let title = taskId === 1 ? 'AdMob Surge' : 'AppLovin Turbo';
+                const now = Date.now();
+
+                const updateObj = {};
+                if (taskId === 1) updateObj['lastTask1Time'] = now;
+                else updateObj['lastTask2Time'] = now;
+
+                await update(ref(database, `users/${State.userId}`), updateObj);
+                await App.creditCoins(amount, title);
             }
         };
 
