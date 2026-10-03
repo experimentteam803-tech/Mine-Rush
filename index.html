@@ -1461,10 +1461,10 @@
                 gain.gain.setValueAtTime(0.18, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
                 osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); osc.stop(now + 0.7);
-            }
-        };
-        playStartupSound: function() {
+                osc.start();
+                osc.stop(now + 0.7);
+            },
+            playStartupSound: function() {
                 this.init();
                 if (!this.ctx) return;
                 const now = this.ctx.currentTime;
@@ -1497,8 +1497,8 @@
                     osc.start(now + 0.35 + (idx * 0.08));
                     osc.stop(now + 1.9);
                 });
-            },
-
+            }
+        };
         // Rig Upgrade Definitions (Designed for High Owner Profit)
         const RIG_TIERS = {
             1: { name: "Starter Core", hourlyYield: 100, ratePerSec: 0.0277, costCoins: 0 },
