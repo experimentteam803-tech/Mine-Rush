@@ -2308,38 +2308,71 @@
 
             // 1. AdMob Rewarded Interstitial (Mining, Upgrade, Swap)
             triggerAdMobRewardedInterstitial: function(tag) {
-                this.toast("Loading Google AdMob Rewarded Interstitial...", "info");
-                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
-                    window.AndroidBridge.showRewardedInterstitialAd(tag);
-                    return;
+                this.toast("Loading Ad...", "info");
+                if (window.AndroidBridge) {
+                    if (typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
+                        window.AndroidBridge.showRewardedInterstitialAd(tag);
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
+                        window.AndroidBridge.showRewardedAd();
+                        return;
+                    }
                 }
                 this.showAdSimulator("Google AdMob", "Rewarded Interstitial", tag);
             },
 
             // 2. AdMob Rewarded Video (Task 1)
             triggerAdMobRewardedAd: function(tag) {
-                this.toast("Loading Google AdMob Rewarded Video...", "info");
-                if (window.AndroidBridge && typeof window.AndroidBridge.showAdMobRewardedAd === 'function') {
-                    window.AndroidBridge.showAdMobRewardedAd(tag);
-                    return;
+                this.toast("Loading Ad...", "info");
+                if (window.AndroidBridge) {
+                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
+                        window.AndroidBridge.showRewardedAd();
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showAdMobRewardedAd === 'function') {
+                        window.AndroidBridge.showAdMobRewardedAd(tag);
+                        return;
+                    }
                 }
                 this.showAdSimulator("Google AdMob", "Rewarded Video", tag);
             },
 
             // 3. AppLovin Rewarded Video (Task 2 & Daily Claim)
             triggerAppLovinRewardedAd: function(tag) {
-                this.toast("Loading AppLovin MAX Rewarded Video...", "info");
-                if (window.AndroidBridge && typeof window.AndroidBridge.showAppLovinRewardedAd === 'function') {
-                    window.AndroidBridge.showAppLovinRewardedAd(tag);
-                    return;
+                this.toast("Loading Ad...", "info");
+                if (window.AndroidBridge) {
+                    if (typeof window.AndroidBridge.showAppLovinRewarded === 'function') {
+                        window.AndroidBridge.showAppLovinRewarded(tag);
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showAppLovinRewardedAd === 'function') {
+                        window.AndroidBridge.showAppLovinRewardedAd(tag);
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
+                        window.AndroidBridge.showRewardedAd();
+                        return;
+                    }
                 }
                 this.showAdSimulator("AppLovin MAX", "Rewarded Video", tag);
             },
 
             // 4. AppLovin Automatic Fullscreen Interstitial (Tab changes)
             triggerAppLovinInterstitialAd: function() {
-                if (window.AndroidBridge && typeof window.AndroidBridge.showAppLovinInterstitialAd === 'function') {
-                    window.AndroidBridge.showAppLovinInterstitialAd();
+                if (window.AndroidBridge) {
+                    if (typeof window.AndroidBridge.showAppLovinInterstitial === 'function') {
+                        window.AndroidBridge.showAppLovinInterstitial();
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showAppLovinInterstitialAd === 'function') {
+                        window.AndroidBridge.showAppLovinInterstitialAd();
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showInterstitialAd === 'function') {
+                        window.AndroidBridge.showInterstitialAd();
+                        return;
+                    }
                 }
             },
 
