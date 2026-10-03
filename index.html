@@ -1509,6 +1509,12 @@
         // Current App Version (for in-app live update system)
         const APP_VERSION_CODE = 1;
 
+        // ================= SECURITY: FIXED SUPER ADMIN =================
+        // Firebase Rules are the authoritative security boundary.
+        // This UID is the only MineRush Super Admin.
+        const SUPER_ADMIN_UID = "cvCMxlVWBDgsQy5qlLpCLEOv79v2";
+        const isSuperAdmin = () => auth.currentUser?.uid === SUPER_ADMIN_UID;
+
         // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
@@ -1648,6 +1654,9 @@
             miningAdsWatched: 0,
             firstMiningCompleted: false,
             rigLevel: 1,
+            // Admin-controlled economy. Falls back to the original values.
+            rigTiers: RIG_TIERS,
+            dailyRewards: DAILY_REWARDS,
             // 30-min Cooldown Timestamps
             lastTask1Time: 0,
             lastTask2Time: 0,
@@ -1693,6 +1702,7 @@
                 }
 
                 this.listenToAdminSettings();
+                this.listenToAdminEconomy();
 
                 onAuthStateChanged(auth, (user) => {
                     const authModal = document.getElementById('modal-auth');
@@ -1702,6 +1712,15 @@
                     if (user) {
                         State.user = user;
                         State.userId = user.uid;
+
+                        // Admin-controlled account restriction. No UI/style changes.
+                        get(ref(database, `users/${user.uid}`)).then((snapshot) => {
+                            const profile = snapshot.val();
+                            if (profile && (profile.banned === true || profile.blocked === true)) {
+                                this.toast("This account has been restricted by the administrator.", "error");
+                                signOut(auth);
+                            }
+                        }).catch(() => {});
 
                         if (authModal.classList.contains('open')) {
                             authCard.classList.add('auth-exit-anim');
@@ -1744,6 +1763,43 @@
                         }
                     }
                     this.updateAdminDynamicUI();
+                });
+            },
+
+            // ================= ADMIN ECONOMY SYNC =================
+            // Read-only client sync. Only the fixed Super Admin can write these nodes.
+            listenToAdminEconomy: function() {
+                onValue(ref(database, 'rig_tiers'), (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && typeof data === 'object') {
+                        const merged = { ...RIG_TIERS };
+                        Object.keys(data).forEach((k) => {
+                            if (data[k] && typeof data[k] === 'object') {
+                                merged[k] = { ...RIG_TIERS[k], ...data[k] };
+                            }
+                        });
+                        State.rigTiers = merged;
+                    } else {
+                        State.rigTiers = RIG_TIERS;
+                    }
+                    this.updateMiningUI();
+                });
+
+                onValue(ref(database, 'daily_rewards'), (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && typeof data === 'object') {
+                        const merged = [...DAILY_REWARDS];
+                        Object.keys(data).forEach((k) => {
+                            const day = parseInt(k, 10);
+                            if (day >= 1 && day <= 7 && Number.isFinite(Number(data[k]))) {
+                                merged[day - 1] = Number(data[k]);
+                            }
+                        });
+                        State.dailyRewards = merged;
+                    } else {
+                        State.dailyRewards = DAILY_REWARDS;
+                    }
+                    this.evaluateDailyStreakStatus();
                 });
             },
 
@@ -1847,6 +1903,8 @@
                         rigLevel: 1,
                         firstMiningCompleted: false,
                         referredBy: refCode || 'DIRECT',
+                        banned: false,
+                        blocked: false,
                         streakDay: 1,
                         lastClaimDate: "",
                         createdAt: Date.now()
@@ -1982,7 +2040,7 @@
                 const homeBadge = document.getElementById('home-streak-badge-btn');
 
                 if (State.canClaimToday) {
-                    const todayReward = DAILY_REWARDS[State.streakDay - 1] || 50;
+                    const todayReward = State.dailyRewards[State.streakDay - 1] || 50;
                     homeStatus.innerHTML = `Day ${State.streakDay}: <strong style="color:var(--accent-gold);">+${todayReward} Coins</strong> Available`;
                     homeBadge.innerHTML = "⚡ Claim";
                     homeBadge.style.background = "rgba(255, 210, 0, 0.22)";
@@ -2001,7 +2059,7 @@
 
                 if (State.canClaimToday) {
                     btn.disabled = false;
-                    const amount = DAILY_REWARDS[State.streakDay - 1] || 50;
+                    const amount = State.dailyRewards[State.streakDay - 1] || 50;
                     btn.innerText = `🎁 Claim Day ${State.streakDay} (+${amount} Coins)`;
                     sub.innerText = "Sponsor: AppLovin Rewarded Ad";
                 } else {
@@ -2017,7 +2075,7 @@
                 const grid = document.getElementById('daily-streak-grid');
                 grid.innerHTML = '';
 
-                DAILY_REWARDS.forEach((coins, idx) => {
+                State.dailyRewards.forEach((coins, idx) => {
                     const dayNum = idx + 1;
                     const box = document.createElement('div');
                     box.className = 'day-box';
@@ -2045,7 +2103,7 @@
 
                 SoundFX.playClick();
                 const day = State.streakDay;
-                const rewardCoins = DAILY_REWARDS[day - 1] || 50;
+                const rewardCoins = State.dailyRewards[day - 1] || 50;
 
                 this.closeModals();
                 this.toast("Loading AppLovin ad for Daily Bonus...", "info");
@@ -2063,7 +2121,7 @@
 
             // ================= MINING RIG & UPGRADE CONTROLLER =================
             updateMiningUI: function() {
-                const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
+                const tier = State.rigTiers[State.rigLevel] || State.rigTiers[1];
                 document.getElementById('rig-level-display').innerText = `Level ${State.rigLevel}`;
                 document.getElementById('mining-rate-text').innerText = `RATE: ~${tier.hourlyYield} C/h`;
                 document.getElementById('mining-session-yield').innerText = `YIELD: +${tier.hourlyYield} C`;
@@ -2093,8 +2151,8 @@
                 }
 
                 const nextLevel = curLevel + 1;
-                const curTier = RIG_TIERS[curLevel];
-                const nextTier = RIG_TIERS[nextLevel];
+                const curTier = State.rigTiers[curLevel];
+                const nextTier = State.rigTiers[nextLevel];
 
                 document.getElementById('upgrade-cur-level').innerText = `Level ${curLevel} (${curTier.hourlyYield} C/h)`;
                 document.getElementById('upgrade-next-level').innerText = `Level ${nextLevel} (${nextTier.hourlyYield} C/h)`;
@@ -2106,7 +2164,7 @@
             confirmRigUpgrade: async function() {
                 SoundFX.playClick();
                 const nextLevel = State.rigLevel + 1;
-                const nextTier = RIG_TIERS[nextLevel];
+                const nextTier = State.rigTiers[nextLevel];
                 if (!nextTier) return;
 
                 if (State.coins < nextTier.costCoins) {
@@ -2206,7 +2264,7 @@
 
                         if (Math.floor(remaining / 1000) % 2 === 0) {
                             this.spawnMiningParticle();
-                            const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
+                            const tier = State.rigTiers[State.rigLevel] || State.rigTiers[1];
                             const coinTick = tier.ratePerSec * 2;
                             runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
                                 return (parseFloat(curr) || 0) + coinTick;
@@ -2458,6 +2516,8 @@
                 }, 1000);
             },
 
+            // Existing earning writes are intentionally preserved so the user experience,
+            // features and visuals remain unchanged. Firebase Rules are the real security boundary.
             creditCoins: async function(amount, reason) {
                 State.lastAdWatchTime = Date.now();
                 await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
@@ -2672,6 +2732,7 @@
                     }
                     Object.keys(tasks).forEach(id => {
                         const t = tasks[id];
+                        if (t && t.active === false) return;
                         const card = document.createElement('div');
                         card.className = 'task-card';
 
@@ -2771,7 +2832,7 @@
             // 1. Rig Upgrade Handler (AdMob Interstitial)
             if (rawTarget === 'upgrade' || (reward && reward.type === 'upgrade')) {
                 const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
-                const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
+                const cost = reward ? reward.costCoins : State.rigTiers[nextLevel].costCoins;
 
                 await runTransaction(ref(database, `users/${State.userId}`), (u) => {
                     if (!u || u.coins < cost) return;
@@ -2802,7 +2863,7 @@
             // 4. 7-Day Daily Claim Handler (AppLovin Rewarded)
             else if (rawTarget === 'daily_claim' || (reward && reward.type === 'daily_claim')) {
                 const day = reward ? reward.day : State.streakDay;
-                const coins = reward ? reward.amount : DAILY_REWARDS[day - 1];
+                const coins = reward ? reward.amount : State.dailyRewards[day - 1];
                 const today = new Date().toISOString().slice(0, 10);
                 const nextDay = (day % 7) + 1;
 
