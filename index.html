@@ -1539,7 +1539,9 @@
             },
             selectedPayoutMethod: 'UPI',
             pendingAdReward: null,
-            lastAdWatchTime: 0
+            lastAdWatchTime: 0,
+            navClickCount: 0,
+            lastInterstitialTime: 0,
         };
 
         window.App = {
@@ -2365,6 +2367,18 @@
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
                 const idx = ['view-home', 'view-tasks', 'view-wallet', 'view-refer'].indexOf(viewId);
                 if (idx >= 0) document.querySelectorAll('.bottom-nav .nav-tab')[idx].classList.add('active');
+
+                // ⚡ AUTOMATIC INTERSTITIAL VIDEO AD LOGIC
+                State.navClickCount++;
+                const now = Date.now();
+                // Har 3 tab change par ya 45s ke gap par apne aap video ad chalega
+                if (State.navClickCount >= 3 && (now - State.lastInterstitialTime > 45000)) {
+                    State.navClickCount = 0;
+                    State.lastInterstitialTime = now;
+                    if (window.AndroidBridge && typeof window.AndroidBridge.showInterstitialAd === 'function') {
+                        window.AndroidBridge.showInterstitialAd();
+                    }
+                }
             },
 
             copyReferralLink: function() {
