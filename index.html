@@ -650,6 +650,8 @@
 
         .pw-toggle-btn { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
 
+  
+
         #btn-auth-register, #btn-auth-login {
             position: relative;
             overflow: hidden;
@@ -928,7 +930,13 @@
                         <input type="text" class="form-input" id="signup-ref-code" placeholder="Auto-fills from invite link">
                     </div>
                 </div>
-
+                
+                <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 16px; font-size: 12px; color: var(--text-secondary); text-align: left;">
+                    <input type="checkbox" id="signup-privacy-check" style="accent-color: var(--accent-cyan); width: 17px; height: 17px; cursor: pointer;">
+                    <label for="signup-privacy-check" style="cursor: pointer; line-height: 1.4;">
+                        I agree to the <a href="https://mine-rush-fawn.vercel.app/privacy.html" style="color: var(--accent-cyan); text-decoration: underline; font-weight: 700;">Privacy Policy</a> & Terms
+                    </label>
+                </div>
                 <button class="btn-primary" id="btn-auth-register" onclick="App.handleRegister()">
                     🚀 Create Free Account
                 </button>
@@ -1499,6 +1507,7 @@
                 });
             }
         };
+
         // Rig Upgrade Definitions (Designed for High Owner Profit)
         const RIG_TIERS = {
             1: { name: "Starter Core", hourlyYield: 100, ratePerSec: 0.0277, costCoins: 0 },
@@ -1628,6 +1637,11 @@
             },
 
             handleRegister: async function() {
+             const privacyChecked = document.getElementById('signup-privacy-check')?.checked;
+                if (!privacyChecked) {
+                    this.toast("Please read & accept Privacy Policy to register", "error");
+                    return;
+                }
                 SoundFX.playClick();
                 const email = document.getElementById('signup-email').value.trim();
                 const pass = document.getElementById('signup-password').value.trim();
