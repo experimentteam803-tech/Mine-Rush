@@ -81,7 +81,7 @@
 
         /* Top Header */
         header {
-            padding: calc(var(--safe-top) + 12px) 18px 12px 18px;
+            padding: calc(var(--safe-top) + 12px) 16px 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -92,12 +92,12 @@
             flex-shrink: 0;
         }
 
-        .header-profile { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .header-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 
         .profile-glow-ring {
             position: relative;
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             padding: 2px;
@@ -113,26 +113,78 @@
         }
 
         .header-user-info { display: flex; flex-direction: column; }
-        .header-user-name { font-size: 14px; font-weight: 800; color: #FFF; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .header-user-tag { font-size: 11px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
+        .header-user-name { font-size: 13px; font-weight: 800; color: #FFF; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .header-user-tag { font-size: 10px; color: var(--accent-cyan); font-weight: 700; letter-spacing: 0.3px; }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 🎁 TOP COMPACT DAILY BONUS BUTTON */
+        .daily-bonus-btn {
+            background: linear-gradient(135deg, rgba(255, 210, 0, 0.16), rgba(245, 158, 11, 0.22));
+            border: 1px solid rgba(255, 210, 0, 0.45);
+            border-radius: 20px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 0 15px rgba(255, 210, 0, 0.25);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .daily-bonus-btn:active {
+            transform: scale(0.94);
+        }
+
+        .bonus-icon { font-size: 14px; animation: bounceGift 2s infinite ease-in-out; }
+        @keyframes bounceGift {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .bonus-text {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--accent-gold);
+            letter-spacing: 0.3px;
+        }
+
+        .bonus-indicator {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: indicatorPulse 1.4s infinite alternate;
+        }
+
+        @keyframes indicatorPulse {
+            0% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
 
         .icon-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
             color: #FFF;
-            width: 40px;
-            height: 40px;
-            border-radius: 14px;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 17px;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 16px;
+            transition: all 0.2s;
         }
         .icon-btn:active { transform: scale(0.9); background: rgba(0, 242, 254, 0.15); border-color: var(--accent-cyan); }
 
-        /* Main View Container */
+        /* Main Views */
         main {
             flex: 1;
             overflow-y: auto;
@@ -203,61 +255,6 @@
         }
         .curr-box .curr-title { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
         .curr-box .curr-amount { font-size: 16px; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
-
-        /* ================= 7-DAY DAILY STREAK CARD ================= */
-        .streak-card {
-            background: linear-gradient(135deg, rgba(22, 34, 64, 0.95), rgba(12, 18, 36, 0.98));
-            border: 1px solid rgba(255, 210, 0, 0.35);
-            border-radius: 24px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .streak-card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .streak-days-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
-        }
-
-        .streak-day-cell {
-            background: rgba(4, 7, 17, 0.7);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .streak-day-cell.active-day {
-            border-color: var(--accent-gold);
-            background: rgba(255, 210, 0, 0.12);
-            box-shadow: 0 0 15px rgba(255, 210, 0, 0.25);
-            transform: scale(1.05);
-        }
-
-        .streak-day-cell.claimed-day {
-            border-color: var(--accent-green);
-            background: rgba(16, 185, 129, 0.12);
-            opacity: 0.75;
-        }
-
-        .streak-day-name { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        .streak-day-coins { font-size: 11px; font-weight: 800; color: var(--accent-gold); }
 
         /* Quick Action Bar (3 Actions on Home) */
         .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -410,6 +407,7 @@
         }
         @keyframes floatSparkle { 0% { transform: translateY(0) scale(0.6); opacity: 1; } 100% { transform: translateY(-70px) scale(1.1); opacity: 0; } }
 
+        /* Dual Button Row on Mining Card */
         .mining-action-row { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; }
 
         /* Unified Buttons */
@@ -436,7 +434,7 @@
         .btn-purple { background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%); color: #FFF; box-shadow: 0 4px 22px rgba(139, 92, 246, 0.35); }
         .btn-outline { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #FFF; }
 
-        /* Top 2 Ad Tasks on Tasks Page */
+        /* TOP REWARDED AD TASKS ON TASKS PAGE */
         .top-ad-tasks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
         @media (min-width: 480px) { .top-ad-tasks-grid { grid-template-columns: 1fr 1fr; } }
 
@@ -578,6 +576,43 @@
         .guide-text h5 { font-size: 13px; font-weight: 800; color: #FFF; }
         .guide-text p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.45; }
 
+        /* ================= 7-DAY STREAK MODAL ================= */
+        .streak-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin: 16px 0;
+        }
+
+        .streak-day-cell {
+            background: rgba(4, 7, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .streak-day-cell.active-day {
+            border-color: var(--accent-gold);
+            background: rgba(255, 210, 0, 0.14);
+            box-shadow: 0 0 15px rgba(255, 210, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .streak-day-cell.claimed-day {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.12);
+            opacity: 0.75;
+        }
+
+        .streak-day-name { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .streak-day-coins { font-size: 11px; font-weight: 800; color: var(--accent-gold); }
+
         /* Modals & Backdrop */
         .modal-backdrop {
             display: none;
@@ -625,7 +660,9 @@
             font-size: 28px;
             margin: 0 auto 12px auto;
             box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
+            animation: authLogoFloat 3s ease-in-out infinite alternate;
         }
+        @keyframes authLogoFloat { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
 
         .auth-nav-tabs {
             display: grid;
@@ -661,7 +698,13 @@
             flex-direction: column;
             gap: 6px;
             margin-bottom: 14px;
+            animation: fieldSlideUp 0.45s ease backwards;
         }
+        .form-group-field:nth-child(1) { animation-delay: 0.1s; }
+        .form-group-field:nth-child(2) { animation-delay: 0.16s; }
+        .form-group-field:nth-child(3) { animation-delay: 0.22s; }
+        .form-group-field:nth-child(4) { animation-delay: 0.28s; }
+        @keyframes fieldSlideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-label { font-size: 11px; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.5px; }
         .input-wrapper { position: relative; display: flex; align-items: center; }
@@ -682,7 +725,7 @@
         .form-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 16px rgba(0, 242, 254, 0.25); background: rgba(4, 7, 17, 1); }
         .pw-toggle-btn { position: absolute; right: 14px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
 
-        /* 4-Tab Bottom Nav */
+        /* 4-Tab Bottom Navigation */
         nav.bottom-nav {
             position: fixed;
             bottom: 0; left: 0; width: 100%;
@@ -708,47 +751,30 @@
         .nav-tab.active { color: var(--accent-cyan); }
         .nav-tab.active .tab-icon { transform: translateY(-3px) scale(1.1); filter: drop-shadow(0 0 10px var(--accent-cyan)); }
 
+        /* Toasts */
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 350; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 360px; pointer-events: none; }
         .toast { background: rgba(13, 20, 38, 0.98); border: 1px solid var(--border); border-radius: 16px; padding: 14px 18px; font-size: 13px; font-weight: 800; color: #FFF; display: flex; align-items: center; gap: 10px; box-shadow: 0 12px 35px rgba(0,0,0,0.7); pointer-events: auto; }
 
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #040711;
-            background-image: radial-gradient(circle at 50% 40%, rgba(0, 242, 254, 0.22), transparent 60%);
-            z-index: 99999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+        /* Modal Sheets */
+        .modal-sheet {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-radius: 28px 28px 0 0;
+            padding: 22px 20px calc(var(--safe-bottom) + 24px) 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin-top: auto;
         }
 
-        #splash-screen.splash-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-        .splash-logo-box {
-            width: 80px; height: 80px; border-radius: 24px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            display: flex; align-items: center; justify-content: center; font-size: 42px;
-            box-shadow: 0 0 45px rgba(0, 242, 254, 0.5);
-            animation: splashPulse 1.8s infinite alternate ease-in-out;
-            margin-bottom: 16px;
-        }
-
-        @keyframes splashPulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(0, 242, 254, 0.35); }
-            100% { transform: scale(1.06); box-shadow: 0 0 55px rgba(0, 242, 254, 0.75); }
-        }
-
-        .splash-brand-title { font-size: 28px; font-weight: 800; color: #FFF; letter-spacing: -0.5px; margin-bottom: 4px; }
-        .splash-brand-title span { color: var(--accent-cyan); }
-        .splash-tagline { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 28px; }
-        .splash-laser-loader { width: 140px; height: 4px; background: rgba(255, 255, 255, 0.08); border-radius: 4px; overflow: hidden; position: relative; }
-        .splash-laser-fill {
-            width: 0%; height: 100%;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            box-shadow: 0 0 12px var(--accent-cyan); border-radius: 4px;
-            animation: splashLoad 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes splashLoad { 0% { width: 0%; } 100% { width: 100%; } }
+        .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px auto; }
+        .payout-method-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .payout-tab { background: var(--bg-base); border: 1px solid var(--border); border-radius: 16px; padding: 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .payout-tab.selected { background: rgba(0, 242, 254, 0.12); border-color: var(--accent-cyan); box-shadow: 0 0 18px rgba(0, 242, 254, 0.22); }
+        .payout-tab .tab-title { font-size: 14px; font-weight: 800; }
+        .payout-tab .tab-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .warning-callout { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 14px; line-height: 1.45; }
 
         /* Force App Update Modal */
         #modal-app-update .modal-cyber-sheet {
@@ -772,7 +798,58 @@
         <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.0.0 • Secured by Cloud Vault</p>
     </div>
 
-    <!-- ================= FORCE APP UPDATE POPUP (ADMIN CONTROLLED) ================= -->
+    <!-- ================= 🎁 7-DAY STREAK CLAIM MODAL ================= -->
+    <div class="modal-backdrop" id="modal-daily-streak" style="z-index: 350;">
+        <div class="modal-cyber-sheet">
+            <div style="text-align: center; margin-bottom: 12px;">
+                <div style="font-size: 44px; margin-bottom: 4px;">🎁</div>
+                <h2 style="font-size: 20px; font-weight: 800; color: #FFF;">7-Day Login Streak</h2>
+                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                    Claim daily rewards & collect 1,000 total free coins!
+                </p>
+            </div>
+
+            <div class="streak-days-grid" id="streak-grid">
+                <div class="streak-day-cell" id="streak-cell-1">
+                    <span class="streak-day-name">D1</span>
+                    <span class="streak-day-coins">+50</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-2">
+                    <span class="streak-day-name">D2</span>
+                    <span class="streak-day-coins">+75</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-3">
+                    <span class="streak-day-name">D3</span>
+                    <span class="streak-day-coins">+100</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-4">
+                    <span class="streak-day-name">D4</span>
+                    <span class="streak-day-coins">+125</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-5">
+                    <span class="streak-day-name">D5</span>
+                    <span class="streak-day-coins">+150</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-6">
+                    <span class="streak-day-name">D6</span>
+                    <span class="streak-day-coins">+200</span>
+                </div>
+                <div class="streak-day-cell" id="streak-cell-7">
+                    <span class="streak-day-name">D7</span>
+                    <span class="streak-day-coins">+300</span>
+                </div>
+            </div>
+
+            <button class="btn-primary btn-gold" id="btn-claim-streak" onclick="App.claimDailyStreak()">
+                🎁 Watch Video & Claim Today's Reward
+            </button>
+            <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= FORCE APP UPDATE POPUP ================= -->
     <div class="modal-backdrop" id="modal-app-update" style="z-index: 500;">
         <div class="modal-cyber-sheet" style="text-align: center;">
             <div style="font-size: 46px; margin-bottom: 8px;">🚀</div>
@@ -961,6 +1038,12 @@
                 </div>
             </div>
             <div class="header-actions">
+                <!-- 🎁 TOP COMPACT DAILY BONUS BUTTON -->
+                <button class="daily-bonus-btn" onclick="App.openDailyStreakModal()" title="Daily Streak">
+                    <span class="bonus-icon">🎁</span>
+                    <span class="bonus-text">Daily</span>
+                    <span class="bonus-indicator" id="header-bonus-indicator"></span>
+                </button>
                 <button class="icon-btn" onclick="App.openSupportLink()" title="Help">🎧</button>
             </div>
         </header>
@@ -988,52 +1071,6 @@
                             <div class="curr-amount" id="home-usdt-balance">$ 0.00</div>
                         </div>
                     </div>
-                </div>
-
-                <!-- 🌟 7-DAY STREAK CLAIM SYSTEM (Accumulates to 1,000 Coins) 🌟 -->
-                <div class="streak-card">
-                    <div class="streak-card-top">
-                        <div>
-                            <div style="font-size: 15px; font-weight: 800; color: #FFF;">7-Day Login Streak</div>
-                            <div style="font-size: 11px; color: var(--text-muted);">Claim daily & collect 1,000 total coins!</div>
-                        </div>
-                        <span class="status-pill status-approved" id="streak-badge">Day 1</span>
-                    </div>
-
-                    <div class="streak-days-grid" id="streak-grid">
-                        <div class="streak-day-cell" id="streak-cell-1">
-                            <span class="streak-day-name">D1</span>
-                            <span class="streak-day-coins">+50</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-2">
-                            <span class="streak-day-name">D2</span>
-                            <span class="streak-day-coins">+75</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-3">
-                            <span class="streak-day-name">D3</span>
-                            <span class="streak-day-coins">+100</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-4">
-                            <span class="streak-day-name">D4</span>
-                            <span class="streak-day-coins">+125</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-5">
-                            <span class="streak-day-name">D5</span>
-                            <span class="streak-day-coins">+150</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-6">
-                            <span class="streak-day-name">D6</span>
-                            <span class="streak-day-coins">+200</span>
-                        </div>
-                        <div class="streak-day-cell" id="streak-cell-7">
-                            <span class="streak-day-name">D7</span>
-                            <span class="streak-day-coins">+300</span>
-                        </div>
-                    </div>
-
-                    <button class="btn-primary btn-gold" id="btn-claim-streak" onclick="App.claimDailyStreak()">
-                        🎁 Watch Video & Claim Today's Reward
-                    </button>
                 </div>
 
                 <!-- Quick Action Bar (3 Quick Links) -->
@@ -1641,13 +1678,26 @@
             },
 
             // ================= 7-DAY STREAK CLAIM SYSTEM =================
+            openDailyStreakModal: function() {
+                SoundFX.playClick();
+                this.renderDailyStreak();
+                document.getElementById('modal-daily-streak').classList.add('open');
+            },
+
             renderDailyStreak: function() {
                 const streak = State.dailyStreak;
                 const todayStr = new Date().toISOString().slice(0, 10);
                 const isClaimedToday = (streak.lastClaimDate === todayStr);
 
-                document.getElementById('streak-badge').innerText = `Day ${streak.currentDay}`;
                 const claimBtn = document.getElementById('btn-claim-streak');
+                const indicator = document.getElementById('header-bonus-indicator');
+
+                // Update Header Indicator (glows if unclaimed)
+                if (isClaimedToday) {
+                    indicator.style.display = "none";
+                } else {
+                    indicator.style.display = "block";
+                }
 
                 for (let i = 1; i <= 7; i++) {
                     const cell = document.getElementById(`streak-cell-${i}`);
@@ -1668,7 +1718,7 @@
                 } else {
                     const todayReward = STREAK_VALUES[streak.currentDay - 1] || 50;
                     claimBtn.disabled = false;
-                    claimBtn.innerText = `🎁 Watch AppLovin Ad & Claim Day ${streak.currentDay} (+${todayReward} C)`;
+                    claimBtn.innerText = `🎁 Watch Video & Claim Day ${streak.currentDay} (+${todayReward} C)`;
                     claimBtn.style.background = "linear-gradient(135deg, #FFD200, #F59E0B)";
                     claimBtn.style.color = "#040711";
                 }
@@ -1751,7 +1801,7 @@
                 this.triggerRewardedAd(taskId === 1 ? 'admob' : 'applovin');
             },
 
-            // ================= DUAL AD NETWORK DISPATCHER (ADMOB + APPLOVIN) =================
+            // ================= DUAL AD NETWORK DISPATCHER =================
             triggerRewardedAd: function(preferredNetwork = 'admob') {
                 const now = Date.now();
                 if (now - State.lastAdWatchTime < 5000) {
@@ -2233,7 +2283,7 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     const user = userCredential.user;
 
-                    // Initialize Profile (NO Welcome bonus - users earn via 7-day streak)
+                    // Initialize Profile
                     await set(ref(database, `users/${user.uid}`), {
                         uid: user.uid,
                         email: email,
@@ -2260,7 +2310,7 @@
                     }
 
                     SoundFX.playSuccess();
-                    this.toast("Account created successfully! Claim your Day 1 reward.", "success");
+                    this.toast("Account created! Tap 🎁 Daily at top to claim Day 1.", "success");
                 } catch (error) {
                     this.toast(error.message.replace("Firebase: ", ""), "error");
                 }
@@ -2543,15 +2593,15 @@
                 SoundFX.playPowerUp();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
             }
-            // 2. Mining Step (AdMob Rewarded Interstitial)
+            // 2. Mining Step (AdMob Rewarded Interstitial - 3 Ads Required)
             else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
-                const reqMiningAds = State.admin.mining.ads_required; // 3 Ads
+                const reqMiningAds = State.admin.mining.ads_required;
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
                         return (parseInt(curr) || 0) + 1;
                     });
                     SoundFX.playCoin();
-                    App.toast("Ad Completed! Step added toward mining session.", "success");
+                    App.toast("Ad Completed! Power step added toward mining session.", "success");
                 }
             }
             // 3. Currency Swap (AdMob Rewarded Interstitial)
@@ -2572,6 +2622,7 @@
                     lastClaimDate: todayStr
                 });
 
+                App.closeModals();
                 await App.creditCoins(earnedAmount, `Day ${State.dailyStreak.currentDay} Streak Claim`);
             }
             // 5. Tasks Page 30-min Ad Tasks (Task 1 AdMob / Task 2 AppLovin)
