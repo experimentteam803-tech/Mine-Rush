@@ -1757,9 +1757,12 @@
                         if (data.exchange) State.admin.exchange = { ...State.admin.exchange, ...data.exchange };
                         if (data.withdrawals) State.admin.withdrawals = { ...State.admin.withdrawals, ...data.withdrawals };
                         if (data.referral) State.admin.referral = { ...State.admin.referral, ...data.referral };
-                        if (data.version_control) {
-                            State.admin.version_control = { ...State.admin.version_control, ...data.version_control };
-                            this.checkAppVersionUpdate();
+
+                        // Admin Panel ke 'app_update' aur 'version_control' dono ko support karega
+                        const updateInfo = data.app_update || data.version_control;
+                        if (updateInfo) {
+                            State.appUpdate = updateInfo;
+                            this.checkAppVersionUpdate(updateInfo);
                         }
                     }
                     this.updateAdminDynamicUI();
@@ -1803,28 +1806,35 @@
                 });
             },
 
-            checkAppVersionUpdate: function() {
-                const vc = State.admin.version_control;
-                if (!vc) return;
+            checkAppVersionUpdate: function(updateInfo) {
+                const info = updateInfo || State.appUpdate || State.admin.version_control;
+                if (!info) return;
 
-                if (parseInt(vc.version_code) > APP_VERSION_CODE) {
+                const currentVer = "1.0.0";
+                const newVer = info.latest_version || info.version || info.version_code;
+                const updateUrl = info.apk_url || info.update_url || info.url;
+
+                // Agar Admin ne naya version ya naya link diya ho toh popup kholo
+                if (updateUrl && (newVer && newVer.toString() !== currentVer && newVer.toString() !== "1")) {
                     const updateModal = document.getElementById('modal-app-update');
-                    document.getElementById('update-modal-title').innerText = vc.title || "New Update Available!";
-                    document.getElementById('update-modal-desc').innerText = vc.message || "Please update to continue using MineRush.";
-                    
-                    const dismissBtn = document.getElementById('btn-update-dismiss');
-                    if (vc.force_update) {
-                        dismissBtn.style.display = 'none';
-                    } else {
-                        dismissBtn.style.display = 'block';
+                    if (updateModal) {
+                        if (info.title) document.getElementById('update-modal-title').innerText = info.title;
+                        if (info.desc || info.message) document.getElementById('update-modal-desc').innerText = info.desc || info.message;
+                        const versionLabel = document.getElementById('update-modal-version');
+                        if (versionLabel) versionLabel.innerText = `v${newVer}`;
+                        
+                        const dismissBtn = document.getElementById('btn-update-dismiss');
+                        if (dismissBtn) dismissBtn.style.display = info.force_update ? 'none' : 'block';
+
+                        updateModal.classList.add('open');
                     }
-                    updateModal.classList.add('open');
                 }
             },
 
             openUpdateLink: function() {
                 SoundFX.playClick();
-                const url = State.admin.version_control.update_url || "https://mine-rush-fawn.vercel.app";
+                const info = State.appUpdate || State.admin.version_control;
+                const url = info?.apk_url || info?.update_url || info?.url || "https://mine-rush-fawn.vercel.app";
                 window.open(url, '_blank');
             },
 
@@ -2829,10 +2839,13 @@
             const reward = State.pendingAdReward;
             State.pendingAdReward = null;
 
-            // 1. Rig Upgrade Handler (AdMob Interstitial)
-            if (rawTarget === 'upgrade' || (reward && reward.type === 'upgrade')) {
+            const targetStr = (rawTarget || '').toString().toLowerCase();
+            const rewardType = (reward && reward.type) ? reward.type.toLowerCase() : '';
+
+            // 1. Machine Rig Upgrade
+            if (targetStr === 'upgrade' || rewardType === 'upgrade') {
                 const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
-                const cost = reward ? reward.costCoins : State.rigTiers[nextLevel].costCoins;
+                const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
 
                 await runTransaction(ref(database, `users/${State.userId}`), (u) => {
                     if (!u || u.coins < cost) return;
@@ -2844,26 +2857,27 @@
                 SoundFX.playPowerUp();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
             }
-            // 2. Mining Power-Up Handler (AdMob Interstitial)
-            else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
-                const reqMiningAds = State.admin.mining.ads_required;
-                if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
-                    await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
-                        return (parseInt(curr) || 0) + 1;
-                    });
-                    SoundFX.playCoin();
-                    App.toast("Ad completed! Power step added.", "success");
-                }
+            // 2. Mining Power-Up (3 Ads Step) - Live Screen Update!
+            else if (targetStr === 'mining' || targetStr.includes('mining') || rewardType === 'mining') {
+                // Screen par turant counter badhao
+                State.miningAdsWatched = (parseInt(State.miningAdsWatched) || 0) + 1;
+                App.updateMiningUI();
+
+                await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
+                    return (parseInt(curr) || 0) + 1;
+                });
+                SoundFX.playCoin();
+                App.toast("Ad Completed! Power step added.", "success");
             }
-            // 3. Currency Swap Handler (AdMob Interstitial)
-            else if (rawTarget === 'swap' || (reward && reward.type === 'swap')) {
+            // 3. Currency Swap
+            else if (targetStr === 'swap' || rewardType === 'swap') {
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
                 await App.executeSwap(coinsToSwap);
             }
-            // 4. 7-Day Daily Claim Handler (AppLovin Rewarded)
-            else if (rawTarget === 'daily_claim' || (reward && reward.type === 'daily_claim')) {
+            // 4. Daily Streak Claim
+            else if (targetStr.includes('daily') || rewardType === 'daily_claim') {
                 const day = reward ? reward.day : State.streakDay;
-                const coins = reward ? reward.amount : State.dailyRewards[day - 1];
+                const coins = reward ? reward.amount : DAILY_REWARDS[day - 1];
                 const today = new Date().toISOString().slice(0, 10);
                 const nextDay = (day % 7) + 1;
 
@@ -2874,12 +2888,13 @@
 
                 await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
                 SoundFX.playSuccess();
+                App.closeModals();
                 App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
             }
-            // 5. Ad Tasks (30-Minute Cooldown Recorded)
-            else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('task_')) || (reward && reward.type === 'ad_task')) {
-                let taskId = reward ? reward.taskId : (rawTarget.includes('1') ? 1 : 2);
-                let amount = reward ? reward.amount : (taskId === 1 ? 50 : 40);
+            // 5. Tasks Page Ad Rewards (Task 1 & Task 2)
+            else if (targetStr.includes('task') || targetStr.includes('admob') || targetStr.includes('applovin') || rewardType === 'ad_task') {
+                let taskId = (reward && reward.taskId) ? reward.taskId : (targetStr.includes('2') ? 2 : 1);
+                let amount = (reward && reward.amount) ? reward.amount : (taskId === 1 ? 50 : 40);
                 let title = taskId === 1 ? 'AdMob Surge' : 'AppLovin Turbo';
                 const now = Date.now();
 
@@ -2889,6 +2904,10 @@
 
                 await update(ref(database, `users/${State.userId}`), updateObj);
                 await App.creditCoins(amount, title);
+            }
+            // Fallback direct reward
+            else {
+                await App.creditCoins(50, "Video Ad Reward");
             }
         };
 
