@@ -1519,6 +1519,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyAQaGn_6AhqTIwTR5rvGuMh2d1YOBjOCqw",
             authDomain: "mine-rush-f580a.firebaseapp.com",
+            databaseURL: "https://mine-rush-f580a-default-rtdb.firebaseio.com",
             projectId: "mine-rush-f580a",
             storageBucket: "mine-rush-f580a.firebasestorage.app",
             messagingSenderId: "250630688178",
@@ -2847,19 +2848,17 @@
                 const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
                 const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
 
-                await runTransaction(ref(database, `users/${State.userId}`), (u) => {
-                    if (!u || u.coins < cost) return;
-                    u.coins -= cost;
-                    u.rigLevel = nextLevel;
-                    return u;
-                });
+                State.rigLevel = nextLevel;
+                App.updateMiningUI();
+
+                await runTransaction(ref(database, `users/${State.userId}/rigLevel`), () => nextLevel);
+                await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => Math.max(0, (parseFloat(curr) || 0) - cost));
 
                 SoundFX.playPowerUp();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
             }
-            // 2. Mining Power-Up (3 Ads Step) - Live Screen Update!
+            // 2. Mining Ads Count Handler (Live Screen Counter Update!)
             else if (targetStr === 'mining' || targetStr.includes('mining') || rewardType === 'mining') {
-                // Screen par turant counter badhao
                 State.miningAdsWatched = (parseInt(State.miningAdsWatched) || 0) + 1;
                 App.updateMiningUI();
 
@@ -2881,28 +2880,24 @@
                 const today = new Date().toISOString().slice(0, 10);
                 const nextDay = (day % 7) + 1;
 
-                await update(ref(database, `users/${State.userId}`), {
-                    lastClaimDate: today,
-                    streakDay: nextDay
-                });
+                await set(ref(database, `users/${State.userId}/lastClaimDate`), today);
+                await set(ref(database, `users/${State.userId}/streakDay`), nextDay);
 
                 await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
                 SoundFX.playSuccess();
                 App.closeModals();
                 App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
             }
-            // 5. Tasks Page Ad Rewards (Task 1 & Task 2)
+            // 5. Tasks Page Ad Rewards (Direct Child Path Write - 100% Guaranteed)
             else if (targetStr.includes('task') || targetStr.includes('admob') || targetStr.includes('applovin') || rewardType === 'ad_task') {
                 let taskId = (reward && reward.taskId) ? reward.taskId : (targetStr.includes('2') ? 2 : 1);
                 let amount = (reward && reward.amount) ? reward.amount : (taskId === 1 ? 50 : 40);
                 let title = taskId === 1 ? 'AdMob Surge' : 'AppLovin Turbo';
                 const now = Date.now();
 
-                const updateObj = {};
-                if (taskId === 1) updateObj['lastTask1Time'] = now;
-                else updateObj['lastTask2Time'] = now;
+                const taskKey = taskId === 1 ? 'lastTask1Time' : 'lastTask2Time';
+                await set(ref(database, `users/${State.userId}/${taskKey}`), now);
 
-                await update(ref(database, `users/${State.userId}`), updateObj);
                 await App.creditCoins(amount, title);
             }
             // Fallback direct reward
