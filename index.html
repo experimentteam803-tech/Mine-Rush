@@ -1835,10 +1835,23 @@
             openUpdateLink: function() {
                 SoundFX.playClick();
                 const info = State.appUpdate || State.admin.version_control;
-                const url = info?.apk_url || info?.update_url || info?.url || "https://mine-rush-fawn.vercel.app";
+                const url = info?.apk_url || info?.update_url || info?.url;
+
+                if (!url) {
+                    this.toast("Update link not found!", "error");
+                    return;
+                }
+
+                // ⚡ In-App Background Downloader Trigger
+                if (window.AndroidBridge && typeof window.AndroidBridge.downloadAndInstallApk === 'function') {
+                    window.AndroidBridge.downloadAndInstallApk(url);
+                    this.toast("Downloading update in background... Check notifications", "info");
+                    return;
+                }
+
+                // Fallback (External Browser)
                 window.open(url, '_blank');
             },
-
             dismissUpdateModal: function() {
                 SoundFX.playClick();
                 document.getElementById('modal-app-update').classList.remove('open');
