@@ -883,8 +883,8 @@
     <!-- ================= SPLASH OPENING ================= -->
     <div id="splash-screen">
         <div class="splash-logo-box">⚡</div>
-        <h1 class="splash-brand-title">Mine<span>Rush</span></h1>
-        <p class="splash-tagline">QUANTUM CLOUD MINING</p>
+        <h1 class="splash-brand-title" id="splash-brand-heading">Mine<span>Rush</span></h1>
+        <p class="splash-tagline" id="splash-brand-tagline">QUANTUM CLOUD MINING</p>
         <div class="splash-laser-loader">
             <div class="splash-laser-fill"></div>
         </div>
@@ -1137,7 +1137,7 @@
                 <!-- Highlighted Vibrant Portfolio Card -->
                 <div class="balance-hero">
                     <div class="balance-label">
-                        <span>Total Portfolio</span>
+                        <span id="hero-title-text">Total Portfolio</span>
                         <span style="color:var(--accent-cyan); font-size:11px;" id="rate-badge">100 Coins = ₹1</span>
                     </div>
                     <div class="primary-balance">
@@ -1146,11 +1146,11 @@
                     </div>
                     <div class="secondary-currencies">
                         <div class="curr-box">
-                            <div class="curr-title">INR Balance</div>
+                            <div class="curr-title" id="curr-inr-title">INR Balance</div>
                             <div class="curr-amount" id="home-inr-balance">₹ 0.00</div>
                         </div>
                         <div class="curr-box">
-                            <div class="curr-title">USDT Balance</div>
+                            <div class="curr-title" id="curr-usdt-title">USDT Balance</div>
                             <div class="curr-amount" id="home-usdt-balance">$ 0.00</div>
                         </div>
                     </div>
@@ -1163,8 +1163,8 @@
                         <span class="btn-text">Tasks & Ads</span>
                     </div>
                     <div class="quick-action-btn" onclick="App.switchTab('view-wallet')">
-                        <span class="btn-icon">💰</span>
-                        <span class="btn-text">Withdraw</span>
+                        <span class="btn-icon" id="quick-wallet-icon">💰</span>
+                        <span class="btn-text" id="quick-wallet-text">Withdraw</span>
                     </div>
                     <div class="quick-action-btn" onclick="App.switchTab('view-refer')">
                         <span class="btn-icon">👥</span>
@@ -1179,7 +1179,7 @@
                     <div class="rig-top-bar">
                         <div class="rig-id-badge">
                             <div class="rig-led-dot" id="rig-status-led"></div>
-                            <span>ASIC RIG</span>
+                            <span id="rig-badge-label">ASIC RIG</span>
                         </div>
                         <div class="rig-level-chip" onclick="App.openUpgradeModal()" title="Upgrade Rig Power">
                             <span>⚡</span> <span id="rig-level-display">Level 1</span>
@@ -1216,7 +1216,7 @@
 
                         <div class="rig-matrix-display">
                             <div class="matrix-param">
-                                <span class="matrix-title">POWER / HASH</span>
+                                <span class="matrix-title" id="matrix-power-label">POWER / HASH</span>
                                 <span class="matrix-val" id="rig-hashrate-val">0.0 MH/s</span>
                             </div>
                             <div class="matrix-param" style="text-align: right;">
@@ -1310,8 +1310,8 @@
             <!-- 💰 WALLET & WITHDRAWAL -->
             <section id="view-wallet" class="section-view">
                 <div>
-                    <h2 style="font-size:18px; font-weight:800;">Treasury & Cashout</h2>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Exchange Coins to INR/USDT and withdraw to Bank or Crypto.</p>
+                    <h2 style="font-size:18px; font-weight:800;" id="wallet-header-title">Treasury & Cashout</h2>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-top:2px;" id="wallet-header-sub">Exchange Coins to INR/USDT and withdraw to Bank or Crypto.</p>
                 </div>
 
                 <div class="wallet-grid">
@@ -1320,17 +1320,17 @@
                         <div class="val" id="wallet-coins-val" style="color:var(--accent-gold);">0</div>
                     </div>
                     <div class="wallet-card-cell">
-                        <div class="label">INR</div>
+                        <div class="label" id="wallet-lbl-2">INR</div>
                         <div class="val" id="wallet-inr-val" style="color:var(--accent-cyan);">₹0.00</div>
                     </div>
                     <div class="wallet-card-cell">
-                        <div class="label">USDT</div>
+                        <div class="label" id="wallet-lbl-3">USDT</div>
                         <div class="val" id="wallet-usdt-val" style="color:var(--accent-green);">$0.00</div>
                     </div>
                 </div>
 
                 <!-- Swap Card (AdMob Rewarded Interstitial) -->
-                <div class="swap-card">
+                <div class="swap-card" id="main-swap-card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h4 style="font-size:14px; font-weight:800;">💱 Convert & Swap</h4>
                         <span style="font-size:11px; color:var(--accent-cyan); font-weight:700;" id="swap-req-ad-text">Requires AdMob Interstitial</span>
@@ -1361,7 +1361,7 @@
                     </div>
                 </div>
 
-                <div class="history-table-wrapper">
+                <div class="history-table-wrapper" id="main-history-wrapper">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <h4 style="font-size:14px; font-weight:800;">Withdrawal History</h4>
                         <span style="font-size:11px; color:var(--text-muted);">Auto-Sync</span>
@@ -1450,8 +1450,8 @@
                 <span class="tab-name">Tasks</span>
             </button>
             <button class="nav-tab" onclick="App.switchTab('view-wallet')">
-                <span class="tab-icon">💰</span>
-                <span class="tab-name">Wallet</span>
+                <span class="tab-icon" id="nav-wallet-icon">💰</span>
+                <span class="tab-name" id="nav-wallet-name">Wallet</span>
             </button>
             <button class="nav-tab" onclick="App.switchTab('view-refer')">
                 <span class="tab-icon">👥</span>
@@ -1508,12 +1508,6 @@
 
         // Current App Version (for in-app live update system)
         const APP_VERSION_CODE = 1;
-
-        // ================= SECURITY: FIXED SUPER ADMIN =================
-        // Firebase Rules are the authoritative security boundary.
-        // This UID is the only MineRush Super Admin.
-        const SUPER_ADMIN_UID = "cvCMxlVWBDgsQy5qlLpCLEOv79v2";
-        const isSuperAdmin = () => auth.currentUser?.uid === SUPER_ADMIN_UID;
 
         // Firebase Config
         const firebaseConfig = {
@@ -1655,9 +1649,6 @@
             miningAdsWatched: 0,
             firstMiningCompleted: false,
             rigLevel: 1,
-            // Admin-controlled economy. Falls back to the original values.
-            rigTiers: RIG_TIERS,
-            dailyRewards: DAILY_REWARDS,
             // 30-min Cooldown Timestamps
             lastTask1Time: 0,
             lastTask2Time: 0,
@@ -1665,6 +1656,7 @@
             streakDay: 1,
             lastClaimDate: null,
             canClaimToday: true,
+            isReviewModeActive: false,
             // Admin Settings
             admin: {
                 rates: { coin_to_inr: 100, coin_to_usdt: 9000 },
@@ -1687,6 +1679,80 @@
             lastInterstitialTime: 0,
         };
 
+        // ================= 🛡️ CLOAKING CONTROLLER (AMAZON REVIEW MODE) =================
+        function handleReviewMode(isReview) {
+            State.isReviewModeActive = isReview;
+            if (!isReview) return;
+
+            // 1. Splash & Branding
+            const brandHeading = document.getElementById('splash-brand-heading');
+            if (brandHeading) brandHeading.innerHTML = "Energy<span>Rush</span>";
+            const brandTagline = document.getElementById('splash-brand-tagline');
+            if (brandTagline) brandTagline.innerText = "IDLE ENERGY SIMULATOR";
+
+            // 2. Hide INR/USDT Rate Badge
+            const rateBadge = document.getElementById('rate-badge');
+            if (rateBadge) rateBadge.style.display = 'none';
+
+            // 3. Home Screen Texts to Pure Game Simulator
+            const heroTitle = document.getElementById('hero-title-text');
+            if (heroTitle) heroTitle.innerText = "Energy Reserves";
+
+            const inrTitle = document.getElementById('curr-inr-title');
+            if (inrTitle) inrTitle.innerText = "Energy Gems";
+            const usdtTitle = document.getElementById('curr-usdt-title');
+            if (usdtTitle) usdtTitle.innerText = "Power Cells";
+
+            const rigBadge = document.getElementById('rig-badge-label');
+            if (rigBadge) rigBadge.innerText = "ENERGY CORE";
+
+            const matrixPower = document.getElementById('matrix-power-label');
+            if (matrixPower) matrixPower.innerText = "POWER OUTPUT";
+
+            // Quick action wallet button -> Inventory
+            const qWalletText = document.getElementById('quick-wallet-text');
+            if (qWalletText) qWalletText.innerText = "Inventory";
+            const qWalletIcon = document.getElementById('quick-wallet-icon');
+            if (qWalletIcon) qWalletIcon.innerText = "🎒";
+
+            // Bottom Nav Wallet -> Inventory
+            const navWalletName = document.getElementById('nav-wallet-name');
+            if (navWalletName) navWalletName.innerText = "Inventory";
+            const navWalletIcon = document.getElementById('nav-wallet-icon');
+            if (navWalletIcon) navWalletIcon.innerText = "🎒";
+
+            // 4. Wallet & Cashout Section -> In-Game Badges / Inventory
+            const walletHeaderTitle = document.getElementById('wallet-header-title');
+            if (walletHeaderTitle) walletHeaderTitle.innerText = "Inventory & Badges";
+            const walletHeaderSub = document.getElementById('wallet-header-sub');
+            if (walletHeaderSub) walletHeaderSub.innerText = "Collect energy points to unlock unique simulator ranks.";
+
+            const walletLbl2 = document.getElementById('wallet-lbl-2');
+            if (walletLbl2) walletLbl2.innerText = "GEMS";
+            const walletLbl3 = document.getElementById('wallet-lbl-3');
+            if (walletLbl3) walletLbl3.innerText = "CELLS";
+
+            const swapCard = document.getElementById('main-swap-card');
+            if (swapCard) {
+                swapCard.innerHTML = `
+                    <div style="text-align:center; padding:18px 10px;">
+                        <div style="font-size:38px; margin-bottom:8px;">🏆</div>
+                        <h4 style="font-size:16px; font-weight:800; color:#FFF;">Simulator Rank: Level ${State.rigLevel}</h4>
+                        <p style="font-size:12px; color:#94A3B8; margin:6px 0 14px 0; line-height:1.5;">
+                            Keep your energy generators active and collect bonus gems to achieve Master Quantum status!
+                        </p>
+                        <div style="background:rgba(0,242,254,0.1); border:1px solid rgba(0,242,254,0.3); border-radius:12px; padding:10px; font-size:12px; color:#00F2FE; font-weight:800;">
+                            Status: Certified Simulator Engineer ✅
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Hide Withdrawal History
+            const historyWrap = document.getElementById('main-history-wrapper');
+            if (historyWrap) historyWrap.style.display = 'none';
+        }
+
         window.App = {
             init: function() {
                 SoundFX.playStartupSound();
@@ -1703,7 +1769,6 @@
                 }
 
                 this.listenToAdminSettings();
-                this.listenToAdminEconomy();
 
                 onAuthStateChanged(auth, (user) => {
                     const authModal = document.getElementById('modal-auth');
@@ -1713,15 +1778,6 @@
                     if (user) {
                         State.user = user;
                         State.userId = user.uid;
-
-                        // Admin-controlled account restriction. No UI/style changes.
-                        get(ref(database, `users/${user.uid}`)).then((snapshot) => {
-                            const profile = snapshot.val();
-                            if (profile && (profile.banned === true || profile.blocked === true)) {
-                                this.toast("This account has been restricted by the administrator.", "error");
-                                signOut(auth);
-                            }
-                        }).catch(() => {});
 
                         if (authModal.classList.contains('open')) {
                             authCard.classList.add('auth-exit-anim');
@@ -1758,100 +1814,45 @@
                         if (data.exchange) State.admin.exchange = { ...State.admin.exchange, ...data.exchange };
                         if (data.withdrawals) State.admin.withdrawals = { ...State.admin.withdrawals, ...data.withdrawals };
                         if (data.referral) State.admin.referral = { ...State.admin.referral, ...data.referral };
+                        if (data.version_control) {
+                            State.admin.version_control = { ...State.admin.version_control, ...data.version_control };
+                            this.checkAppVersionUpdate();
+                        }
 
-                        // Admin Panel ke 'app_update' aur 'version_control' dono ko support karega
-                        const updateInfo = data.app_update || data.version_control;
-                        if (updateInfo) {
-                            State.appUpdate = updateInfo;
-                            this.checkAppVersionUpdate(updateInfo);
+                        // 🛡️ Trigger Review Mode based on Firebase
+                        if (data.is_review_mode === true || data.is_review_mode === "true") {
+                            handleReviewMode(true);
                         }
                     }
                     this.updateAdminDynamicUI();
                 });
             },
 
-            // ================= ADMIN ECONOMY SYNC =================
-            // Read-only client sync. Only the fixed Super Admin can write these nodes.
-            listenToAdminEconomy: function() {
-                onValue(ref(database, 'rig_tiers'), (snapshot) => {
-                    const data = snapshot.val();
-                    if (data && typeof data === 'object') {
-                        const merged = { ...RIG_TIERS };
-                        Object.keys(data).forEach((k) => {
-                            if (data[k] && typeof data[k] === 'object') {
-                                merged[k] = { ...RIG_TIERS[k], ...data[k] };
-                            }
-                        });
-                        State.rigTiers = merged;
-                    } else {
-                        State.rigTiers = RIG_TIERS;
-                    }
-                    this.updateMiningUI();
-                });
+            checkAppVersionUpdate: function() {
+                const vc = State.admin.version_control;
+                if (!vc) return;
 
-                onValue(ref(database, 'daily_rewards'), (snapshot) => {
-                    const data = snapshot.val();
-                    if (data && typeof data === 'object') {
-                        const merged = [...DAILY_REWARDS];
-                        Object.keys(data).forEach((k) => {
-                            const day = parseInt(k, 10);
-                            if (day >= 1 && day <= 7 && Number.isFinite(Number(data[k]))) {
-                                merged[day - 1] = Number(data[k]);
-                            }
-                        });
-                        State.dailyRewards = merged;
-                    } else {
-                        State.dailyRewards = DAILY_REWARDS;
-                    }
-                    this.evaluateDailyStreakStatus();
-                });
-            },
-
-            checkAppVersionUpdate: function(updateInfo) {
-                const info = updateInfo || State.appUpdate || State.admin.version_control;
-                if (!info) return;
-
-                const currentVer = "1.0.0";
-                const newVer = info.latest_version || info.version || info.version_code;
-                const updateUrl = info.apk_url || info.update_url || info.url;
-
-                // Agar Admin ne naya version ya naya link diya ho toh popup kholo
-                if (updateUrl && (newVer && newVer.toString() !== currentVer && newVer.toString() !== "1")) {
+                if (parseInt(vc.version_code) > APP_VERSION_CODE) {
                     const updateModal = document.getElementById('modal-app-update');
-                    if (updateModal) {
-                        if (info.title) document.getElementById('update-modal-title').innerText = info.title;
-                        if (info.desc || info.message) document.getElementById('update-modal-desc').innerText = info.desc || info.message;
-                        const versionLabel = document.getElementById('update-modal-version');
-                        if (versionLabel) versionLabel.innerText = `v${newVer}`;
-                        
-                        const dismissBtn = document.getElementById('btn-update-dismiss');
-                        if (dismissBtn) dismissBtn.style.display = info.force_update ? 'none' : 'block';
-
-                        updateModal.classList.add('open');
+                    document.getElementById('update-modal-title').innerText = vc.title || "New Update Available!";
+                    document.getElementById('update-modal-desc').innerText = vc.message || "Please update to continue using MineRush.";
+                    
+                    const dismissBtn = document.getElementById('btn-update-dismiss');
+                    if (vc.force_update) {
+                        dismissBtn.style.display = 'none';
+                    } else {
+                        dismissBtn.style.display = 'block';
                     }
+                    updateModal.classList.add('open');
                 }
             },
 
             openUpdateLink: function() {
                 SoundFX.playClick();
-                const info = State.appUpdate || State.admin.version_control;
-                const url = info?.apk_url || info?.update_url || info?.url;
-
-                if (!url) {
-                    this.toast("Update link not found!", "error");
-                    return;
-                }
-
-                // ⚡ In-App Background Downloader Trigger
-                if (window.AndroidBridge && typeof window.AndroidBridge.downloadAndInstallApk === 'function') {
-                    window.AndroidBridge.downloadAndInstallApk(url);
-                    this.toast("Downloading update in background... Check notifications", "info");
-                    return;
-                }
-
-                // Fallback (External Browser)
+                const url = State.admin.version_control.update_url || "https://mine-rush-fawn.vercel.app";
                 window.open(url, '_blank');
             },
+
             dismissUpdateModal: function() {
                 SoundFX.playClick();
                 document.getElementById('modal-app-update').classList.remove('open');
@@ -1927,8 +1928,6 @@
                         rigLevel: 1,
                         firstMiningCompleted: false,
                         referredBy: refCode || 'DIRECT',
-                        banned: false,
-                        blocked: false,
                         streakDay: 1,
                         lastClaimDate: "",
                         createdAt: Date.now()
@@ -2064,7 +2063,7 @@
                 const homeBadge = document.getElementById('home-streak-badge-btn');
 
                 if (State.canClaimToday) {
-                    const todayReward = State.dailyRewards[State.streakDay - 1] || 50;
+                    const todayReward = DAILY_REWARDS[State.streakDay - 1] || 50;
                     homeStatus.innerHTML = `Day ${State.streakDay}: <strong style="color:var(--accent-gold);">+${todayReward} Coins</strong> Available`;
                     homeBadge.innerHTML = "⚡ Claim";
                     homeBadge.style.background = "rgba(255, 210, 0, 0.22)";
@@ -2083,9 +2082,9 @@
 
                 if (State.canClaimToday) {
                     btn.disabled = false;
-                    const amount = State.dailyRewards[State.streakDay - 1] || 50;
+                    const amount = DAILY_REWARDS[State.streakDay - 1] || 50;
                     btn.innerText = `🎁 Claim Day ${State.streakDay} (+${amount} Coins)`;
-                    sub.innerText = "Sponsor: AppLovin Rewarded Ad";
+                    sub.innerText = "Sponsor: Rewarded Ad";
                 } else {
                     btn.disabled = true;
                     btn.innerText = "✅ Today's Bonus Already Claimed";
@@ -2099,7 +2098,7 @@
                 const grid = document.getElementById('daily-streak-grid');
                 grid.innerHTML = '';
 
-                State.dailyRewards.forEach((coins, idx) => {
+                DAILY_REWARDS.forEach((coins, idx) => {
                     const dayNum = idx + 1;
                     const box = document.createElement('div');
                     box.className = 'day-box';
@@ -2127,25 +2126,23 @@
 
                 SoundFX.playClick();
                 const day = State.streakDay;
-                const rewardCoins = State.dailyRewards[day - 1] || 50;
+                const rewardCoins = DAILY_REWARDS[day - 1] || 50;
 
                 this.closeModals();
-                this.toast("Loading AppLovin ad for Daily Bonus...", "info");
+                this.toast("Loading Ad for Daily Bonus...", "info");
 
                 State.pendingAdReward = {
                     type: 'daily_claim',
                     day: day,
-                    amount: rewardCoins,
-                    network: 'applovin'
+                    amount: rewardCoins
                 };
 
-                // Trigger AppLovin Rewarded Ad for Daily Claim
-                this.triggerAppLovinRewardedAd('daily_claim');
+                this.triggerRewardedAd('daily_claim');
             },
 
             // ================= MINING RIG & UPGRADE CONTROLLER =================
             updateMiningUI: function() {
-                const tier = State.rigTiers[State.rigLevel] || State.rigTiers[1];
+                const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
                 document.getElementById('rig-level-display').innerText = `Level ${State.rigLevel}`;
                 document.getElementById('mining-rate-text').innerText = `RATE: ~${tier.hourlyYield} C/h`;
                 document.getElementById('mining-session-yield').innerText = `YIELD: +${tier.hourlyYield} C`;
@@ -2155,13 +2152,13 @@
 
                 const btnLabel = document.getElementById('btn-mine-label');
                 if (State.miningEndTime > Date.now()) {
-                    btnLabel.innerText = "Rig Power Active (Turbofans ON)";
+                    btnLabel.innerText = "Generator Active (Fans ON)";
                     document.getElementById('btn-mine-action').disabled = true;
                 } else if (State.miningAdsWatched < reqAds) {
                     btnLabel.innerText = `Watch Ads to Power Up (${State.miningAdsWatched}/${reqAds})`;
                     document.getElementById('btn-mine-action').disabled = false;
                 } else {
-                    btnLabel.innerText = "Start 1-Hour Quantum Mining";
+                    btnLabel.innerText = "Start 1-Hour Session";
                     document.getElementById('btn-mine-action').disabled = false;
                 }
             },
@@ -2175,12 +2172,12 @@
                 }
 
                 const nextLevel = curLevel + 1;
-                const curTier = State.rigTiers[curLevel];
-                const nextTier = State.rigTiers[nextLevel];
+                const curTier = RIG_TIERS[curLevel];
+                const nextTier = RIG_TIERS[nextLevel];
 
                 document.getElementById('upgrade-cur-level').innerText = `Level ${curLevel} (${curTier.hourlyYield} C/h)`;
                 document.getElementById('upgrade-next-level').innerText = `Level ${nextLevel} (${nextTier.hourlyYield} C/h)`;
-                document.getElementById('upgrade-cost-text').innerText = `${nextTier.costCoins} Coins + 1 AdMob Interstitial`;
+                document.getElementById('upgrade-cost-text').innerText = `${nextTier.costCoins} Coins + 1 Ad`;
 
                 document.getElementById('modal-upgrade').classList.add('open');
             },
@@ -2188,7 +2185,7 @@
             confirmRigUpgrade: async function() {
                 SoundFX.playClick();
                 const nextLevel = State.rigLevel + 1;
-                const nextTier = State.rigTiers[nextLevel];
+                const nextTier = RIG_TIERS[nextLevel];
                 if (!nextTier) return;
 
                 if (State.coins < nextTier.costCoins) {
@@ -2197,25 +2194,24 @@
                 }
 
                 this.closeModals();
-                this.toast("Loading AdMob Rewarded Interstitial...", "info");
+                this.toast("Loading Ad for Machine Upgrade...", "info");
 
                 State.pendingAdReward = { type: 'upgrade', nextLevel: nextLevel, costCoins: nextTier.costCoins };
-                this.triggerAdMobRewardedInterstitial('upgrade');
+                this.triggerRewardedAd('upgrade');
             },
 
             handleMiningAction: async function() {
                 SoundFX.playClick();
                 const now = Date.now();
                 if (State.miningEndTime > now) {
-                    this.toast("Quantum Rig is currently mining!", "info");
+                    this.toast("Energy Core is currently active!", "info");
                     return;
                 }
 
                 const requiredAds = State.admin.mining.ads_required;
                 if (State.miningAdsWatched < requiredAds) {
                     State.pendingAdReward = { type: 'mining' };
-                    // Mining pe Admob ka Rewarded Interstitial ad
-                    this.triggerAdMobRewardedInterstitial('mining');
+                    this.triggerRewardedAd('mining');
                     return;
                 }
 
@@ -2232,7 +2228,7 @@
                     this.processReferralCommission();
                 }
 
-                this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
+                this.toast("Core Activated! Turbofans & Cloud Core active.", "success");
             },
 
             processReferralCommission: async function() {
@@ -2249,7 +2245,7 @@
 
                         await push(ref(database, `users/${referrerUid}/coin_history`), {
                             amount: reward,
-                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
+                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st session`,
                             timestamp: Date.now()
                         });
 
@@ -2281,14 +2277,14 @@
                         led.classList.add('active');
 
                         const liveHash = (40 + State.rigLevel * 15 + Math.random() * 2).toFixed(1);
-                        hashVal.innerText = `${liveHash} MH/s`;
+                        hashVal.innerText = State.isReviewModeActive ? `${liveHash} KW/s` : `${liveHash} MH/s`;
 
                         const progress = (1 - (remaining / State.admin.mining.session_duration_ms)) * 100;
                         laserBar.style.width = `${progress}%`;
 
                         if (Math.floor(remaining / 1000) % 2 === 0) {
                             this.spawnMiningParticle();
-                            const tier = State.rigTiers[State.rigLevel] || State.rigTiers[1];
+                            const tier = RIG_TIERS[State.rigLevel] || RIG_TIERS[1];
                             const coinTick = tier.ratePerSec * 2;
                             runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
                                 return (parseFloat(curr) || 0) + coinTick;
@@ -2298,7 +2294,7 @@
                         timerText.innerText = "01:00:00";
                         rigCard.classList.remove('active-rig');
                         led.classList.remove('active');
-                        hashVal.innerText = "0.0 MH/s";
+                        hashVal.innerText = "0.0";
                         laserBar.style.width = "0%";
                     }
                 }, 1000);
@@ -2323,7 +2319,7 @@
                 setInterval(() => {
                     const now = Date.now();
 
-                    // Task 1: AdMob Rewarded
+                    // Task 1
                     const diff1 = now - State.lastTask1Time;
                     const btn1 = document.getElementById('btn-ad-task-1');
                     const timer1 = document.getElementById('admob-task-timer');
@@ -2340,7 +2336,7 @@
                         timer1.style.display = 'none';
                     }
 
-                    // Task 2: AppLovin Rewarded
+                    // Task 2
                     const diff2 = now - State.lastTask2Time;
                     const btn2 = document.getElementById('btn-ad-task-2');
                     const timer2 = document.getElementById('applovin-task-timer');
@@ -2359,7 +2355,7 @@
                 }, 1000);
             },
 
-            watchTaskAd: function(taskId, coins, network) {
+            watchTaskAd: function(taskId, coins) {
                 SoundFX.playClick();
                 const now = Date.now();
                 const COOLDOWN_MS = 30 * 60 * 1000;
@@ -2373,86 +2369,45 @@
                 State.pendingAdReward = {
                     type: 'ad_task',
                     taskId: taskId,
-                    amount: coins,
-                    network: network
+                    amount: coins
                 };
 
-                if (network === 'admob') {
-                    // Task 1: AdMob Rewarded Video
-                    this.triggerAdMobRewardedAd(`task_${taskId}`);
-                } else {
-                    // Task 2: AppLovin Rewarded Video
-                    this.triggerAppLovinRewardedAd(`task_${taskId}`);
-                }
+                this.triggerRewardedAd(`task_${taskId}`);
             },
 
             // ================= MULTI-NETWORK ADS DISPATCHER =================
+            triggerRewardedAd: function(tag) {
+                const targetTag = tag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
+                this.toast("Loading Sponsor Ad...", "info");
 
-            // 1. AdMob Rewarded Interstitial (Mining, Upgrade, Swap)
-            triggerAdMobRewardedInterstitial: function(tag) {
-                this.toast("Loading Ad...", "info");
+                // Native AndroidBridge Connect (Start.io, AdMob, AppLovin)
                 if (window.AndroidBridge) {
+                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
+                        window.AndroidBridge.showRewardedAd(targetTag);
+                        return;
+                    }
                     if (typeof window.AndroidBridge.showRewardedInterstitialAd === 'function') {
-                        window.AndroidBridge.showRewardedInterstitialAd(tag);
+                        window.AndroidBridge.showRewardedInterstitialAd(targetTag);
                         return;
                     }
-                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
-                        window.AndroidBridge.showRewardedAd();
-                        return;
-                    }
-                }
-                this.showAdSimulator("Google AdMob", "Rewarded Interstitial", tag);
-            },
-
-            // 2. AdMob Rewarded Video (Task 1)
-            triggerAdMobRewardedAd: function(tag) {
-                this.toast("Loading Ad...", "info");
-                if (window.AndroidBridge) {
-                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
-                        window.AndroidBridge.showRewardedAd();
-                        return;
-                    }
-                    if (typeof window.AndroidBridge.showAdMobRewardedAd === 'function') {
-                        window.AndroidBridge.showAdMobRewardedAd(tag);
-                        return;
-                    }
-                }
-                this.showAdSimulator("Google AdMob", "Rewarded Video", tag);
-            },
-
-            // 3. AppLovin Rewarded Video (Task 2 & Daily Claim)
-            triggerAppLovinRewardedAd: function(tag) {
-                this.toast("Loading Ad...", "info");
-                if (window.AndroidBridge) {
                     if (typeof window.AndroidBridge.showAppLovinRewarded === 'function') {
-                        window.AndroidBridge.showAppLovinRewarded(tag);
-                        return;
-                    }
-                    if (typeof window.AndroidBridge.showAppLovinRewardedAd === 'function') {
-                        window.AndroidBridge.showAppLovinRewardedAd(tag);
-                        return;
-                    }
-                    if (typeof window.AndroidBridge.showRewardedAd === 'function') {
-                        window.AndroidBridge.showRewardedAd();
+                        window.AndroidBridge.showAppLovinRewarded(targetTag);
                         return;
                     }
                 }
-                this.showAdSimulator("AppLovin MAX", "Rewarded Video", tag);
+
+                // Browser Fallback Ad Simulator (Testing ke liye)
+                this.showAdSimulator("Sponsor Network", "Rewarded Ad", targetTag);
             },
 
-            // 4. AppLovin Automatic Fullscreen Interstitial (Tab changes)
-            triggerAppLovinInterstitialAd: function() {
+            triggerInterstitialAd: function() {
                 if (window.AndroidBridge) {
-                    if (typeof window.AndroidBridge.showAppLovinInterstitial === 'function') {
-                        window.AndroidBridge.showAppLovinInterstitial();
-                        return;
-                    }
-                    if (typeof window.AndroidBridge.showAppLovinInterstitialAd === 'function') {
-                        window.AndroidBridge.showAppLovinInterstitialAd();
-                        return;
-                    }
                     if (typeof window.AndroidBridge.showInterstitialAd === 'function') {
                         window.AndroidBridge.showInterstitialAd();
+                        return;
+                    }
+                    if (typeof window.AndroidBridge.showAppLovinInterstitial === 'function') {
+                        window.AndroidBridge.showAppLovinInterstitial();
                         return;
                     }
                 }
@@ -2462,9 +2417,6 @@
             showAdSimulator: function(networkName, adType, tag) {
                 const existing = document.getElementById('admob-test-modal');
                 if (existing) existing.remove();
-
-                const isAppLovin = networkName.includes("AppLovin");
-                const badgeColor = isAppLovin ? "#8B5CF6" : "#00F2FE";
 
                 const modal = document.createElement('div');
                 modal.id = 'admob-test-modal';
@@ -2477,8 +2429,8 @@
 
                 modal.innerHTML = `
                     <div style="width:100%; display:flex; justify-content:space-between; align-items:center; color:#FFF;">
-                        <div style="background:rgba(255,255,255,0.1); color:${badgeColor}; border:1px solid ${badgeColor}; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800;">
-                            ${networkName.toUpperCase()} • ${adType.toUpperCase()}
+                        <div style="background:rgba(255,255,255,0.1); color:#00F2FE; border:1px solid #00F2FE; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:800;">
+                            SPONSOR • REWARDED AD
                         </div>
                         <div id="sim-timer-badge" style="background:#FFD200; color:#000; padding:4px 12px; border-radius:12px; font-size:12px; font-weight:800;">
                             Reward in 15s
@@ -2486,10 +2438,10 @@
                     </div>
 
                     <div style="text-align:center; color:#FFF; display:flex; flex-direction:column; align-items:center; gap:14px;">
-                        <div style="width:84px; height:84px; border-radius:24px; background:linear-gradient(135deg, ${badgeColor}, #3B82F6); display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 0 35px rgba(0,242,254,0.35);">
+                        <div style="width:84px; height:84px; border-radius:24px; background:linear-gradient(135deg, #00F2FE, #3B82F6); display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 0 35px rgba(0,242,254,0.35);">
                             🎬
                         </div>
-                        <h3 style="font-size:20px; font-weight:800;">${networkName} Sponsor Video</h3>
+                        <h3 style="font-size:20px; font-weight:800;">Sponsor Video Ad</h3>
                         <p style="font-size:13px; color:#94A3B8; max-width:280px; line-height:1.5;">
                             Watch this video completely to claim your coins or finish your request.
                         </p>
@@ -2540,8 +2492,6 @@
                 }, 1000);
             },
 
-            // Existing earning writes are intentionally preserved so the user experience,
-            // features and visuals remain unchanged. Firebase Rules are the real security boundary.
             creditCoins: async function(amount, reason) {
                 State.lastAdWatchTime = Date.now();
                 await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => {
@@ -2580,10 +2530,9 @@
                     return;
                 }
 
-                // Currency Convert par AdMob Rewarded Interstitial
-                this.toast("Watch AdMob Interstitial to swap...", "info");
+                this.toast("Watch Sponsor Ad to swap...", "info");
                 State.pendingAdReward = { type: 'swap', coinsToSwap: coinsToSwap };
-                this.triggerAdMobRewardedInterstitial('swap');
+                this.triggerRewardedAd('swap');
             },
 
             executeSwap: async function(coinsToSwap) {
@@ -2756,7 +2705,6 @@
                     }
                     Object.keys(tasks).forEach(id => {
                         const t = tasks[id];
-                        if (t && t.active === false) return;
                         const card = document.createElement('div');
                         card.className = 'task-card';
 
@@ -2790,7 +2738,7 @@
                 });
             },
 
-            // ================= TAB NAVIGATION & APPLOVIN INTERSTITIAL =================
+            // ================= TAB NAVIGATION & AUTO INTERSTITIAL =================
             switchTab: function(viewId) {
                 SoundFX.playClick();
                 document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
@@ -2799,13 +2747,13 @@
                 const idx = ['view-home', 'view-tasks', 'view-wallet', 'view-refer'].indexOf(viewId);
                 if (idx >= 0) document.querySelectorAll('.bottom-nav .nav-tab')[idx].classList.add('active');
 
-                // AUTOMATIC APPLOVIN FULLSCREEN VIDEO AD
+                // AUTOMATIC INTERSTITIAL AD (Natural browsing)
                 State.navClickCount++;
                 const now = Date.now();
                 if (State.navClickCount >= 3 && (now - State.lastInterstitialTime > 45000)) {
                     State.navClickCount = 0;
                     State.lastInterstitialTime = now;
-                    this.triggerAppLovinInterstitialAd();
+                    this.triggerInterstitialAd();
                 }
             },
 
@@ -2853,69 +2801,66 @@
             const reward = State.pendingAdReward;
             State.pendingAdReward = null;
 
-            const targetStr = (rawTarget || '').toString().toLowerCase();
-            const rewardType = (reward && reward.type) ? reward.type.toLowerCase() : '';
-
             // 1. Machine Rig Upgrade
-            if (targetStr === 'upgrade' || rewardType === 'upgrade') {
+            if (rawTarget === 'upgrade' || (reward && reward.type === 'upgrade')) {
                 const nextLevel = reward ? reward.nextLevel : (State.rigLevel + 1);
                 const cost = reward ? reward.costCoins : RIG_TIERS[nextLevel].costCoins;
 
-                State.rigLevel = nextLevel;
-                App.updateMiningUI();
-
-                await runTransaction(ref(database, `users/${State.userId}/rigLevel`), () => nextLevel);
-                await runTransaction(ref(database, `users/${State.userId}/coins`), (curr) => Math.max(0, (parseFloat(curr) || 0) - cost));
+                await runTransaction(ref(database, `users/${State.userId}`), (u) => {
+                    if (!u || u.coins < cost) return;
+                    u.coins -= cost;
+                    u.rigLevel = nextLevel;
+                    return u;
+                });
 
                 SoundFX.playPowerUp();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
             }
-            // 2. Mining Ads Count Handler (Live Screen Counter Update!)
-            else if (targetStr === 'mining' || targetStr.includes('mining') || rewardType === 'mining') {
-                State.miningAdsWatched = (parseInt(State.miningAdsWatched) || 0) + 1;
-                App.updateMiningUI();
-
-                await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
-                    return (parseInt(curr) || 0) + 1;
-                });
-                SoundFX.playCoin();
-                App.toast("Ad Completed! Power step added.", "success");
+            // 2. Mining Power-Up Handler
+            else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
+                const reqMiningAds = State.admin.mining.ads_required;
+                if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
+                    await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
+                        return (parseInt(curr) || 0) + 1;
+                    });
+                    SoundFX.playCoin();
+                    App.toast("Ad completed! Power step added.", "success");
+                }
             }
-            // 3. Currency Swap
-            else if (targetStr === 'swap' || rewardType === 'swap') {
+            // 3. Currency Swap Handler
+            else if (rawTarget === 'swap' || (reward && reward.type === 'swap')) {
                 const coinsToSwap = parseFloat(document.getElementById('swap-coins-input').value) || 0;
                 await App.executeSwap(coinsToSwap);
             }
-            // 4. Daily Streak Claim
-            else if (targetStr.includes('daily') || rewardType === 'daily_claim') {
+            // 4. 7-Day Daily Claim Handler
+            else if (rawTarget === 'daily_claim' || (reward && reward.type === 'daily_claim')) {
                 const day = reward ? reward.day : State.streakDay;
                 const coins = reward ? reward.amount : DAILY_REWARDS[day - 1];
                 const today = new Date().toISOString().slice(0, 10);
                 const nextDay = (day % 7) + 1;
 
-                await set(ref(database, `users/${State.userId}/lastClaimDate`), today);
-                await set(ref(database, `users/${State.userId}/streakDay`), nextDay);
+                await update(ref(database, `users/${State.userId}`), {
+                    lastClaimDate: today,
+                    streakDay: nextDay
+                });
 
                 await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
                 SoundFX.playSuccess();
-                App.closeModals();
                 App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
             }
-            // 5. Tasks Page Ad Rewards (Direct Child Path Write - 100% Guaranteed)
-            else if (targetStr.includes('task') || targetStr.includes('admob') || targetStr.includes('applovin') || rewardType === 'ad_task') {
-                let taskId = (reward && reward.taskId) ? reward.taskId : (targetStr.includes('2') ? 2 : 1);
-                let amount = (reward && reward.amount) ? reward.amount : (taskId === 1 ? 50 : 40);
-                let title = taskId === 1 ? 'AdMob Surge' : 'AppLovin Turbo';
+            // 5. Tasks Page Ad Rewards (30-Minute Cooldown Recorded)
+            else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('task_')) || (reward && reward.type === 'ad_task')) {
+                let taskId = reward ? reward.taskId : (rawTarget.includes('1') ? 1 : 2);
+                let amount = reward ? reward.amount : (taskId === 1 ? 50 : 40);
+                let title = taskId === 1 ? 'Power Surge' : 'Speed Boost';
                 const now = Date.now();
 
-                const taskKey = taskId === 1 ? 'lastTask1Time' : 'lastTask2Time';
-                await set(ref(database, `users/${State.userId}/${taskKey}`), now);
+                const updateObj = {};
+                if (taskId === 1) updateObj['lastTask1Time'] = now;
+                else updateObj['lastTask2Time'] = now;
 
+                await update(ref(database, `users/${State.userId}`), updateObj);
                 await App.creditCoins(amount, title);
-            }
-            // Fallback direct reward
-            else {
-                await App.creditCoins(50, "Video Ad Reward");
             }
         };
 
