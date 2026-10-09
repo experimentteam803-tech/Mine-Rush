@@ -2037,10 +2037,20 @@
             renderBalances: function() {
                 document.getElementById('home-coin-balance').innerText = Math.floor(State.coins).toLocaleString();
                 document.getElementById('wallet-coins-val').innerText = Math.floor(State.coins).toLocaleString();
-                document.getElementById('home-inr-balance').innerText = `₹ ${State.inr.toFixed(2)}`;
-                document.getElementById('wallet-inr-val').innerText = `₹ ${State.inr.toFixed(2)}`;
-                document.getElementById('home-usdt-balance').innerText = `$ ${State.usdt.toFixed(2)}`;
-                document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
+
+                if (State.isReviewModeActive) {
+                    // 🛡️ Amazon Reviewer View: Gems aur Cells (₹ aur $ gayab)
+                    document.getElementById('home-inr-balance').innerText = `💎 ${Math.floor(State.inr)}`;
+                    document.getElementById('wallet-inr-val').innerText = `💎 ${Math.floor(State.inr)}`;
+                    document.getElementById('home-usdt-balance').innerText = `⚡ ${Math.floor(State.usdt)}`;
+                    document.getElementById('wallet-usdt-val').innerText = `⚡ ${Math.floor(State.usdt)}`;
+                } else {
+                    // 🚀 Real App Mode: Original ₹ aur $ (No change in real app)
+                    document.getElementById('home-inr-balance').innerText = `₹ ${State.inr.toFixed(2)}`;
+                    document.getElementById('wallet-inr-val').innerText = `₹ ${State.inr.toFixed(2)}`;
+                    document.getElementById('home-usdt-balance').innerText = `$ ${State.usdt.toFixed(2)}`;
+                    document.getElementById('wallet-usdt-val').innerText = `$ ${State.usdt.toFixed(2)}`;
+                }
             },
 
             // ================= 7-DAY REWARD STREAK LOGIC (1000 COINS TOTAL) =================
