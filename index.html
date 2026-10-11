@@ -462,61 +462,6 @@
         }
         .modal-backdrop.open .modal-cyber-sheet { transform: scale(1) translateY(0); opacity: 1; }
 
-        .auth-brand-logo {
-            width: 58px;
-            height: 58px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin: 0 auto 12px auto;
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
-        }
-
-        .auth-nav-tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: rgba(4, 7, 17, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 4px;
-            margin-bottom: 20px;
-        }
-
-        .auth-tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 800;
-            padding: 11px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .auth-tab-btn.active {
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(59, 130, 246, 0.22));
-            color: var(--accent-cyan);
-            border: 1px solid rgba(0, 242, 254, 0.3);
-        }
-
-        .form-group-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-        .form-label { font-size: 11px; font-weight: 800; color: var(--text-secondary); letter-spacing: 0.5px; }
-        .form-input {
-            width: 100%;
-            background: rgba(4, 7, 17, 0.85);
-            border: 1px solid var(--border);
-            color: #FFF;
-            padding: 14px 14px 14px 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            outline: none;
-        }
-
         .daily-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
         .day-box {
             background: rgba(4, 7, 17, 0.7);
@@ -589,7 +534,7 @@
 </head>
 <body>
 
-    <!-- 100% CLEAN SPLASH OPENING (NO CRYPTO WORDS) -->
+    <!-- 100% CLEAN SPLASH OPENING -->
     <div id="splash-screen">
         <div class="splash-logo-box">⚡</div>
         <h1 class="splash-brand-title">Energy<span>Rush</span></h1>
@@ -615,7 +560,7 @@
         </div>
     </div>
 
-    <!-- RIG UPGRADE MODAL -->
+    <!-- CORE UPGRADE MODAL -->
     <div class="modal-backdrop" id="modal-upgrade" style="z-index: 300;">
         <div class="modal-cyber-sheet">
             <div style="text-align: center; margin-bottom: 18px;">
@@ -642,45 +587,6 @@
         </div>
     </div>
 
-    <!-- CLEAN FIREBASE AUTH MODAL -->
-    <div class="modal-backdrop" id="modal-auth">
-        <div class="modal-cyber-sheet">
-            <div class="auth-brand-logo">⚡</div>
-            <div style="text-align: center; margin-bottom: 18px;">
-                <h2 style="font-size: 22px; font-weight: 800;">Welcome to EnergyRush</h2>
-                <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
-                    Enter credentials to connect to your simulation core
-                </p>
-            </div>
-            <div class="auth-nav-tabs">
-                <button class="auth-tab-btn active" id="tab-btn-signup" onclick="App.switchAuthTab('signup')">Sign Up</button>
-                <button class="auth-tab-btn" id="tab-btn-login" onclick="App.switchAuthTab('login')">Sign In</button>
-            </div>
-            <div id="auth-signup-view">
-                <div class="form-group-field">
-                    <label class="form-label">EMAIL ADDRESS</label>
-                    <input type="email" class="form-input" id="signup-email" placeholder="name@example.com">
-                </div>
-                <div class="form-group-field">
-                    <label class="form-label">PASSWORD</label>
-                    <input type="password" class="form-input" id="signup-password" placeholder="At least 6 characters">
-                </div>
-                <button class="btn-primary" onclick="App.handleRegister()">🚀 Create Free Account</button>
-            </div>
-            <div id="auth-login-view" style="display:none;">
-                <div class="form-group-field">
-                    <label class="form-label">EMAIL ADDRESS</label>
-                    <input type="email" class="form-input" id="login-email" placeholder="name@example.com">
-                </div>
-                <div class="form-group-field">
-                    <label class="form-label">PASSWORD</label>
-                    <input type="password" class="form-input" id="login-password" placeholder="Enter password">
-                </div>
-                <button class="btn-primary" onclick="App.handleLogin()">🔐 Secure Sign In</button>
-            </div>
-        </div>
-    </div>
-
     <!-- MAIN APP WRAPPER -->
     <div id="app">
         <header>
@@ -689,7 +595,7 @@
                     <img id="user-avatar" src="https://i.pravatar.cc/100" alt="Avatar">
                 </div>
                 <div class="header-user-info">
-                    <span class="header-user-name" id="user-display-name">Player</span>
+                    <span class="header-user-name" id="user-display-name">Commander</span>
                     <span class="header-user-tag">ONLINE</span>
                 </div>
             </div>
@@ -747,7 +653,7 @@
                     </div>
                 </div>
 
-                <!-- RIG CARD -->
+                <!-- CORE CARD -->
                 <div class="mining-rig-card" id="mining-rig-wrapper">
                     <div class="sparkle-container"></div>
                     <div class="rig-top-bar">
@@ -851,7 +757,7 @@
                 </div>
             </section>
 
-            <!-- 🎒 INVENTORY & BADGES (100% REPLACED CASHOUT MODAL) -->
+            <!-- 🎒 INVENTORY SECTION -->
             <section id="view-wallet" class="section-view">
                 <div>
                     <h2 style="font-size:18px; font-weight:800;">Inventory & Badges</h2>
@@ -927,10 +833,9 @@
         </nav>
     </div>
 
-    <!-- FIREBASE & CORE LOGIC -->
+    <!-- ZERO LOGIN - LOCAL GUEST ID ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         import { getDatabase, ref, set, update, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -945,7 +850,6 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const database = getDatabase(app);
 
         const RIG_TIERS = {
@@ -959,7 +863,6 @@
         const DAILY_REWARDS = [50, 75, 100, 125, 175, 225, 250];
 
         const State = {
-            user: null,
             userId: null,
             coins: 0,
             inr: 0,
@@ -977,83 +880,37 @@
 
         window.App = {
             init: function() {
+                // Hide splash smoothly
                 setTimeout(() => {
                     const splash = document.getElementById('splash-screen');
                     if (splash) splash.classList.add('splash-hidden');
                 }, 1800);
 
-                onAuthStateChanged(auth, (user) => {
-                    const authModal = document.getElementById('modal-auth');
-                    const appWrapper = document.getElementById('app');
-
-                    if (user) {
-                        State.user = user;
-                        State.userId = user.uid;
-                        authModal.classList.remove('open');
-                        appWrapper.classList.add('app-revealed');
-                        this.attachUserSession();
-                    } else {
-                        appWrapper.classList.remove('app-revealed');
-                        authModal.classList.add('open');
-                    }
-                });
-
-                this.startMiningClock();
-            },
-
-            switchAuthTab: function(tab) {
-                if (tab === 'signup') {
-                    document.getElementById('auth-signup-view').style.display = 'block';
-                    document.getElementById('auth-login-view').style.display = 'none';
-                    document.getElementById('tab-btn-signup').classList.add('active');
-                    document.getElementById('tab-btn-login').classList.remove('active');
-                } else {
-                    document.getElementById('auth-signup-view').style.display = 'none';
-                    document.getElementById('auth-login-view').style.display = 'block';
-                    document.getElementById('tab-btn-signup').classList.remove('active');
-                    document.getElementById('tab-btn-login').classList.add('active');
+                // ⚡ ZERO LOGIN: Device-based Local Player ID (No email/password required!)
+                let localId = localStorage.getItem('minerush_player_id');
+                if (!localId) {
+                    localId = "Player_" + Math.floor(100000 + Math.random() * 900000);
+                    localStorage.setItem('minerush_player_id', localId);
                 }
-            },
+                State.userId = localId;
 
-            handleRegister: async function() {
-                const email = document.getElementById('signup-email').value.trim();
-                const pass = document.getElementById('signup-password').value.trim();
-                if (!email || pass.length < 6) return this.toast("Valid email & 6-char password required", "error");
+                // Direct instant game reveal (Zero barriers)
+                const appWrapper = document.getElementById('app');
+                appWrapper.classList.add('app-revealed');
 
-                try {
-                    const uc = await createUserWithEmailAndPassword(auth, email, pass);
-                    await set(ref(database, `users/${uc.user.uid}`), {
-                        uid: uc.user.uid,
-                        email: email,
-                        coins: 0,
-                        inr_balance: 0,
-                        usdt_balance: 0,
-                        miningEndTime: 0,
-                        miningAdsWatched: 0,
-                        rigLevel: 1,
-                        streakDay: 1,
-                        lastClaimDate: "",
-                        createdAt: Date.now()
-                    });
-                } catch (e) { this.toast(e.message, "error"); }
-            },
-
-            handleLogin: async function() {
-                const email = document.getElementById('login-email').value.trim();
-                const pass = document.getElementById('login-password').value.trim();
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                } catch (e) { this.toast(e.message, "error"); }
+                this.attachUserSession();
+                this.startMiningClock();
             },
 
             attachUserSession: function() {
                 const uid = State.userId;
-                document.getElementById('user-display-name').innerText = State.user.email.split('@')[0];
+                document.getElementById('user-display-name').innerText = uid;
 
                 const origin = window.location.origin + window.location.pathname;
                 document.getElementById('user-ref-link-display').innerText = `${origin}?ref=${uid}`;
 
-                onValue(ref(database, `users/${uid}`), (snap) => {
+                const userRef = ref(database, `users/${uid}`);
+                onValue(userRef, (snap) => {
                     const data = snap.val();
                     if (data) {
                         State.coins = parseFloat(data.coins) || 0;
@@ -1064,11 +921,25 @@
                         State.rigLevel = parseInt(data.rigLevel) || 1;
                         State.streakDay = parseInt(data.streakDay) || 1;
                         State.lastClaimDate = data.lastClaimDate || "";
-
-                        this.evaluateDailyStreakStatus();
-                        this.renderBalances();
-                        this.updateMiningUI();
+                    } else {
+                        // First time launch: Initialize player data in Firebase
+                        set(userRef, {
+                            uid: uid,
+                            coins: 0,
+                            inr_balance: 0,
+                            usdt_balance: 0,
+                            miningEndTime: 0,
+                            miningAdsWatched: 0,
+                            rigLevel: 1,
+                            streakDay: 1,
+                            lastClaimDate: "",
+                            createdAt: Date.now()
+                        });
                     }
+
+                    this.evaluateDailyStreakStatus();
+                    this.renderBalances();
+                    this.updateMiningUI();
                 });
             },
 
@@ -1195,7 +1066,7 @@
                     window.AndroidBridge.showRewardedAd(tag);
                 } else {
                     this.toast("Sponsor video loading...", "info");
-                    setTimeout(() => window.onNativeAdRewarded(tag), 2000);
+                    setTimeout(() => window.onNativeAdRewarded(tag), 1500);
                 }
             },
 
@@ -1246,6 +1117,16 @@
 
             closeModals: function() {
                 document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+            },
+
+            copyReferralLink: function() {
+                const origin = window.location.origin + window.location.pathname;
+                const link = `${origin}?ref=${State.userId}`;
+                navigator.clipboard.writeText(link).then(() => {
+                    this.toast("Invite link copied!", "success");
+                }).catch(() => {
+                    this.toast(`Code: ${State.userId}`, "info");
+                });
             },
 
             toast: function(msg, type = 'info') {
