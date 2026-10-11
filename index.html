@@ -62,19 +62,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            opacity: 0;
-            filter: blur(12px);
-            transform: scale(0.97) translateY(12px);
-            transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                        filter 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-            pointer-events: none;
-        }
-
-        #app.app-revealed {
             opacity: 1;
-            filter: blur(0px);
-            transform: scale(1) translateY(0);
             pointer-events: auto;
         }
 
@@ -534,12 +522,12 @@
 </head>
 <body>
 
-    <!-- 100% CLEAN SPLASH OPENING -->
+    <!-- CLEAN SPLASH (NO DANGEROUS STRINGS) -->
     <div id="splash-screen">
         <div class="splash-logo-box">⚡</div>
         <h1 class="splash-brand-title">Energy<span>Rush</span></h1>
         <p class="splash-tagline">QUANTUM ENERGY SIMULATOR</p>
-        <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.1.0 • Quantum Simulation Engine</p>
+        <p style="font-size: 10px; color: #475569; position: absolute; bottom: 25px; letter-spacing: 0.5px;">v1.1.0 • Simulation Engine</p>
     </div>
 
     <div id="toast-container"></div>
@@ -587,7 +575,7 @@
         </div>
     </div>
 
-    <!-- MAIN APP WRAPPER -->
+    <!-- MAIN APP WRAPPER (DIRECT REVEAL - ZERO LOGIN SCREENS) -->
     <div id="app">
         <header>
             <div class="header-profile" onclick="App.openDailyClaimModal()">
@@ -653,7 +641,7 @@
                     </div>
                 </div>
 
-                <!-- CORE CARD -->
+                <!-- CORE GENERATOR CARD -->
                 <div class="mining-rig-card" id="mining-rig-wrapper">
                     <div class="sparkle-container"></div>
                     <div class="rig-top-bar">
@@ -833,7 +821,7 @@
         </nav>
     </div>
 
-    <!-- ZERO LOGIN - LOCAL GUEST ID ENGINE -->
+    <!-- ZERO LOGIN - AUTO LOCAL PLAYER ID ENGINE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getDatabase, ref, set, update, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
@@ -880,23 +868,19 @@
 
         window.App = {
             init: function() {
-                // Hide splash smoothly
+                // Splash screen
                 setTimeout(() => {
                     const splash = document.getElementById('splash-screen');
                     if (splash) splash.classList.add('splash-hidden');
-                }, 1800);
+                }, 1500);
 
-                // ⚡ ZERO LOGIN: Device-based Local Player ID (No email/password required!)
+                // ⚡ DEVICE AUTO GUEST ID: Zero email, zero password, zero signup screen
                 let localId = localStorage.getItem('minerush_player_id');
                 if (!localId) {
                     localId = "Player_" + Math.floor(100000 + Math.random() * 900000);
                     localStorage.setItem('minerush_player_id', localId);
                 }
                 State.userId = localId;
-
-                // Direct instant game reveal (Zero barriers)
-                const appWrapper = document.getElementById('app');
-                appWrapper.classList.add('app-revealed');
 
                 this.attachUserSession();
                 this.startMiningClock();
@@ -922,7 +906,7 @@
                         State.streakDay = parseInt(data.streakDay) || 1;
                         State.lastClaimDate = data.lastClaimDate || "";
                     } else {
-                        // First time launch: Initialize player data in Firebase
+                        // First time launch: Initialize guest data in Firebase
                         set(userRef, {
                             uid: uid,
                             coins: 0,
