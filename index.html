@@ -879,6 +879,17 @@
             50% { width: 65%; }
             100% { width: 100%; }
         }
+
+       /* 📺 Full-Screen Live Ad Viewer */
+        #modal-direct-ad { padding: 0 !important; background: #040711; z-index: 9999; }
+        .live-ad-container { width: 100vw; height: 100vh; display: flex; flex-direction: column; background: #000; position: relative; }
+        .live-ad-topbar { height: 60px; background: rgba(10, 16, 32, 0.98); border-bottom: 1.5px solid var(--accent-cyan); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 100; }
+        .live-ad-timer-pill { background: #FFD200; color: #000; font-size: 12px; font-weight: 800; padding: 5px 12px; border-radius: 20px; }
+        .live-ad-progress-track { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: rgba(255, 255, 255, 0.1); }
+        .live-ad-progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); transition: width 1s linear; }
+        .live-ad-frame-wrapper { flex: 1; width: 100%; height: 100%; position: relative; background: #090E1A; }
+        #direct-ad-iframe { width: 100%; height: 100%; border: none; background: #FFF; }
+        .live-ad-footer-bar { padding: 10px 16px; background: rgba(10, 16, 32, 0.98); border-top: 1px solid var(--border); display: flex; z-index: 100; }
     </style>
 </head>
 <body>
@@ -1481,6 +1492,34 @@
                 <span class="tab-name">Refer</span>
             </button>
         </nav>
+    </div>
+
+    <!-- 📺 LIVE FULL-SCREEN AD VIEWER -->
+    <div class="modal-backdrop" id="modal-direct-ad">
+        <div class="live-ad-container">
+            <div class="live-ad-topbar">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="status-pill status-approved" id="direct-ad-sponsor-badge" style="font-size:11px;">SPONSOR AD</span>
+                    <span style="font-size:12px; color:var(--text-secondary); font-weight:700;">Live View</span>
+                </div>
+                <div class="live-ad-timer-pill">
+                    <span>⏳</span> <span id="direct-ad-timer-text">15s</span>
+                </div>
+                <div class="live-ad-progress-track">
+                    <div class="live-ad-progress-fill" id="direct-ad-progress-bar"></div>
+                </div>
+            </div>
+
+            <div class="live-ad-frame-wrapper">
+                <iframe id="direct-ad-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+            </div>
+
+            <div class="live-ad-footer-bar">
+                <button class="btn-primary" id="btn-claim-direct-ad" disabled style="opacity:0.5; cursor:not-allowed;" onclick="App.claimDirectAdReward()">
+                    ⏳ Please wait 15s to claim reward...
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- WITHDRAWAL MODAL -->
@@ -2319,93 +2358,106 @@
                 this.triggerDirectAd(`task_${taskId}`);
             },
 
-            // ================= 🎯 DIRECT LINK & 15-SECOND COUNTDOWN ENGINE =================
+            // ================= 🎯 100% VISIBLE FULLSCREEN LIVE AD ENGINE =================
             triggerDirectAd: function(targetTag) {
                 SoundFX.playClick();
                 const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
-                
-                // 1. Determine Ad Network & Target URL from Admin Settings
+                State.pendingActionTag = tag;
+
+                // 1. Admin Panel Se URL aur Sponsor Name Uthana
+                const links = State.admin.ad_links || {};
                 let adUrl = "";
                 let sponsorName = "Direct Sponsor";
 
-                if (tag === 'mining' || tag === 'upgrade' || tag === 'swap' || tag === 'task_2') {
-                    // RichAds Channel
-                    adUrl = State.admin.ad_links.richads_url || "https://richads.com";
+                if (tag === 'mining') {
+                    adUrl = links.mining_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Mining Sponsor";
+                } else if (tag === 'upgrade') {
+                    adUrl = links.upgrade_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Upgrade Sponsor";
+                } else if (tag === 'swap') {
+                    adUrl = links.swap_url || links.richads_url || "https://uplcm.com/4/10010968";
+                    sponsorName = "Swap Sponsor";
+                } else if (tag === 'daily_claim') {
+                    adUrl = links.daily_claim_url || links.monetag_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Daily Streak Sponsor";
+                } else if (tag === 'task_1') {
+                    adUrl = links.task1_url || links.monetag_url || "https://uplcm.com/4/10010970";
+                    sponsorName = "Monetag Partner";
+                } else if (tag === 'task_2') {
+                    adUrl = links.task2_url || links.richads_url || "https://uplcm.com/4/10010966";
                     sponsorName = "RichAds Partner";
                 } else {
-                    // Monetag Channel (daily_claim, task_1)
-                    adUrl = State.admin.ad_links.monetag_url || "https://monetag.com";
-                    sponsorName = "Monetag Partner";
+                    adUrl = links.monetag_url || links.richads_url || "https://uplcm.com/4/10010966";
                 }
 
-                // 2. Open Direct Link Safely (Background Tab / Browser)
-                try {
-                    window.open(adUrl, '_blank');
-                } catch (e) {
-                    console.log("Direct link open fallback", e);
-                }
+                // 2. Iframe me Live Ad Webpage load karein
+                const iframe = document.getElementById('direct-ad-iframe');
+                if (iframe) iframe.src = adUrl;
 
-                // 3. Show In-App 15-Second Smart Countdown Modal
-                this.showDirectAdModal(sponsorName, tag);
-            },
-
-            showDirectAdModal: function(sponsorName, tag) {
+                // 3. Full-Screen Live Ad Screen Open Karein
                 const modal = document.getElementById('modal-direct-ad');
+                if (modal) modal.classList.add('open');
+
                 const badge = document.getElementById('direct-ad-sponsor-badge');
-                const timerBadge = document.getElementById('direct-ad-timer-badge');
+                if (badge) badge.innerText = sponsorName.toUpperCase();
+
+                // 4. Timer Countdown Setup
+                const totalSeconds = parseInt(links.timer_seconds) || 15;
+                State.directAdTimeLeft = totalSeconds;
+
+                const timerText = document.getElementById('direct-ad-timer-text');
                 const progressBar = document.getElementById('direct-ad-progress-bar');
                 const claimBtn = document.getElementById('btn-claim-direct-ad');
 
-                badge.innerText = sponsorName.toUpperCase();
-                modal.classList.add('open');
-
-                if (State.directAdTimerInterval) {
-                    clearInterval(State.directAdTimerInterval);
+                if (claimBtn) {
+                    claimBtn.disabled = true;
+                    claimBtn.style.opacity = "0.5";
+                    claimBtn.style.cursor = "not-allowed";
+                    claimBtn.style.background = "#1C2740";
+                    claimBtn.style.color = "#64748B";
+                    claimBtn.innerText = `⏳ Please wait ${totalSeconds}s to claim reward...`;
                 }
+                if (progressBar) progressBar.style.width = "0%";
 
-                const totalSeconds = parseInt(State.admin.ad_links.timer_seconds) || 15;
-                State.directAdTimeLeft = totalSeconds;
-
-                claimBtn.disabled = true;
-                claimBtn.style.opacity = "0.5";
-                claimBtn.style.cursor = "not-allowed";
-                claimBtn.style.background = "#1C2740";
-                claimBtn.innerText = `⏳ Please wait ${totalSeconds}s...`;
-                progressBar.style.width = "0%";
+                if (State.directAdTimerInterval) clearInterval(State.directAdTimerInterval);
 
                 State.directAdTimerInterval = setInterval(() => {
                     State.directAdTimeLeft--;
                     const progress = ((totalSeconds - State.directAdTimeLeft) / totalSeconds) * 100;
-                    progressBar.style.width = `${progress}%`;
+                    if (progressBar) progressBar.style.width = `${progress}%`;
 
                     if (State.directAdTimeLeft > 0) {
-                        timerBadge.innerText = `${State.directAdTimeLeft}s`;
-                        claimBtn.innerText = `⏳ Please wait ${State.directAdTimeLeft}s...`;
+                        if (timerText) timerText.innerText = `${State.directAdTimeLeft}s`;
+                        if (claimBtn) claimBtn.innerText = `⏳ Please wait ${State.directAdTimeLeft}s to claim reward...`;
                     } else {
                         clearInterval(State.directAdTimerInterval);
-                        timerBadge.innerText = "Completed! ✅";
-                        timerBadge.style.background = "#10B981";
-                        timerBadge.style.color = "#FFF";
-
-                        claimBtn.disabled = false;
-                        claimBtn.style.opacity = "1";
-                        claimBtn.style.cursor = "pointer";
-                        claimBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
-                        claimBtn.style.color = "#040711";
-                        claimBtn.innerText = "🎉 Claim Reward & Continue";
-                        SoundFX.playCoin();
+                        if (timerText) timerText.innerText = "Done! ✅";
+                        if (claimBtn) {
+                            claimBtn.disabled = false;
+                            claimBtn.style.opacity = "1";
+                            claimBtn.style.cursor = "pointer";
+                            claimBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
+                            claimBtn.style.color = "#040711";
+                            claimBtn.innerText = "🎉 Claim Reward & Close";
+                            SoundFX.playCoin(); // 🪙 Sound effect intact!
+                        }
                     }
                 }, 1000);
             },
 
             claimDirectAdReward: function() {
-                SoundFX.playSuccess();
+                SoundFX.playSuccess(); // 🔔 Success fanfare sound intact!
                 const modal = document.getElementById('modal-direct-ad');
-                modal.classList.remove('open');
+                if (modal) modal.classList.remove('open');
+
+                const iframe = document.getElementById('direct-ad-iframe');
+                if (iframe) iframe.src = "about:blank"; // Screen clean close
+
                 if (State.directAdTimerInterval) clearInterval(State.directAdTimerInterval);
 
-                const rewardTag = State.pendingAdReward ? State.pendingAdReward.type : "mining";
-                window.onNativeAdRewarded(rewardTag);
+                const tag = State.pendingActionTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
+                window.onNativeAdRewarded(tag);
             },
 
             creditCoins: async function(amount, reason) {
