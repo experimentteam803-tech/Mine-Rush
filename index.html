@@ -906,6 +906,23 @@
 
     <div id="toast-container"></div>
 
+    <!-- 🚫 PERMANENT VPN & PROXY BLOCK MODAL -->
+    <div class="modal-backdrop" id="modal-vpn-block" style="z-index: 99999; backdrop-filter: blur(25px); background: rgba(4, 7, 17, 0.98);">
+        <div class="modal-cyber-sheet" style="text-align: center; border-color: var(--accent-red); box-shadow: 0 0 50px rgba(239, 68, 68, 0.4);">
+            <div style="font-size: 54px; margin-bottom: 10px;">🛡️</div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #FFF;">VPN / PROXY DETECTED!</h2>
+            <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 12px; margin: 14px 0; font-size: 13px; color: #FCA5A5; line-height: 1.5;">
+                To protect quantum network security and prevent ad fraud, <strong>VPNs, Proxies, and Private DNS are strictly prohibited</strong> on MineRush.
+            </div>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;">
+                Please disconnect your VPN connection and completely restart the application to continue mining.
+            </p>
+            <button class="btn-primary" style="background: linear-gradient(135deg, #EF4444, #B91C1C); color: #FFF;" onclick="location.reload()">
+                🔄 I Turned Off VPN (Retry)
+            </button>
+        </div>
+    </div>
+
     <!-- ================= LIVE IN-APP UPDATE MODAL ================= -->
     <div class="modal-backdrop" id="modal-app-update" style="z-index: 500;">
         <div class="modal-cyber-sheet" style="text-align: center;">
@@ -1697,6 +1714,9 @@
             streakDay: 1,
             lastClaimDate: null,
             canClaimToday: true,
+            isVpnActive: false,
+            isTier1: false,
+            userCountry: 'IN',
             isReviewModeActive: false,
             // Admin Settings from Firebase
             admin: {
@@ -1742,6 +1762,7 @@
                 }
 
                 this.listenToAdminSettings();
+                this.detectUserCountryAndVPN();
 
                 onAuthStateChanged(auth, (user) => {
                     const authModal = document.getElementById('modal-auth');
@@ -1775,6 +1796,109 @@
                 this.startMiningClock();
                 this.startCooldownTimers();
                 document.body.addEventListener('click', () => SoundFX.init(), { once: true });
+            },
+
+            // ================= 🛡️ ANTI-VPN & TIER-1 COUNTRY ENGINE =================
+            detectUserCountryAndVPN: async function() {
+                // 1. Android Native Hardware VPN Check
+                if (window.AndroidBridge && typeof window.AndroidBridge.isVpnConnected === 'function') {
+                    if (window.AndroidBridge.isVpnConnected()) {
+                        this.triggerVpnLockdown();
+                        return;
+                    }
+                }
+
+                // 2. IP Threat, Proxy & Country Check (Zero Permission Required)
+                try {
+                    const res = await fetch('https://ipwho.is/');
+                    const data = await res.json();
+
+                    // Agar user ne koi bhi VPN, Proxy ya Fake IP lagayi hai toh turant block karo
+                    if (data.security && (data.security.vpn || data.security.proxy || data.security.tor || data.security.hosting)) {
+                        this.triggerVpnLockdown();
+                        return;
+                    }
+
+                    // Country Detection
+                    State.userCountry = data.country_code || 'IN';
+
+                    // USA, Australia, UK, Canada, Germany, etc.
+                    const TIER1 = ['US', 'GB', 'AU', 'CA', 'DE', 'FR', 'NL', 'NZ', 'CH', 'SE', 'NO', 'IT', 'ES'];
+                    if (TIER1.includes(State.userCountry)) {
+                        this.applyTier1Economy();
+                    } else {
+                        State.isTier1 = false;
+                    }
+                } catch (e) {
+                    State.isTier1 = false; // Fallback
+                }
+            },
+
+            triggerVpnLockdown: function() {
+                State.isVpnActive = true;
+                const vpnModal = document.getElementById('modal-vpn-block');
+                if (vpnModal) vpnModal.classList.add('open');
+
+                // Saare mining buttons disable kar do
+                const mineBtn = document.getElementById('btn-mine-action');
+                if (mineBtn) {
+                    mineBtn.disabled = true;
+                    mineBtn.innerText = "⚠️ VPN Detected (Mining Blocked)";
+                }
+            },
+
+            applyTier1Economy: function() {
+                State.isTier1 = true;
+                State.admin.rates.coin_to_inr = 100; // 100 Coins = $1.00
+                State.admin.withdrawals.min_upi_inr = 100; // Min $100
+
+                // 1. INR Box Hide Karo, Sirf USD ($) Dikhao
+                const inrBox = document.getElementById('curr-inr-title')?.parentElement;
+                if (inrBox) inrBox.style.display = 'none';
+
+                const inrCell = document.getElementById('wallet-inr-val')?.parentElement;
+                if (inrCell) inrCell.style.display = 'none';
+
+                const rateBadge = document.getElementById('rate-badge');
+                if (rateBadge) rateBadge.innerText = "100 Coins = $1.00";
+
+                // 2. Withdrawal Modal Me PayPal & Crypto Set Karo
+                const tabUpi = document.getElementById('tab-upi');
+                if (tabUpi) {
+                    tabUpi.innerHTML = `
+                        <div class="tab-title">🅿️ PayPal Cashout</div>
+                        <div class="tab-sub">Min $100 (USD)</div>
+                    `;
+                }
+                const tabTon = document.getElementById('tab-ton');
+                if (tabTon) {
+                    tabTon.innerHTML = `
+                        <div class="tab-title">💎 Crypto (USDT / BTC)</div>
+                        <div class="tab-sub">Min $100 (Instant)</div>
+                    `;
+                }
+                const labelDest = document.getElementById('withdraw-label-dest');
+                if (labelDest) labelDest.innerText = "YOUR PAYPAL EMAIL / CRYPTO ADDRESS";
+
+                // 3. Dynamic Yield Curve Hook ($50 Fast + $50 Slow)
+                this.updateTier1Progression();
+            },
+
+            updateTier1Progression: function() {
+                if (!State.isTier1) return;
+                const rigRateText = document.getElementById('mining-rate-text');
+
+                // Stage 1 (Coins < 5,000 / $50): 5X SUPER BOOST (Fast $50)
+                if (State.coins < 5000) {
+                    RIG_TIERS[1].hourlyYield = 500;
+                    RIG_TIERS[1].ratePerSec = 0.1388;
+                    if (rigRateText) rigRateText.innerText = "RATE: ~500 C/h (⚡ 5X BOOST)";
+                } else {
+                    // Stage 2 (Coins >= 5,000 / $50): Normal Speed (Next $50 Takes 7-8 Days)
+                    RIG_TIERS[1].hourlyYield = 100;
+                    RIG_TIERS[1].ratePerSec = 0.0277;
+                    if (rigRateText) rigRateText.innerText = "RATE: ~100 C/h (Standard Core)";
+                }
             },
 
             listenToAdminSettings: function() {
@@ -2342,6 +2466,11 @@
             // ================= 🎯 100% VISIBLE FULLSCREEN LIVE AD ENGINE =================
             triggerDirectAd: function(targetTag) {
                 SoundFX.playClick();
+                // 🛡️ VPN Guard: Agar VPN on hai toh ad link open mat hone do
+                if (State.isVpnActive) {
+                    this.triggerVpnLockdown();
+                    return;
+                }
                 const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
                 State.pendingActionTag = tag;
 
@@ -2519,6 +2648,17 @@
                 inputDest.value = '';
                 document.getElementById('withdraw-amount-input').value = '';
 
+                // Tier-1 Country Min $100 Check
+                if (State.isTier1) {
+                    if (amount < 100) {
+                        this.toast("Minimum withdrawal for PayPal / Crypto is $100.00", "error");
+                        return;
+                    }
+                    if (amount > State.usdt) {
+                        this.toast("Insufficient USD balance! Convert coins first.", "error");
+                        return;
+                    }
+                }
                 if (method === 'UPI') {
                     tabUpi.classList.add('selected');
                     tabTon.classList.remove('selected');
