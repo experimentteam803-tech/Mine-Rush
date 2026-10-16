@@ -854,35 +854,187 @@
             border-radius: 10px;
         }
 
+        /* ================= EXPANDABLE ACCORDION TASK CARDS ================= */
         .task-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 18px;
+            background: linear-gradient(145deg, rgba(16, 26, 52, 0.88), rgba(9, 15, 30, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 20px;
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            gap: 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .task-card-top { display: flex; justify-content: space-between; align-items: center; }
-        .task-icon { width: 50px; height: 50px; border-radius: 16px; object-fit: cover; border: 1px solid var(--border); background: var(--bg-card-subtle); flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
-        .task-info { flex: 1; margin-left: 14px; min-width: 0; }
-        .task-name { font-size: 15px; font-weight: 800; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .task-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12px; }
+        .task-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            user-select: none;
+        }
 
-        .task-steps-box {
-            background: rgba(4, 7, 17, 0.65);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px;
+        .task-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(4, 7, 17, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .task-icon-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .task-info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .task-main-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #FFF;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-badges-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .task-cat-tag {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cat-daily { background: rgba(255, 210, 0, 0.15); color: var(--accent-gold); border: 1px solid rgba(255, 210, 0, 0.3); }
+        .cat-social { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.3); }
+        .cat-app { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+
+        .task-header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .task-reward-pill {
+            background: linear-gradient(135deg, rgba(255, 210, 0, 0.2), rgba(245, 158, 11, 0.15));
+            border: 1px solid rgba(255, 210, 0, 0.5);
+            color: var(--accent-gold);
+            font-size: 12px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(255, 210, 0, 0.15);
+        }
+
+        .task-accordion-arrow {
             font-size: 13px;
-            line-height: 1.6;
+            color: var(--text-muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .task-card-body {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-top 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .task-card.expanded {
+            border-color: rgba(0, 242, 254, 0.45);
+            background: linear-gradient(145deg, rgba(20, 32, 62, 0.95), rgba(10, 16, 32, 0.98));
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 20px rgba(0, 242, 254, 0.15);
+        }
+
+        .task-card.expanded .task-accordion-arrow {
+            transform: rotate(180deg);
+            color: var(--accent-cyan);
+        }
+
+        .task-card.expanded .task-card-body {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+        }
+
+        .task-instruction-list {
+            background: rgba(4, 7, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 12px;
+            line-height: 1.5;
             color: var(--text-secondary);
         }
 
-        .step-row { display: flex; gap: 10px; margin-bottom: 6px; }
-        .step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-cyan); color: #040711; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+        .step-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            color: #040711;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .task-live-timer {
+            background: rgba(255, 210, 0, 0.12);
+            border: 1px solid rgba(255, 210, 0, 0.35);
+            border-radius: 12px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
 
         /* Wallet & Swap */
         .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -2246,6 +2398,11 @@
             streakDay: 1,
             lastClaimDate: null,
             canClaimToday: true,
+            currentTaskCategory: 'all',
+            allTasksCache: {},
+            userCompletedTasks: {},
+            userPendingTasks: {},
+            runningTimers: {},
             isVpnActive: false,
             isTier1: false,
             userCountry: 'IN',
@@ -3326,48 +3483,291 @@
                 });
             },
 
+            // ================= 📋 SMART ACCORDION TASK ENGINE =================
             listenToTasks: function() {
+                const uid = State.userId;
+                
+                onValue(ref(database, `users/${uid}/completed_tasks`), (snap) => {
+                    State.userCompletedTasks = snap.val() || {};
+                    this.renderAllTasks();
+                });
+
+                onValue(ref(database, `users/${uid}/pending_tasks`), (snap) => {
+                    State.userPendingTasks = snap.val() || {};
+                    this.renderAllTasks();
+                });
+
                 onValue(ref(database, 'tasks'), (snap) => {
-                    const c = document.getElementById('tasks-container');
-                    c.innerHTML = '';
-                    const tasks = snap.val();
-                    if (!tasks) {
-                        c.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center; padding:20px;">No partner tasks available today.</p>`;
-                        return;
+                    State.allTasksCache = snap.val() || {};
+                    this.renderAllTasks();
+                });
+            },
+
+            filterTasks: function(category, element) {
+                SoundFX.playClick();
+                State.currentTaskCategory = category;
+                
+                document.querySelectorAll('#task-category-chips .chip-tab').forEach(tab => tab.classList.remove('active'));
+                if (element) element.classList.add('active');
+
+                this.renderAllTasks();
+            },
+
+            toggleTaskCard: function(taskId) {
+                SoundFX.playClick();
+                const card = document.getElementById(`task-card-${taskId}`);
+                if (card) {
+                    card.classList.toggle('expanded');
+                }
+            },
+
+            renderAllTasks: function() {
+                const container = document.getElementById('tasks-container');
+                if (!container) return;
+                container.innerHTML = '';
+
+                const tasks = State.allTasksCache;
+                const keys = Object.keys(tasks);
+
+                if (keys.length === 0) {
+                    container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center; padding:25px;">No partner tasks available today.</p>`;
+                    return;
+                }
+
+                const filteredKeys = keys.filter(id => {
+                    const t = tasks[id];
+                    const cat = (t.category || 'social').toLowerCase();
+                    if (State.currentTaskCategory === 'all') return true;
+                    return cat === State.currentTaskCategory;
+                });
+
+                if (filteredKeys.length === 0) {
+                    container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center; padding:25px;">No tasks in this category.</p>`;
+                    return;
+                }
+
+                filteredKeys.forEach(id => {
+                    const t = tasks[id];
+                    const cat = (t.category || 'social').toLowerCase();
+                    const isCompleted = !!State.userCompletedTasks[id];
+                    const isPending = !!State.userPendingTasks[id];
+                    const timerRunning = State.runningTimers[id];
+
+                    const card = document.createElement('div');
+                    card.className = 'task-card';
+                    card.id = `task-card-${id}`;
+
+                    let catLabel = 'Social';
+                    let catClass = 'cat-social';
+                    if (cat === 'daily') { catLabel = 'Daily'; catClass = 'cat-daily'; }
+                    else if (cat === 'app') { catLabel = 'App Install'; catClass = 'cat-app'; }
+
+                    let stepsHtml = '';
+                    if (t.instructions && Array.isArray(t.instructions)) {
+                        stepsHtml = t.instructions.map((step, idx) => `
+                            <div class="task-step-item">
+                                <span class="step-circle">${idx + 1}</span>
+                                <span>${step}</span>
+                            </div>
+                        `).join('');
+                    } else if (typeof t.instructions === 'string') {
+                        stepsHtml = t.instructions.split('\n').filter(s => s.trim()).map((step, idx) => `
+                            <div class="task-step-item">
+                                <span class="step-circle">${idx + 1}</span>
+                                <span>${step.trim()}</span>
+                            </div>
+                        `).join('');
+                    } else {
+                        stepsHtml = `
+                            <div class="task-step-item">
+                                <span class="step-circle">1</span>
+                                <span>Complete task requirements and return to claim.</span>
+                            </div>
+                        `;
                     }
-                    Object.keys(tasks).forEach(id => {
-                        const t = tasks[id];
-                        const card = document.createElement('div');
-                        card.className = 'task-card';
 
-                        let instructionsHtml = '';
-                        if (t.instructions && Array.isArray(t.instructions)) {
-                            instructionsHtml = `<div class="task-steps-box">` + 
-                                t.instructions.map((step, idx) => `
-                                        <div class="step-row">
-                                            <div class="step-num">${idx + 1}</div>
-                                            <div>${step}</div>
-                                        </div>
-                                    `).join('') + `</div>`;
-                        }
+                    let actionButtonHtml = '';
+                    if (isCompleted) {
+                        actionButtonHtml = `<button class="btn-primary" disabled style="background:#172538; color:#10B981; border:1px solid #10B981;">✅ Completed</button>`;
+                    } else if (isPending) {
+                        actionButtonHtml = `<button class="btn-primary" disabled style="background:#262115; color:#F59E0B; border:1px solid #F59E0B;">⏳ Under Verification (Pending Approval)</button>`;
+                    } else if (timerRunning) {
+                        actionButtonHtml = `
+                            <div class="task-live-timer">
+                                <span>⏱️ Task In Progress...</span>
+                                <span id="timer-text-${id}">${timerRunning.timeLeft}s</span>
+                            </div>
+                        `;
+                    } else {
+                        actionButtonHtml = `
+                            <button class="btn-primary" onclick="event.stopPropagation(); App.startPartnerTask('${id}')">
+                                🚀 Start Task (+${t.reward || 100} Coins)
+                            </button>
+                        `;
+                    }
 
-                        card.innerHTML = `
-                            <div class="task-card-top">
-                                <img class="task-icon" src="${t.logoUrl || 'https://via.placeholder.com/48'}">
-                                <div class="task-info">
-                                    <div class="task-name">${t.name}</div>
-                                    <div class="task-meta">
-                                        <span style="color:var(--accent-gold); font-weight:800;">+${t.reward || 100} Coins</span>
-                                        <span style="color:var(--text-muted);">⏱️ ~2 mins</span>
+                    card.innerHTML = `
+                        <div class="task-card-header" onclick="App.toggleTaskCard('${id}')">
+                            <div class="task-header-left">
+                                <div class="task-icon-box">
+                                    ${t.logoUrl ? `<img src="${t.logoUrl}" alt="Task">` : (cat === 'daily' ? '📅' : (cat === 'app' ? '📱' : '🎯'))}
+                                </div>
+                                <div class="task-info-block">
+                                    <div class="task-main-name">${t.name}</div>
+                                    <div class="task-badges-row">
+                                        <span class="task-cat-tag ${catClass}">${catLabel}</span>
+                                        <span style="font-size:11px; color:var(--text-muted);">⏱️ ${cat === 'daily' ? '60s' : (cat === 'social' ? '20s' : 'Instant')}</span>
                                     </div>
                                 </div>
                             </div>
-                            ${instructionsHtml}
-                            <button class="btn-primary" onclick="SoundFX.playClick(); window.open('${t.link || '#'}', '_blank')">Complete Task</button>
-                        `;
-                        c.appendChild(card);
-                    });
+                            <div class="task-header-right">
+                                <span class="task-reward-pill">+${t.reward || 100} C</span>
+                                <span class="task-accordion-arrow">▼</span>
+                            </div>
+                        </div>
+
+                        <div class="task-card-body">
+                            <div class="task-instruction-list">
+                                <div style="font-size:11px; font-weight:800; color:var(--accent-cyan); letter-spacing:0.5px; margin-bottom:4px;">INSTRUCTIONS:</div>
+                                ${stepsHtml}
+                            </div>
+                            <div id="task-action-wrapper-${id}">
+                                ${actionButtonHtml}
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(card);
                 });
+            },
+
+            // 🌐 EXTERNAL APP & BROWSER OPENER (Telegram & Chrome Bahar Bhejne ke liye)
+            openExternalUrl: function(rawUrl) {
+                if (!rawUrl || rawUrl === '#') return;
+                let url = rawUrl.trim();
+
+                // 1. Agar 'https://' nahi laga toh auto-add karein (404 Error Fix)
+                if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('tg://')) {
+                    url = 'https://' + url;
+                }
+
+                // 2. Android Native Bridge support
+                if (window.AndroidBridge && typeof window.AndroidBridge.openBrowser === 'function') {
+                    window.AndroidBridge.openBrowser(url);
+                    return;
+                }
+
+                // 3. App se bahar System Browser / Telegram open karne ke liye Anchor trigger
+                const a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => a.remove(), 200);
+            },
+
+            startPartnerTask: function(taskId) {
+                SoundFX.playClick();
+                const t = State.allTasksCache[taskId];
+                if (!t) return;
+
+                const cat = (t.category || 'social').toLowerCase();
+                const link = t.link || '#';
+
+                // App se bahar bhejein
+                this.openExternalUrl(link);
+
+                const duration = cat === 'daily' ? 60 : (cat === 'social' ? 20 : 30);
+
+                State.runningTimers[taskId] = {
+                    timeLeft: duration,
+                    interval: null
+                };
+
+                const card = document.getElementById(`task-card-${taskId}`);
+                if (card && !card.classList.contains('expanded')) {
+                    card.classList.add('expanded');
+                }
+
+                this.renderAllTasks();
+
+                const timerObj = State.runningTimers[taskId];
+                timerObj.interval = setInterval(() => {
+                    timerObj.timeLeft--;
+
+                    const timerEl = document.getElementById(`timer-text-${taskId}`);
+                    if (timerEl) {
+                        timerEl.innerText = `${timerObj.timeLeft}s`;
+                    }
+
+                    if (timerObj.timeLeft <= 0) {
+                        clearInterval(timerObj.interval);
+                        delete State.runningTimers[taskId];
+
+                        if (cat === 'daily') {
+                            this.autoCreditDailyTask(taskId, t);
+                        } else {
+                            this.showTaskVerifyButton(taskId, t);
+                        }
+                    }
+                }, 1000);
+            },
+
+            autoCreditDailyTask: async function(taskId, task) {
+                SoundFX.playSuccess();
+                const reward = parseInt(task.reward) || 50;
+
+                await update(ref(database, `users/${State.userId}/completed_tasks/${taskId}`), {
+                    completedAt: Date.now(),
+                    reward: reward,
+                    name: task.name
+                });
+
+                await this.creditCoins(reward, `Daily Task: ${task.name}`);
+                this.toast(`🎉 Daily Task Completed! +${reward} Coins Added`, "success");
+                this.renderAllTasks();
+            },
+
+            showTaskVerifyButton: function(taskId, task) {
+                SoundFX.playCoin();
+                const wrapper = document.getElementById(`task-action-wrapper-${taskId}`);
+                if (wrapper) {
+                    wrapper.innerHTML = `
+                        <button class="btn-primary btn-gold" onclick="event.stopPropagation(); App.submitTaskForVerification('${taskId}')">
+                            🛡️ Verify Task (+${task.reward} C)
+                        </button>
+                    `;
+                }
+            },
+
+            submitTaskForVerification: async function(taskId) {
+                SoundFX.playClick();
+                const t = State.allTasksCache[taskId];
+                if (!t) return;
+
+                await update(ref(database, `users/${State.userId}/pending_tasks/${taskId}`), {
+                    submittedAt: Date.now(),
+                    taskName: t.name,
+                    reward: t.reward || 100
+                });
+
+                const submissionRef = push(ref(database, 'task_submissions'));
+                await set(submissionRef, {
+                    submissionId: submissionRef.key,
+                    userId: State.userId,
+                    userEmail: State.user.email,
+                    taskId: taskId,
+                    taskName: t.name,
+                    category: t.category || 'social',
+                    reward: parseInt(t.reward) || 100,
+                    status: 'Pending',
+                    timestamp: Date.now()
+                });
+
+                SoundFX.playSuccess();
+                this.toast("Task submitted! Admin will verify and credit coins soon.", "info");
+                this.renderAllTasks();
             },
 
             switchTab: function(viewId) {
@@ -3398,7 +3798,7 @@
 
             openSupportLink: function() {
                 SoundFX.playClick();
-                window.open("https://t.me/MiningFatherhelp", "_blank");
+                this.openExternalUrl("https://t.me/MiningFatherhelp");
             },
 
             closeModals: function() {
