@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <title>MineRush - NextGen Quantum Cloud Mining</title>
-    <!-- RichAds SDK -->
-    <script type="module" src="https://richinfo.co/richpartners/push/js/rp-cl-ob.js?pubid=996843&siteid=410221&niche=33" async data-cfasync="false"></script>
 
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -817,19 +815,24 @@
         }
         .chip-tab:active { transform: scale(0.94); }
 
-        /* TOP REWARDED DIRECT AD TASKS ON TASKS PAGE */
-        .top-ad-tasks-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 16px; }
-        @media (min-width: 480px) { .top-ad-tasks-grid { grid-template-columns: 1fr 1fr; } }
+        /* 🪓 SPLIT-STYLE COMPACT AD TASKS (Side-by-Side) */
+        .top-ad-tasks-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            margin-bottom: 14px; 
+        }
 
         .ad-task-card {
-            background: linear-gradient(135deg, rgba(20, 32, 62, 0.9), rgba(10, 16, 32, 0.96));
+            background: linear-gradient(145deg, rgba(20, 32, 62, 0.9), rgba(10, 16, 32, 0.96));
             border: 1px solid rgba(0, 242, 254, 0.25);
-            border-radius: 22px;
-            padding: 18px;
+            border-radius: 16px;
+            padding: 10px 10px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            justify-content: space-between;
+            gap: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
         }
@@ -838,48 +841,49 @@
             content: '';
             position: absolute;
             top: 0; left: 0;
-            width: 4px; height: 100%;
+            width: 3px; height: 100%;
             background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
         }
 
-        .ad-task-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .ad-task-title { font-size: 14px; font-weight: 800; color: #FFF; }
-        .ad-task-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .ad-task-card-top { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 2px; 
+        }
+        .ad-task-title { font-size: 12px; font-weight: 800; color: #FFF; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ad-task-sub { font-size: 10px; color: var(--text-muted); }
 
         .cooldown-badge {
             background: rgba(239, 68, 68, 0.16);
             border: 1px solid rgba(239, 68, 68, 0.4);
             color: #F87171;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            display: inline-block;
         }
 
-        /* ================= EXPANDABLE ACCORDION TASK CARDS ================= */
-        .task-card {
+        /* ================= CLEAN COMPACT TASK CARDS ================= */
+        .task-compact-card {
             background: linear-gradient(145deg, rgba(16, 26, 52, 0.88), rgba(9, 15, 30, 0.95));
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
             padding: 14px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .task-card-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
-            user-select: none;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+        .task-compact-card:active {
+            transform: scale(0.97) translateY(1px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.3);
         }
 
-        .task-header-left {
+        .task-compact-left {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -901,13 +905,12 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-
         .task-icon-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .task-info-block {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
             min-width: 0;
         }
 
@@ -923,14 +926,14 @@
         .task-badges-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .task-cat-tag {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 800;
             padding: 2px 7px;
-            border-radius: 8px;
+            border-radius: 7px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -938,7 +941,7 @@
         .cat-social { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.3); }
         .cat-app { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
 
-        .task-header-right {
+        .task-compact-right {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -946,7 +949,7 @@
         }
 
         .task-reward-pill {
-            background: linear-gradient(135deg, rgba(255, 210, 0, 0.2), rgba(245, 158, 11, 0.15));
+            background: linear-gradient(135deg, rgba(255, 210, 0, 0.22), rgba(245, 158, 11, 0.15));
             border: 1px solid rgba(255, 210, 0, 0.5);
             color: var(--accent-gold);
             font-size: 12px;
@@ -956,56 +959,30 @@
             box-shadow: 0 0 10px rgba(255, 210, 0, 0.15);
         }
 
-        .task-accordion-arrow {
-            font-size: 13px;
-            color: var(--text-muted);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .task-card-body {
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, margin-top 0.3s ease;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .task-card.expanded {
-            border-color: rgba(0, 242, 254, 0.45);
-            background: linear-gradient(145deg, rgba(20, 32, 62, 0.95), rgba(10, 16, 32, 0.98));
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 20px rgba(0, 242, 254, 0.15);
-        }
-
-        .task-card.expanded .task-accordion-arrow {
-            transform: rotate(180deg);
+        .task-open-arrow {
+            font-size: 20px;
             color: var(--accent-cyan);
+            font-weight: 700;
+            line-height: 1;
         }
 
-        .task-card.expanded .task-card-body {
-            max-height: 600px;
-            opacity: 1;
-            margin-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 14px;
-        }
-
+        /* Popup Instruction Styles */
         .task-instruction-list {
             background: rgba(4, 7, 17, 0.7);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
+            border-radius: 16px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .task-step-item {
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 1.5;
             color: var(--text-secondary);
         }
@@ -2125,7 +2102,7 @@
             <div class="live-ad-topbar">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="status-pill status-approved" id="direct-ad-sponsor-badge" style="font-size:11px;">SPONSOR AD</span>
-                    <span style="font-size:12px; color:var(--text-secondary); font-weight:700;">Live View</span>
+                    <button class="icon-btn" onclick="App.openDirectAdInExternalBrowser()" title="Open in Phone Browser" style="width:34px; height:34px; font-size:14px;">🌐</button>
                 </div>
                 <div class="live-ad-timer-pill">
                     <span>⏳</span> <span id="direct-ad-timer-text">15s</span>
@@ -2136,7 +2113,8 @@
             </div>
 
             <div class="live-ad-frame-wrapper">
-                <iframe id="direct-ad-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+                <!-- Sandbox permissions updated to let user link clicks break out into mobile browser directly -->
+                <iframe id="direct-ad-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe>
             </div>
 
             <div class="live-ad-footer-bar">
@@ -2144,6 +2122,30 @@
                     ⏳ Please wait 15s to claim reward...
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- ================= 📋 TASK DETAILS POPUP MODAL ================= -->
+    <div class="modal-backdrop" id="modal-task-details" style="z-index: 350;">
+        <div class="modal-cyber-sheet">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="task-icon-box" id="task-modal-icon">🎯</div>
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 800; color: #FFF;" id="task-modal-name">Task Name</h3>
+                        <span class="task-cat-tag cat-social" id="task-modal-cat">Social</span>
+                    </div>
+                </div>
+                <span class="task-reward-pill" id="task-modal-reward">+100 C</span>
+            </div>
+
+            <div class="task-instruction-list">
+                <div style="font-size: 11px; font-weight: 800; color: var(--accent-cyan); letter-spacing: 0.5px; margin-bottom: 4px;">LINE BY LINE INSTRUCTIONS:</div>
+                <div id="task-modal-steps" style="display: flex; flex-direction: column; gap: 10px;"></div>
+            </div>
+
+            <div id="task-modal-action-wrapper"></div>
+            <button class="btn-primary btn-outline" style="margin-top: 10px;" onclick="App.closeModals()">Close</button>
         </div>
     </div>
 
@@ -3515,14 +3517,16 @@
                 this.renderAllTasks();
             },
 
-            toggleTaskCard: function(taskId) {
+            // 🌐 Live Ad ko phone ke Original Browser me open karne ka function
+            openDirectAdInExternalBrowser: function() {
                 SoundFX.playClick();
-                const card = document.getElementById(`task-card-${taskId}`);
-                if (card) {
-                    card.classList.toggle('expanded');
+                const iframe = document.getElementById('direct-ad-iframe');
+                if (iframe && iframe.src && iframe.src !== 'about:blank') {
+                    this.openExternalUrl(iframe.src);
                 }
             },
 
+            // 🎯 Compact List Card View (Sirf Name, Logo, Reward)
             renderAllTasks: function() {
                 const container = document.getElementById('tasks-container');
                 if (!container) return;
@@ -3553,94 +3557,113 @@
                     const cat = (t.category || 'social').toLowerCase();
                     const isCompleted = !!State.userCompletedTasks[id];
                     const isPending = !!State.userPendingTasks[id];
-                    const timerRunning = State.runningTimers[id];
 
                     const card = document.createElement('div');
-                    card.className = 'task-card';
-                    card.id = `task-card-${id}`;
+                    card.className = 'task-compact-card';
+                    card.onclick = () => App.openTaskDetailsModal(id);
 
                     let catLabel = 'Social';
                     let catClass = 'cat-social';
                     if (cat === 'daily') { catLabel = 'Daily'; catClass = 'cat-daily'; }
                     else if (cat === 'app') { catLabel = 'App Install'; catClass = 'cat-app'; }
 
-                    let stepsHtml = '';
-                    if (t.instructions && Array.isArray(t.instructions)) {
-                        stepsHtml = t.instructions.map((step, idx) => `
-                            <div class="task-step-item">
-                                <span class="step-circle">${idx + 1}</span>
-                                <span>${step}</span>
-                            </div>
-                        `).join('');
-                    } else if (typeof t.instructions === 'string') {
-                        stepsHtml = t.instructions.split('\n').filter(s => s.trim()).map((step, idx) => `
-                            <div class="task-step-item">
-                                <span class="step-circle">${idx + 1}</span>
-                                <span>${step.trim()}</span>
-                            </div>
-                        `).join('');
-                    } else {
-                        stepsHtml = `
-                            <div class="task-step-item">
-                                <span class="step-circle">1</span>
-                                <span>Complete task requirements and return to claim.</span>
-                            </div>
-                        `;
-                    }
-
-                    let actionButtonHtml = '';
+                    let statusBadge = `<span class="task-open-arrow">›</span>`;
                     if (isCompleted) {
-                        actionButtonHtml = `<button class="btn-primary" disabled style="background:#172538; color:#10B981; border:1px solid #10B981;">✅ Completed</button>`;
+                        statusBadge = `<span style="font-size:11px; color:#10B981; font-weight:800;">✅ Done</span>`;
                     } else if (isPending) {
-                        actionButtonHtml = `<button class="btn-primary" disabled style="background:#262115; color:#F59E0B; border:1px solid #F59E0B;">⏳ Under Verification (Pending Approval)</button>`;
-                    } else if (timerRunning) {
-                        actionButtonHtml = `
-                            <div class="task-live-timer">
-                                <span>⏱️ Task In Progress...</span>
-                                <span id="timer-text-${id}">${timerRunning.timeLeft}s</span>
-                            </div>
-                        `;
-                    } else {
-                        actionButtonHtml = `
-                            <button class="btn-primary" onclick="event.stopPropagation(); App.startPartnerTask('${id}')">
-                                🚀 Start Task (+${t.reward || 100} Coins)
-                            </button>
-                        `;
+                        statusBadge = `<span style="font-size:11px; color:#F59E0B; font-weight:800;">⏳ Review</span>`;
                     }
 
                     card.innerHTML = `
-                        <div class="task-card-header" onclick="App.toggleTaskCard('${id}')">
-                            <div class="task-header-left">
-                                <div class="task-icon-box">
-                                    ${t.logoUrl ? `<img src="${t.logoUrl}" alt="Task">` : (cat === 'daily' ? '📅' : (cat === 'app' ? '📱' : '🎯'))}
-                                </div>
-                                <div class="task-info-block">
-                                    <div class="task-main-name">${t.name}</div>
-                                    <div class="task-badges-row">
-                                        <span class="task-cat-tag ${catClass}">${catLabel}</span>
-                                        <span style="font-size:11px; color:var(--text-muted);">⏱️ ${cat === 'daily' ? '60s' : (cat === 'social' ? '20s' : 'Instant')}</span>
-                                    </div>
-                                </div>
+                        <div class="task-compact-left">
+                            <div class="task-icon-box">
+                                ${t.logoUrl ? `<img src="${t.logoUrl}" alt="Task">` : (cat === 'daily' ? '📅' : (cat === 'app' ? '📱' : '🎯'))}
                             </div>
-                            <div class="task-header-right">
-                                <span class="task-reward-pill">+${t.reward || 100} C</span>
-                                <span class="task-accordion-arrow">▼</span>
+                            <div class="task-info-block">
+                                <div class="task-main-name">${t.name}</div>
+                                <div class="task-badges-row">
+                                    <span class="task-cat-tag ${catClass}">${catLabel}</span>
+                                    <span style="font-size:10px; color:var(--text-muted);">⏱️ ${cat === 'daily' ? '60s' : (cat === 'social' ? '20s' : 'Instant')}</span>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="task-card-body">
-                            <div class="task-instruction-list">
-                                <div style="font-size:11px; font-weight:800; color:var(--accent-cyan); letter-spacing:0.5px; margin-bottom:4px;">INSTRUCTIONS:</div>
-                                ${stepsHtml}
-                            </div>
-                            <div id="task-action-wrapper-${id}">
-                                ${actionButtonHtml}
-                            </div>
+                        <div class="task-compact-right">
+                            <span class="task-reward-pill">+${t.reward || 100} C</span>
+                            ${statusBadge}
                         </div>
                     `;
 
                     container.appendChild(card);
                 });
+            },
+
+            // ✨ Smooth Animated Popup Modal Opener
+            openTaskDetailsModal: function(taskId) {
+                SoundFX.playClick();
+                const t = State.allTasksCache[taskId];
+                if (!t) return;
+
+                const cat = (t.category || 'social').toLowerCase();
+                const isCompleted = !!State.userCompletedTasks[taskId];
+                const isPending = !!State.userPendingTasks[taskId];
+                const timerRunning = State.runningTimers[taskId];
+
+                // Modal Elements
+                const iconBox = document.getElementById('task-modal-icon');
+                const nameEl = document.getElementById('task-modal-name');
+                const catEl = document.getElementById('task-modal-cat');
+                const rewardEl = document.getElementById('task-modal-reward');
+                const stepsBox = document.getElementById('task-modal-steps');
+                const actionBox = document.getElementById('task-modal-action-wrapper');
+
+                iconBox.innerHTML = t.logoUrl ? `<img src="${t.logoUrl}">` : (cat === 'daily' ? '📅' : (cat === 'app' ? '📱' : '🎯'));
+                nameEl.innerText = t.name;
+                catEl.className = `task-cat-tag cat-${cat}`;
+                catEl.innerText = cat.toUpperCase();
+                rewardEl.innerText = `+${t.reward || 100} Coins`;
+
+                // Steps Rendering Line by Line
+                let stepsHtml = '';
+                if (t.instructions && Array.isArray(t.instructions)) {
+                    stepsHtml = t.instructions.map((step, idx) => `
+                        <div class="task-step-item">
+                            <span class="step-circle">${idx + 1}</span>
+                            <span>${step}</span>
+                        </div>
+                    `).join('');
+                } else if (typeof t.instructions === 'string') {
+                    stepsHtml = t.instructions.split('\n').filter(s => s.trim()).map((step, idx) => `
+                        <div class="task-step-item">
+                            <span class="step-circle">${idx + 1}</span>
+                            <span>${step.trim()}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    stepsHtml = `<div class="task-step-item"><span class="step-circle">1</span><span>Complete the task and claim your reward.</span></div>`;
+                }
+                stepsBox.innerHTML = stepsHtml;
+
+                // Action Button in Modal
+                if (isCompleted) {
+                    actionBox.innerHTML = `<button class="btn-primary" disabled style="background:#172538; color:#10B981; border:1px solid #10B981;">✅ Already Completed</button>`;
+                } else if (isPending) {
+                    actionBox.innerHTML = `<button class="btn-primary" disabled style="background:#262115; color:#F59E0B; border:1px solid #F59E0B;">⏳ Verification In Progress (Admin Review)</button>`;
+                } else if (timerRunning) {
+                    actionBox.innerHTML = `
+                        <div class="task-live-timer">
+                            <span>⏱️ Running... Return to app after completing</span>
+                            <span id="timer-text-${taskId}">${timerRunning.timeLeft}s</span>
+                        </div>
+                    `;
+                } else {
+                    actionBox.innerHTML = `
+                        <button class="btn-primary" onclick="App.startPartnerTask('${taskId}')">
+                            🚀 Start Task (+${t.reward || 100} C)
+                        </button>
+                    `;
+                }
+
+                document.getElementById('modal-task-details').classList.add('open');
             },
 
             // 🌐 EXTERNAL APP & BROWSER OPENER (Telegram & Chrome Bahar Bhejne ke liye)
