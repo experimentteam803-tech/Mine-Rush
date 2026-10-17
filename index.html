@@ -1015,6 +1015,29 @@
             color: var(--accent-gold);
         }
 
+        /* 🌐 SOLUTION A PULSE RADAR STYLING */
+        .sponsor-pulse-circle {
+            width: 80px; height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1.5px solid var(--accent-cyan);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.35);
+        }
+        .sponsor-pulse-circle .pulse-icon { font-size: 36px; z-index: 2; animation: iconFloat 2s infinite alternate ease-in-out; }
+        @keyframes iconFloat { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+        .sponsor-pulse-circle .pulse-wave {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px solid var(--accent-cyan);
+            animation: pulseWaveAnim 2s infinite ease-out;
+        }
+        @keyframes pulseWaveAnim {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
         /* Wallet & Swap */
         .wallet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .wallet-card-cell {
@@ -2096,32 +2119,37 @@
         </nav>
     </div>
 
-    <!-- 📺 LIVE FULL-SCREEN AD VIEWER -->
-    <div class="modal-backdrop" id="modal-direct-ad">
-        <div class="live-ad-container">
-            <div class="live-ad-topbar">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="status-pill status-approved" id="direct-ad-sponsor-badge" style="font-size:11px;">SPONSOR AD</span>
-                    <button class="icon-btn" onclick="App.openDirectAdInExternalBrowser()" title="Open in Phone Browser" style="width:34px; height:34px; font-size:14px;">🌐</button>
-                </div>
-                <div class="live-ad-timer-pill">
-                    <span>⏳</span> <span id="direct-ad-timer-text">15s</span>
-                </div>
-                <div class="live-ad-progress-track">
-                    <div class="live-ad-progress-fill" id="direct-ad-progress-bar"></div>
-                </div>
+    <!-- 📺 SOLUTION A: DIRECT BROWSER LAUNCH + REWARD TIMER -->
+    <div class="modal-backdrop" id="modal-direct-ad" style="z-index: 9999;">
+        <div class="modal-cyber-sheet" style="text-align: center; max-width: 380px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <span class="status-pill status-approved" id="direct-ad-sponsor-badge">SPONSOR AD</span>
+                <span style="font-size:12px; color:var(--text-muted); font-weight:700;">Verified Session</span>
             </div>
 
-            <div class="live-ad-frame-wrapper">
-                <!-- Sandbox permissions updated to let user link clicks break out into mobile browser directly -->
-                <iframe id="direct-ad-iframe" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"></iframe>
+            <!-- Animated Radar Pulse Icon -->
+            <div class="sponsor-pulse-circle">
+                <div class="pulse-wave"></div>
+                <div class="pulse-icon">🌐</div>
             </div>
 
-            <div class="live-ad-footer-bar">
-                <button class="btn-primary" id="btn-claim-direct-ad" disabled style="opacity:0.5; cursor:not-allowed;" onclick="App.claimDirectAdReward()">
-                    ⏳ Please wait 15s to claim reward...
-                </button>
+            <h3 style="font-size:18px; font-weight:800; color:#FFF; margin-top:14px;" id="direct-ad-modal-title">Sponsor Opened in Chrome</h3>
+            <p style="font-size:12px; color:var(--text-secondary); margin:6px 0 16px 0; line-height:1.5;">
+                Please view the sponsor website for <strong style="color:var(--accent-gold); font-size:14px;" id="direct-ad-timer-text">15s</strong> to claim your reward.
+            </p>
+
+            <!-- Progress Bar -->
+            <div style="width:100%; height:6px; background:rgba(255,255,255,0.08); border-radius:10px; overflow:hidden; margin-bottom:16px;">
+                <div id="direct-ad-progress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, var(--accent-cyan), #FFD200); transition:width 1s linear;"></div>
             </div>
+
+            <button class="btn-primary btn-outline" style="font-size:12px; padding:10px; margin-bottom:12px; width:100%;" onclick="App.reopenDirectAd()">
+                🔗 Re-open Sponsor in Browser
+            </button>
+
+            <button class="btn-primary" id="btn-claim-direct-ad" disabled style="opacity:0.5; cursor:not-allowed;" onclick="App.claimDirectAdReward()">
+                ⏳ Viewing Sponsor (15s)...
+            </button>
         </div>
     </div>
 
@@ -3517,13 +3545,117 @@
                 this.renderAllTasks();
             },
 
-            // 🌐 Live Ad ko phone ke Original Browser me open karne ka function
-            openDirectAdInExternalBrowser: function() {
+            // ================= 🎯 SOLUTION A: 100% EARNING BROWSER LAUNCH ENGINE =================
+            triggerDirectAd: function(targetTag) {
                 SoundFX.playClick();
-                const iframe = document.getElementById('direct-ad-iframe');
-                if (iframe && iframe.src && iframe.src !== 'about:blank') {
-                    this.openExternalUrl(iframe.src);
+                if (State.isVpnActive) {
+                    this.triggerVpnLockdown();
+                    return;
                 }
+                const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
+                State.pendingActionTag = tag;
+
+                // 1. Admin Panel Se URL aur Sponsor Name Uthana
+                const links = State.admin.ad_links || {};
+                let adUrl = "";
+                let sponsorName = "Direct Sponsor";
+
+                if (tag === 'mining') {
+                    adUrl = links.mining_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Mining Sponsor";
+                } else if (tag === 'upgrade') {
+                    adUrl = links.upgrade_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Upgrade Sponsor";
+                } else if (tag === 'swap') {
+                    adUrl = links.swap_url || links.richads_url || "https://uplcm.com/4/10010968";
+                    sponsorName = "Swap Sponsor";
+                } else if (tag === 'daily_claim') {
+                    adUrl = links.daily_claim_url || links.monetag_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "Daily Streak Sponsor";
+                } else if (tag === 'task_1') {
+                    adUrl = links.task1_url || links.monetag_url || "https://uplcm.com/4/10010970";
+                    sponsorName = "Monetag Partner";
+                } else if (tag === 'task_2') {
+                    adUrl = links.task2_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    sponsorName = "RichAds Partner";
+                } else {
+                    adUrl = links.monetag_url || links.richads_url || "https://uplcm.com/4/10010966";
+                }
+
+                State.currentAdUrl = adUrl;
+
+                // 🚀 STEP 1: Direct link ko seedha phone ke Google Chrome me open karo
+                // (Is se 100% Click count hoga aur AdEx loop hamesha ke liye khatam)
+                this.openExternalUrl(adUrl);
+
+                // 🚀 STEP 2: App ke andar Verification Popup kholo
+                const modal = document.getElementById('modal-direct-ad');
+                if (modal) modal.classList.add('open');
+
+                const badge = document.getElementById('direct-ad-sponsor-badge');
+                if (badge) badge.innerText = sponsorName.toUpperCase();
+
+                // 🚀 STEP 3: 15-Second Countdown Timer Setup
+                const totalSeconds = parseInt(links.timer_seconds) || 15;
+                State.directAdTimeLeft = totalSeconds;
+
+                const timerText = document.getElementById('direct-ad-timer-text');
+                const progressBar = document.getElementById('direct-ad-progress-bar');
+                const claimBtn = document.getElementById('btn-claim-direct-ad');
+
+                if (claimBtn) {
+                    claimBtn.disabled = true;
+                    claimBtn.style.opacity = "0.5";
+                    claimBtn.style.cursor = "not-allowed";
+                    claimBtn.style.background = "#1C2740";
+                    claimBtn.style.color = "#64748B";
+                    claimBtn.innerText = `⏳ Viewing Sponsor (${totalSeconds}s)...`;
+                }
+                if (progressBar) progressBar.style.width = "0%";
+
+                if (State.directAdTimerInterval) clearInterval(State.directAdTimerInterval);
+
+                State.directAdTimerInterval = setInterval(() => {
+                    State.directAdTimeLeft--;
+                    const progress = ((totalSeconds - State.directAdTimeLeft) / totalSeconds) * 100;
+                    if (progressBar) progressBar.style.width = `${progress}%`;
+
+                    if (State.directAdTimeLeft > 0) {
+                        if (timerText) timerText.innerText = `${State.directAdTimeLeft}s`;
+                        if (claimBtn) claimBtn.innerText = `⏳ Viewing Sponsor (${State.directAdTimeLeft}s)...`;
+                    } else {
+                        clearInterval(State.directAdTimerInterval);
+                        if (timerText) timerText.innerText = "Verified! ✅";
+                        if (claimBtn) {
+                            claimBtn.disabled = false;
+                            claimBtn.style.opacity = "1";
+                            claimBtn.style.cursor = "pointer";
+                            claimBtn.style.background = "linear-gradient(135deg, #00F2FE, #3B82F6)";
+                            claimBtn.style.color = "#040711";
+                            claimBtn.innerText = "🎉 Claim Reward";
+                            SoundFX.playCoin();
+                        }
+                    }
+                }, 1000);
+            },
+
+            reopenDirectAd: function() {
+                SoundFX.playClick();
+                if (State.currentAdUrl) {
+                    this.openExternalUrl(State.currentAdUrl);
+                    this.toast("🚀 Opening Sponsor in Chrome...", "info");
+                }
+            },
+
+            claimDirectAdReward: function() {
+                SoundFX.playSuccess();
+                const modal = document.getElementById('modal-direct-ad');
+                if (modal) modal.classList.remove('open');
+
+                if (State.directAdTimerInterval) clearInterval(State.directAdTimerInterval);
+
+                const tag = State.pendingActionTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
+                window.onNativeAdRewarded(tag);
             },
 
             // 🎯 Compact List Card View (Sirf Name, Logo, Reward)
@@ -3644,10 +3776,18 @@
                 stepsBox.innerHTML = stepsHtml;
 
                 // Action Button in Modal
+                const isReady = State.readyToVerify && State.readyToVerify[taskId];
+
                 if (isCompleted) {
                     actionBox.innerHTML = `<button class="btn-primary" disabled style="background:#172538; color:#10B981; border:1px solid #10B981;">✅ Already Completed</button>`;
                 } else if (isPending) {
                     actionBox.innerHTML = `<button class="btn-primary" disabled style="background:#262115; color:#F59E0B; border:1px solid #F59E0B;">⏳ Verification In Progress (Admin Review)</button>`;
+                } else if (isReady) {
+                    actionBox.innerHTML = `
+                        <button class="btn-primary btn-gold" onclick="App.submitTaskForVerification('${taskId}')">
+                            🛡️ Verify Task (+${t.reward || 100} C)
+                        </button>
+                    `;
                 } else if (timerRunning) {
                     actionBox.innerHTML = `
                         <div class="task-live-timer">
@@ -3756,10 +3896,13 @@
 
             showTaskVerifyButton: function(taskId, task) {
                 SoundFX.playCoin();
-                const wrapper = document.getElementById(`task-action-wrapper-${taskId}`);
+                State.readyToVerify = State.readyToVerify || {};
+                State.readyToVerify[taskId] = true;
+
+                const wrapper = document.getElementById('task-modal-action-wrapper') || document.getElementById(`task-action-wrapper-${taskId}`);
                 if (wrapper) {
                     wrapper.innerHTML = `
-                        <button class="btn-primary btn-gold" onclick="event.stopPropagation(); App.submitTaskForVerification('${taskId}')">
+                        <button class="btn-primary btn-gold" onclick="App.submitTaskForVerification('${taskId}')">
                             🛡️ Verify Task (+${task.reward} C)
                         </button>
                     `;
@@ -3768,6 +3911,7 @@
 
             submitTaskForVerification: async function(taskId) {
                 SoundFX.playClick();
+                if (State.readyToVerify) delete State.readyToVerify[taskId];
                 const t = State.allTasksCache[taskId];
                 if (!t) return;
 
