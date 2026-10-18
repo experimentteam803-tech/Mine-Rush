@@ -1759,19 +1759,6 @@
             <!-- 🏠 HOME SECTION -->
             <section id="view-home" class="section-view active">
                 
-                <!-- SLEEK TOP 7-DAYS DAILY STREAK BANNER -->
-                <div class="daily-streak-btn" onclick="App.openDailyClaimModal()">
-                    <div class="streak-info-left">
-                        <div class="streak-icon-box">🎁</div>
-                        <div>
-                            <div class="streak-tag">Daily Bonus Streak</div>
-                            <div class="streak-title" id="home-streak-status-text">Day 1: +50 Coins Available</div>
-                        </div>
-                    </div>
-                    <div class="streak-badge" id="home-streak-badge-btn">
-                        <span>⚡ Claim</span>
-                    </div>
-                </div>
 
                 <!-- Highlighted Vibrant Holographic Portfolio Card -->
                 <div class="balance-hero">
@@ -2872,15 +2859,18 @@
                 const homeStatus = document.getElementById('home-streak-status-text');
                 const homeBadge = document.getElementById('home-streak-badge-btn');
 
-                if (State.canClaimToday) {
-                    const todayReward = DAILY_REWARDS[State.streakDay - 1] || 50;
-                    homeStatus.innerHTML = `Day ${State.streakDay}: <strong style="color:var(--accent-gold);">+${todayReward} Coins</strong> Available`;
-                    homeBadge.innerHTML = "⚡ Claim";
-                    homeBadge.style.background = "rgba(255, 210, 0, 0.22)";
-                } else {
-                    homeStatus.innerHTML = `Day ${State.streakDay} Claimed! Next tomorrow`;
-                    homeBadge.innerHTML = "✅ Claimed";
-                    homeBadge.style.background = "rgba(16, 185, 129, 0.2)";
+                // Agar banner screen par ho tabhi update kare, warna skip kare (Error Safe)
+                if (homeStatus && homeBadge) {
+                    if (State.canClaimToday) {
+                        const todayReward = DAILY_REWARDS[State.streakDay - 1] || 50;
+                        homeStatus.innerHTML = `Day ${State.streakDay}: <strong style="color:var(--accent-gold);">+${todayReward} Coins</strong> Available`;
+                        homeBadge.innerHTML = "⚡ Claim";
+                        homeBadge.style.background = "rgba(255, 210, 0, 0.22)";
+                    } else {
+                        homeStatus.innerHTML = `Day ${State.streakDay} Claimed! Next tomorrow`;
+                        homeBadge.innerHTML = "✅ Claimed";
+                        homeBadge.style.background = "rgba(16, 185, 129, 0.2)";
+                    }
                 }
             },
 
