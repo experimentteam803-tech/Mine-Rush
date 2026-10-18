@@ -6,6 +6,7 @@
     <title>MineRush - NextGen Quantum Cloud Mining</title>
 
     <!-- RichAds SDK -->
+    <script>(function(s){s.dataset.zone='12057384',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     
     <!-- RichAds SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -3451,27 +3452,19 @@
                 return (url && typeof url === 'string') ? url.trim() : "https://uplcm.com/4/10010966";
             },
 
-            // ================= 🎯 UNITY REWARDED VIDEO ADS ENGINE =================
+            // ================= 🎯 DIRECT 1-CLICK ADS + HIDDEN 20s VERIFYING ENGINE =================
             triggerDirectAd: function(targetTag) {
                 if (State.isVpnActive) {
                     this.triggerVpnLockdown();
                     return;
                 }
-
-                const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
-                State.pendingActionTag = tag;
-
-                // 🎮 1. AGAR ANDROID APP ME HO TOH SEEDHA UNITY VIDEO AD CHALAO
-                if (window.AndroidBridge && typeof window.AndroidBridge.showRewardedAd === 'function') {
-                    this.closeModals();
-                    window.AndroidBridge.showRewardedAd(tag);
-                    return;
-                }
-
                 if (State.isAdVerifying) {
                     this.toast("Verification already in progress...", "info");
                     return;
                 }
+
+                const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
+                State.pendingActionTag = tag;
 
                 // Admin Panel ka URL fetch karein
                 const adUrl = this.getAdUrl(tag);
