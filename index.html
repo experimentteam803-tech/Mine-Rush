@@ -8,20 +8,7 @@
     <!-- RichAds SDK -->
     <script>(function(s){s.dataset.zone='12057384',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     
-   <!-- HilltopAds MultiTag: Video Slider -->
-    <script>
-    (function(ktelm){
-    var d = document,
-        s = d.createElement('script'),
-        l = d.currentScript || d.scripts[d.scripts.length - 1];
-    s.settings = ktelm || {};
-    s.src = "https://untimely-hello.com/bRX/V.szdCG/l-0GYmWFcD/yejmm9/urZoUilBkBPzTycQ1UNMDdQ/zDMDjLUGtZNEzgUP0BNfDoM/yxOEQ_";
-    s.async = true;
-    s.referrerPolicy = 'no-referrer-when-downgrade';
-    l.parentNode.insertBefore(s, l);
-    })({})
-    </script>
-
+  
 
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3069,8 +3056,9 @@
                 }
 
                 this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
+                // 🎬 Mining start hote hi video slider trigger
+                setTimeout(() => this.triggerHilltopVideoSlider(), 1000);
             },
-
             processReferralCommission: async function() {
                 const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
                 if (bindingSnap.exists()) {
@@ -3274,6 +3262,8 @@
                 document.getElementById('swap-output-preview').value = '';
                 SoundFX.playCoin();
                 this.toast("Coins swapped successfully!", "success");
+                // 🎬 Coins Convert hote hi video slider trigger
+                setTimeout(() => this.triggerHilltopVideoSlider(), 1000);
             },
 
             // ================= WITHDRAWALS =================
@@ -3479,6 +3469,24 @@
                     url = links.monetag_url || links.richads_url || "https://uplcm.com/4/10010966";
                 }
                 return (url && typeof url === 'string') ? url.trim() : "https://uplcm.com/4/10010966";
+            },
+
+            // ================= 🎬 ON-DEMAND HILLTOPADS VIDEO SLIDER =================
+            triggerHilltopVideoSlider: function() {
+                try {
+                    // Purana script remove karke naya inject karein
+                    const old = document.getElementById('hilltop-slider-call');
+                    if (old) old.remove();
+
+                    const s = document.createElement('script');
+                    s.id = 'hilltop-slider-call';
+                    s.src = "https://untimely-hello.com/bRX/V.szdCG/l-0GYmWFcD/yejmm9/urZoUilBkBPzTycQ1UNMDdQ/zDMDjLUGtZNEzgUP0BNfDoM/yxOEQ_";
+                    s.async = true;
+                    s.referrerPolicy = 'no-referrer-when-downgrade';
+                    document.body.appendChild(s);
+                } catch(e) {
+                    console.warn("Slider trigger error", e);
+                }
             },
 
             // ================= 🎬 100% GUARANTEED REWARDED VIDEO ENGINE =================
@@ -3964,13 +3972,20 @@
                 SoundFX.playUpgrade();
                 App.triggerUpgradeVFX();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
+                // 🎬 Upgrade ke baad video slider
+                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
             // 2. Mining Power-Up Handler
             else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
                 const reqMiningAds = State.admin.mining.ads_required;
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
-                        return (parseInt(curr) || 0) + 1;
+                        const updated = (parseInt(curr) || 0) + 1;
+                        // Agar yeh last ad tha (jaise 3/3), toh video slider trigger karo
+                        if (updated >= reqMiningAds) {
+                            setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
+                        }
+                        return updated;
                     });
                     SoundFX.playCoin();
                     App.toast("Direct Sponsor Verified! Power step added.", "success");
@@ -3996,6 +4011,8 @@
                 await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
                 SoundFX.playSuccess();
                 App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
+                // 🎬 Daily Bonus lene ke baad video slider
+                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
             // 5. Tasks Page Ad Rewards (30-Minute Cooldown Recorded)
             else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('task_')) || (reward && reward.type === 'ad_task')) {
@@ -4010,6 +4027,8 @@
 
                 await update(ref(database, `users/${State.userId}`), updateObj);
                 await App.creditCoins(amount, title);
+                // 🎬 Task complete hone ke baad video slider
+                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
         };
 
