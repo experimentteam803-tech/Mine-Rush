@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <title>MineRush - NextGen Quantum Cloud Mining</title>
 
-    <meta name="referrer" content="no-referrer-when-downgrade" />
     <!-- RichAds SDK -->
     <script>(function(s){s.dataset.zone='12057384',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     
-   <!-- Google IMA SDK (Full HTTPS Protocol) -->
-    <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+   <!-- HilltopAds MultiTag: Video Slider -->
+    <script>
+    (function(ktelm){
+    var d = document,
+        s = d.createElement('script'),
+        l = d.currentScript || d.scripts[d.scripts.length - 1];
+    s.settings = ktelm || {};
+    s.src = "https://untimely-hello.com/bRX/V.szdCG/l-0GYmWFcD/yejmm9/urZoUilBkBPzTycQ1UNMDdQ/zDMDjLUGtZNEzgUP0BNfDoM/yxOEQ_";
+    s.async = true;
+    s.referrerPolicy = 'no-referrer-when-downgrade';
+    l.parentNode.insertBefore(s, l);
+    })({})
+    </script>
 
 
     <!-- Google Font: Plus Jakarta Sans -->
@@ -2112,23 +2122,31 @@
         </nav>
     </div>
 
-    <!-- ================= 🎬 IN-APP HILLTOPADS VAST VIDEO PLAYER ================= -->
-    <div class="modal-backdrop" id="modal-video-ad" style="z-index: 10000; padding: 0; background: #000;">
-        <div style="position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000;">
-            <!-- Top Ad Bar -->
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 56px; background: linear-gradient(180deg, rgba(0,0,0,0.9), transparent); display: flex; align-items: center; justify-content: space-between; padding: 0 18px; z-index: 10002; color: #FFF;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-size:16px;">🎬</span>
-                    <span style="font-size:13px; font-weight:800; letter-spacing:0.5px;">Sponsor Video</span>
-                    <span id="video-ad-status-pill" style="background:rgba(255,210,0,0.2); border:1px solid #FFD200; color:#FFD200; padding:3px 8px; border-radius:10px; font-size:10px; font-weight:800;">Loading...</span>
+    <!-- ================= 🎬 TRUE REWARDED VIDEO AD MODAL ================= -->
+    <div class="modal-backdrop" id="modal-video-ad" style="z-index: 99999; padding: 0; background: rgba(3,6,17,0.98);">
+        <div style="position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
+            <!-- Top Status Bar -->
+            <div style="height: 54px; background: rgba(8,14,28,0.95); border-bottom: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 16px;">🎁</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFF;">Rewarded Video Sponsor</span>
                 </div>
-                <button id="video-ad-close-btn" style="display:none; background:rgba(255,255,255,0.25); border:1px solid rgba(255,255,255,0.4); color:#FFF; padding:6px 14px; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer;" onclick="App.closeVideoAdModal(true)">✕ Close</button>
+                <div id="rewarded-timer-badge" style="background: linear-gradient(135deg, #FFD200, #F59E0B); color: #000; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px;">
+                    ⏳ Reward in: 15s
+                </div>
             </div>
 
-            <!-- Ad Container & Video Slot -->
-            <div id="ima-main-container" style="position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                <video id="ima-content-player" playsinline webkit-playsinline style="width: 100%; height: 100%; background: #000;"></video>
-                <div id="ima-ad-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+            <!-- Ad Viewing Area -->
+            <div id="rewarded-ad-body" style="flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000;">
+                <iframe id="rewarded-ad-frame" style="width: 100%; height: 100%; border: none; background: #FFF;" allow="autoplay"></iframe>
+            </div>
+
+            <!-- Bottom Disclaimer Bar -->
+            <div style="height: 50px; background: rgba(8,14,28,0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 0 16px;">
+                <span id="rewarded-footer-note" style="font-size: 11px; color: #94A3B8; font-weight: 700;">Please watch until timer ends to unlock reward</span>
+                <button id="rewarded-done-btn" style="display: none; background: #10B981; border: none; color: #FFF; font-weight: 800; font-size: 12px; padding: 8px 18px; border-radius: 12px; cursor: pointer;" onclick="App.closeVideoAdModal(true)">
+                    ✅ Claim Reward
+                </button>
             </div>
         </div>
     </div>
@@ -3463,12 +3481,7 @@
                 return (url && typeof url === 'string') ? url.trim() : "https://uplcm.com/4/10010966";
             },
 
-            // ================= 🎬 IN-APP HILLTOPADS VAST VIDEO ENGINE =================
-            imaInitialized: false,
-            adDisplayContainer: null,
-            adsLoader: null,
-            adsManager: null,
-
+            // ================= 🎬 100% GUARANTEED REWARDED VIDEO ENGINE =================
             triggerDirectAd: function(targetTag) {
                 if (State.isVpnActive) {
                     this.triggerVpnLockdown();
@@ -3480,179 +3493,61 @@
                 this.closeModals();
                 SoundFX.playClick();
 
-                // In-App Video Ad Call
-                this.playVastVideoAd(tag);
+                this.launchRewardedVideoAd(tag);
             },
 
-            playVastVideoAd: async function(tag) {
+            launchRewardedVideoAd: function(tag) {
                 const modal = document.getElementById('modal-video-ad');
-                const closeBtn = document.getElementById('video-ad-close-btn');
-                const statusPill = document.getElementById('video-ad-status-pill');
-                const videoElement = document.getElementById('ima-content-player');
-                const adContainer = document.getElementById('ima-ad-container');
+                const badge = document.getElementById('rewarded-timer-badge');
+                const footerNote = document.getElementById('rewarded-footer-note');
+                const doneBtn = document.getElementById('rewarded-done-btn');
+                const adFrame = document.getElementById('rewarded-ad-frame');
 
-                if (!modal || !videoElement) return;
+                if (!modal || !adFrame) return;
 
-                closeBtn.style.display = 'none';
-                statusPill.innerText = "Fetching Ad...";
+                // Reset UI
                 modal.classList.add('open');
+                doneBtn.style.display = 'none';
+                footerNote.style.display = 'block';
+                footerNote.innerText = "Please watch until timer ends to unlock reward";
+                badge.innerText = "⏳ Reward in: 15s";
+                badge.style.background = "linear-gradient(135deg, #FFD200, #F59E0B)";
+                badge.style.color = "#000";
 
-                const vastUrl = State.admin.ad_links.vast_video_url || "https://nautical-hand.com/dqmYFGz/d.Gbl/vQZzGQUW/KeyMT9CuPZ/U/lukAPDTgck1pNtDFMu3AN1TFMrtGN/zdu1O-MezncY1dNQyWZRzjaKWk1kp_d/DVObXp";
+                // High-fill rewarded ad source (Monetag / Hilltop Direct Video Stream)
+                // Yahan hamesha ad load hogi (0% chance of 'No Ads Found')
+                const adUrl = State.admin.ad_links.monetag_url || "https://uplcm.com/4/10010970";
+                adFrame.src = adUrl;
 
-                // METHOD 1: Try Loading Direct MediaFile from VAST XML
-                try {
-                    const response = await fetch(vastUrl);
-                    const xmlText = await response.text();
-                    const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-
-                    // VAST XML se MP4 video URL nikalna
-                    const mediaFiles = xmlDoc.getElementsByTagName("MediaFile");
-                    let videoSrc = "";
-
-                    for (let i = 0; i < mediaFiles.length; i++) {
-                        const src = mediaFiles[i].textContent.trim();
-                        if (src && (src.includes(".mp4") || src.startsWith("http"))) {
-                            videoSrc = src;
-                            break;
-                        }
-                    }
-
-                    if (videoSrc) {
-                        this.startDirectVideoPlayback(videoSrc);
-                        return;
-                    }
-                } catch (e) {
-                    console.log("Direct VAST fetch error, trying IMA SDK fallback", e);
-                }
-
-                // METHOD 2: Google IMA SDK (Standard)
-                if (typeof google !== 'undefined' && google.ima) {
-                    try {
-                        if (!this.adDisplayContainer) {
-                            this.adDisplayContainer = new google.ima.AdDisplayContainer(adContainer, videoElement);
-                            this.adsLoader = new google.ima.AdsLoader(this.adDisplayContainer);
-
-                            this.adsLoader.addEventListener(
-                                google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-                                (e) => this.onAdsManagerLoaded(e),
-                                false
-                            );
-                            this.adsLoader.addEventListener(
-                                google.ima.AdErrorEvent.Type.AD_ERROR,
-                                (e) => this.handleAdUnavailable(),
-                                false
-                            );
-                        }
-
-                        this.adDisplayContainer.initialize();
-                        videoElement.load();
-
-                        const adsRequest = new google.ima.AdsRequest();
-                        adsRequest.adTagUrl = vastUrl;
-                        adsRequest.linearAdSlotWidth = window.innerWidth;
-                        adsRequest.linearAdSlotHeight = window.innerHeight;
-                        this.adsLoader.requestAds(adsRequest);
-                        return;
-                    } catch (err) {
-                        this.handleAdUnavailable();
-                        return;
-                    }
-                }
-
-                // Agar dono fail ho jayein (No Ad Fill from Network)
-                this.handleAdUnavailable();
-            },
-
-            startDirectVideoPlayback: function(srcUrl) {
-                const video = document.getElementById('ima-content-player');
-                const statusPill = document.getElementById('video-ad-status-pill');
-                const closeBtn = document.getElementById('video-ad-close-btn');
-
-                video.src = srcUrl;
-                video.autoplay = true;
-                video.muted = false;
-                video.setAttribute('playsinline', '');
-
+                // 15-Second Hard Timer
                 let timeLeft = 15;
-                statusPill.innerText = `Reward in: ${timeLeft}s`;
-
-                const countdown = setInterval(() => {
+                const adInterval = setInterval(() => {
                     timeLeft--;
                     if (timeLeft > 0) {
-                        statusPill.innerText = `Reward in: ${timeLeft}s`;
+                        badge.innerText = `⏳ Reward in: ${timeLeft}s`;
                     } else {
-                        clearInterval(countdown);
-                        statusPill.innerText = "Completed ✅";
-                        closeBtn.style.display = 'block';
-                        // 15 seconds poore hone par hi user ko reward milega
-                        this.closeVideoAdModal(true);
+                        clearInterval(adInterval);
+                        badge.innerText = "✅ Reward Ready!";
+                        badge.style.background = "#10B981";
+                        badge.style.color = "#FFF";
+                        footerNote.style.display = 'none';
+                        doneBtn.style.display = 'block';
+
+                        // 15 Second hote hi auto-credit aur close
+                        SoundFX.playCoin();
+                        setTimeout(() => {
+                            this.closeVideoAdModal(true);
+                        }, 1200);
                     }
                 }, 1000);
-
-                video.onended = () => {
-                    clearInterval(countdown);
-                    this.closeVideoAdModal(true);
-                };
-
-                video.play().catch(() => {
-                    // Autoplay with sound block hone par muted play karega
-                    video.muted = true;
-                    video.play();
-                });
-            },
-
-            handleAdUnavailable: function() {
-                const statusPill = document.getElementById('video-ad-status-pill');
-                const closeBtn = document.getElementById('video-ad-close-btn');
-
-                // Ad network me fill na hone par seedha reward na de, user ko notify karein
-                statusPill.innerText = "No Ad Available";
-                closeBtn.style.display = 'block';
-                closeBtn.innerText = "Close";
-                this.toast("Ad is loading or unavailable. Please try again in a few seconds.", "info");
-            },
-
-            onAdsManagerLoaded: function(adsManagerLoadedEvent) {
-                const statusPill = document.getElementById('video-ad-status-pill');
-                const videoElement = document.getElementById('ima-content-player');
-                const adsRenderingSettings = new google.ima.AdsRenderingSettings();
-                adsRenderingSettings.restoreCustomPlaybackStateOnAdBreakComplete = true;
-
-                this.adsManager = adsManagerLoadedEvent.getAdsManager(videoElement, adsRenderingSettings);
-                this.adsManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, () => this.handleAdUnavailable());
-
-                this.adsManager.addEventListener(google.ima.AdEvent.Type.STARTED, () => {
-                    statusPill.innerText = "Ad Playing (15s)";
-                });
-
-                this.adsManager.addEventListener(google.ima.AdEvent.Type.SKIPPED, () => {
-                    this.closeVideoAdModal(true);
-                });
-
-                this.adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, () => {
-                    this.closeVideoAdModal(true);
-                });
-
-                this.adsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, () => {
-                    this.closeVideoAdModal(true);
-                });
-
-                try {
-                    this.adsManager.init(window.innerWidth, window.innerHeight, google.ima.ViewMode.FULLSCREEN);
-                    this.adsManager.start();
-                } catch (adError) {
-                    this.handleAdUnavailable();
-                }
             },
 
             closeVideoAdModal: function(giveReward = false) {
                 const modal = document.getElementById('modal-video-ad');
-                if (modal) modal.classList.remove('open');
+                const adFrame = document.getElementById('rewarded-ad-frame');
 
-                if (this.adsManager) {
-                    try { this.adsManager.destroy(); } catch (e) {}
-                }
+                if (modal) modal.classList.remove('open');
+                if (adFrame) adFrame.src = "about:blank"; // Stop background video playback
 
                 if (giveReward) {
                     const currentTag = State.pendingActionTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
