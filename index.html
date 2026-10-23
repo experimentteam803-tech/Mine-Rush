@@ -2162,6 +2162,44 @@
         </div>
     </div>
 
+    <!-- 🎁 TELEGRAM MINI APP COIN RECEIVED CELEBRATION MODAL -->
+    <div class="modal-backdrop" id="modal-tg-transfer-received" style="z-index: 550;">
+        <div class="modal-cyber-sheet" style="text-align: center; border-color: var(--accent-gold); box-shadow: 0 0 50px rgba(255, 210, 0, 0.45);">
+            <!-- Telegram Flying Logo -->
+            <div style="width: 72px; height: 72px; margin: 0 auto 12px; border-radius: 50%; background: linear-gradient(135deg, #0088cc, #00c6ff); display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 0 0 25px rgba(0, 198, 255, 0.6); animation: coinLevitate 3s infinite alternate;">
+                ✈️
+            </div>
+
+            <div style="font-size: 11px; font-weight: 800; color: var(--accent-gold); letter-spacing: 1.2px; text-transform: uppercase;">
+                TELEGRAM MINI APP REWARD
+            </div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #FFF; margin: 6px 0;">Coins Received!</h2>
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+                Coins earned from <strong>Pip's Rescue Mini App</strong> have been successfully deposited into your Quantum Vault!
+            </p>
+
+            <!-- Sender Detail Card -->
+            <div style="background: rgba(4, 7, 17, 0.85); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 16px; padding: 12px 14px; margin-bottom: 16px; text-align: left;">
+                <div style="font-size: 10px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">SENT FROM TELEGRAM ACCOUNT</div>
+                <div style="font-size: 14px; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <span>👤</span> <span id="tg-sender-name">Telegram Player</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;" id="tg-sender-username">@username</div>
+            </div>
+
+            <!-- Big Glowing Coins Display -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; background: rgba(255, 210, 0, 0.1); border: 1px solid rgba(255, 210, 0, 0.3); border-radius: 20px; padding: 12px;">
+                <div class="balance-coin-3d" style="width: 44px; height: 44px; font-size: 22px;">🪙</div>
+                <span style="font-size: 36px; font-weight: 800; color: var(--accent-gold); text-shadow: 0 0 25px rgba(255, 210, 0, 0.6);" id="tg-received-coins">+0</span>
+                <span class="coin-symbol">COINS</span>
+            </div>
+
+            <button class="btn-primary btn-gold" onclick="App.closeTgTransferModal()">
+                🎉 Claim &amp; Add to Balance
+            </button>
+        </div>
+    </div>
+
     <!-- WITHDRAWAL MODAL -->
     <div class="modal-backdrop" id="modal-withdraw">
         <div class="modal-sheet">
@@ -2848,6 +2886,75 @@
                 this.listenToReferralStats();
                 this.listenToTasks();
                 this.listenToHistory();
+                this.listenToIncomingTelegramTransfers(); // 🚀 Mini App Transfers Listener
+            },
+
+            // ================= ✈️ TELEGRAM MINI APP AUTO-CREDIT & POPUP ENGINE =================
+            listenToIncomingTelegramTransfers: function() {
+                const uid = State.userId;
+                if (!uid) return;
+
+                // Realtime listen to mine_rush_transfers node for this user
+                const transfersRef = query(ref(database, 'mine_rush_transfers'), orderByChild('uid'), equalTo(uid));
+                
+                onValue(transfersRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) return;
+
+                    Object.entries(data).forEach(async ([txId, tx]) => {
+                        // Agar status 'Sent to App' hai toh abhi user ko credit nahi hua hai
+                        if (tx.status === 'Sent to App') {
+                            const amount = Number(tx.amount || 0);
+                            if (amount <= 0) return;
+
+                            // 1. Status turant 'Delivered' mark karein taaki dubara credit na ho
+                            await update(ref(database, `mine_rush_transfers/${txId}`), {
+                                status: 'Delivered',
+                                deliveredAt: Date.now()
+                            });
+
+                            // 2. User account me automatic Coins add karein
+                            await runTransaction(ref(database, `users/${uid}/coins`), (curr) => {
+                                return (Number(curr) || 0) + amount;
+                            });
+
+                            // 3. User ki History me transaction record daalein
+                            const tgSender = tx.telegramUser?.name || (tx.telegramUser?.username ? `@${tx.telegramUser.username}` : 'Telegram Mini App');
+                            await push(ref(database, `users/${uid}/coin_history`), {
+                                amount: amount,
+                                reason: `Received from Pip's Rescue Game (${tgSender})`,
+                                timestamp: Date.now()
+                            });
+
+                            // 4. 🎉 Sundar Popup Modal Trigger Karein!
+                            App.showTelegramTransferModal(tx);
+                        }
+                    });
+                });
+            },
+
+            showTelegramTransferModal: function(tx) {
+                SoundFX.playSuccess();
+                SoundFX.playCoin();
+
+                const senderName = tx.telegramUser?.name || 'Telegram Player';
+                const senderUsername = tx.telegramUser?.username ? `@${tx.telegramUser.username}` : `Player ID: ${tx.playerId || 'Telegram'}`;
+
+                document.getElementById('tg-sender-name').innerText = senderName;
+                document.getElementById('tg-sender-username').innerText = senderUsername;
+                document.getElementById('tg-received-coins').innerText = `+${Number(tx.amount).toLocaleString()}`;
+
+                const modal = document.getElementById('modal-tg-transfer-received');
+                if (modal) modal.classList.add('open');
+
+                // Screen par gold sparkles celebrate karein
+                App.triggerUpgradeVFX();
+            },
+
+            closeTgTransferModal: function() {
+                SoundFX.playClick();
+                const modal = document.getElementById('modal-tg-transfer-received');
+                if (modal) modal.classList.remove('open');
             },
 
             renderBalances: function() {
