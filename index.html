@@ -8,7 +8,9 @@
     <!-- RichAds SDK -->
     <script>(function(s){s.dataset.zone='12057384',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
-    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <!-- Fluid Player (RichAds VAST Video Player) -->
+    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
     
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2109,29 +2111,31 @@
         </nav>
     </div>
 
-    <!-- ================= 🎬 TRUE REWARDED VIDEO AD MODAL ================= -->
-    <div class="modal-backdrop" id="modal-video-ad" style="z-index: 99999; padding: 0; background: rgba(3,6,17,0.98);">
-        <div style="position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between;">
+    <!-- ================= 🎬 RICHADS FLUID PLAYER VIDEO MODAL ================= -->
+    <div class="modal-backdrop" id="modal-video-ad" style="z-index: 99999; padding: 0; background: #000;">
+        <div style="position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; background: #000;">
             <!-- Top Status Bar -->
-            <div style="height: 54px; background: rgba(8,14,28,0.95); border-bottom: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10;">
+            <div style="height: 52px; background: rgba(8,14,28,0.95); border-bottom: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10002;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 16px;">🎁</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFF;">Rewarded Video Sponsor</span>
+                    <span style="font-size: 18px;">🎬</span>
+                    <span style="font-size: 13px; font-weight: 800; color: #FFF;">Sponsor Video Ad</span>
                 </div>
                 <div id="rewarded-timer-badge" style="background: linear-gradient(135deg, #FFD200, #F59E0B); color: #000; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px;">
-                    ⏳ Reward in: 15s
+                    ⏳ Playing Video...
                 </div>
             </div>
 
-            <!-- Ad Viewing Area -->
-            <div id="rewarded-ad-body" style="flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000;">
-                <iframe id="rewarded-ad-frame" style="width: 100%; height: 100%; border: none; background: #FFF;" allow="autoplay"></iframe>
+            <!-- Fluid Player Video Area -->
+            <div id="rewarded-player-container" style="flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000;">
+                <video id="richads-fluid-player" playsinline webkit-playsinline style="width: 100%; height: 100%;">
+                    <source src="https://cdn.fluidplayer.com/videos/valerian-1080p.mkv" type="video/mp4"/>
+                </video>
             </div>
 
             <!-- Bottom Disclaimer Bar -->
-            <div style="height: 50px; background: rgba(8,14,28,0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; padding: 0 16px;">
-                <span id="rewarded-footer-note" style="font-size: 11px; color: #94A3B8; font-weight: 700;">Please watch until timer ends to unlock reward</span>
-                <button id="rewarded-done-btn" style="display: none; background: #10B981; border: none; color: #FFF; font-weight: 800; font-size: 12px; padding: 8px 18px; border-radius: 12px; cursor: pointer;" onclick="App.closeVideoAdModal(true)">
+            <div style="height: 48px; background: rgba(8,14,28,0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10002;">
+                <span id="rewarded-footer-note" style="font-size: 11px; color: #94A3B8; font-weight: 700;">Please watch video to claim reward</span>
+                <button id="rewarded-done-btn" style="display: none; background: #10B981; border: none; color: #FFF; font-weight: 800; font-size: 12px; padding: 6px 16px; border-radius: 12px; cursor: pointer;" onclick="App.closeVideoAdModal(true)">
                     ✅ Claim Reward
                 </button>
             </div>
@@ -2480,7 +2484,7 @@
                 ad_links: {
                     richads_url: "https://richads.com",
                     monetag_url: "https://monetag.com",
-                    vast_video_url: "https://nautical-hand.com/dqmYFGz/d.Gbl/vQZzGQUW/KeyMT9CuPZ/U/lukAPDTgck1pNtDFMu3AN1TFMrtGN/zdu1O-MezncY1dNQyWZRzjaKWk1kp_d/DVObXp",
+                    vast_video_url: "https://16793.rtb.adp3.net/pre-roll-rp?pubid=996843&siteid=410761",
                     timer_seconds: 15
                 }
             },
@@ -3611,58 +3615,138 @@
                 this.launchRewardedVideoAd(tag);
             },
 
+            fluidPlayerInstance: null,
+
             launchRewardedVideoAd: function(tag) {
                 const modal = document.getElementById('modal-video-ad');
                 const badge = document.getElementById('rewarded-timer-badge');
                 const footerNote = document.getElementById('rewarded-footer-note');
                 const doneBtn = document.getElementById('rewarded-done-btn');
-                const adFrame = document.getElementById('rewarded-ad-frame');
+                const container = document.getElementById('rewarded-player-container');
 
-                if (!modal || !adFrame) return;
+                if (!modal || !container) return;
 
-                // Reset UI
                 modal.classList.add('open');
                 doneBtn.style.display = 'none';
                 footerNote.style.display = 'block';
-                footerNote.innerText = "Please watch until timer ends to unlock reward";
-                badge.innerText = "⏳ Reward in: 15s";
+                footerNote.innerText = "Please watch video to claim reward";
+                badge.innerText = "⏳ Loading Video...";
                 badge.style.background = "linear-gradient(135deg, #FFD200, #F59E0B)";
                 badge.style.color = "#000";
 
-                // High-fill rewarded ad source (Monetag / Hilltop Direct Video Stream)
-                // Yahan hamesha ad load hogi (0% chance of 'No Ads Found')
-                const adUrl = State.admin.ad_links.monetag_url || "https://uplcm.com/4/10010970";
-                adFrame.src = adUrl;
+                // 🚀 FIX 1: Har baar fresh clean video element recreate karein (No "HTML node not found" bug)
+                container.innerHTML = `
+                    <video id="richads-fluid-player" playsinline webkit-playsinline style="width: 100%; height: 100%;">
+                        <source src="https://cdn.fluidplayer.com/videos/valerian-1080p.mkv" type="video/mp4"/>
+                    </video>
+                `;
 
-                // 15-Second Hard Timer
-                let timeLeft = 15;
-                const adInterval = setInterval(() => {
-                    timeLeft--;
-                    if (timeLeft > 0) {
-                        badge.innerText = `⏳ Reward in: ${timeLeft}s`;
-                    } else {
-                        clearInterval(adInterval);
-                        badge.innerText = "✅ Reward Ready!";
-                        badge.style.background = "#10B981";
-                        badge.style.color = "#FFF";
-                        footerNote.style.display = 'none';
-                        doneBtn.style.display = 'block';
+                // Cache buster taaki har request fresh ho
+                const userUA = encodeURIComponent(navigator.userAgent);
+                const cb = Date.now();
+                const richadsVastTag = `https://16793.rtb.adp3.net/pre-roll-rp?pubid=996843&siteid=410761&ua=${userUA}&cb=${cb}`;
 
-                        // 15 Second hote hi auto-credit aur close
-                        SoundFX.playCoin();
-                        setTimeout(() => {
-                            this.closeVideoAdModal(true);
-                        }, 1200);
-                    }
-                }, 1000);
+                let timerStarted = false;
+
+                const startCountdown = () => {
+                    if (timerStarted) return;
+                    timerStarted = true;
+
+                    let timeLeft = 15;
+                    const timer = setInterval(() => {
+                        timeLeft--;
+                        if (timeLeft > 0) {
+                            badge.innerText = `⏳ Reward in: ${timeLeft}s`;
+                        } else {
+                            clearInterval(timer);
+                            badge.innerText = "✅ Reward Ready!";
+                            badge.style.background = "#10B981";
+                            badge.style.color = "#FFF";
+                            footerNote.style.display = 'none';
+                            doneBtn.style.display = 'block';
+
+                            // 15 Second poore hote hi direct reward
+                            SoundFX.playCoin();
+                            setTimeout(() => {
+                                this.closeVideoAdModal(true);
+                            }, 1200);
+                        }
+                    }, 1000);
+                };
+
+                // 🚀 FIX 2: Agar RichAds Error 101/900 de, toh black screen atkne ke bajaye fallback chalao
+                const triggerFallback = () => {
+                    console.warn("Switching to live sponsor stream...");
+                    container.innerHTML = `
+                        <iframe src="${State.admin.ad_links.monetag_url || 'https://uplcm.com/4/10010970'}" style="width:100%; height:100%; border:none; background:#FFF;" allow="autoplay"></iframe>
+                    `;
+                    badge.innerText = "🎬 Sponsor Playing";
+                    startCountdown();
+                };
+
+                // Fluid Player Setup
+                try {
+                    this.fluidPlayerInstance = fluidPlayer('richads-fluid-player', {
+                        layoutControls: {
+                            fillToContainer: true,
+                            autoPlay: true,
+                            mute: true,
+                            playButtonShowing: false,
+                            controlBar: {
+                                autoHide: true
+                            }
+                        },
+                        vastOptions: {
+                            adList: [
+                                {
+                                    roll: 'preRoll',
+                                    vastTag: richadsVastTag,
+                                    timer: 15
+                                }
+                            ],
+                            vastAdvanced: {
+                                vastLoadedCallback: () => {
+                                    badge.innerText = "🎬 Ad Playing";
+                                    startCountdown();
+                                },
+                                noVastVideoCallback: () => {
+                                    triggerFallback();
+                                },
+                                vastErrorCallback: () => {
+                                    triggerFallback();
+                                }
+                            }
+                        }
+                    });
+
+                    // Safety Trigger (Agar 3.5s tak video load na ho toh user ko freeze na rakhe)
+                    setTimeout(() => {
+                        if (!timerStarted) {
+                            triggerFallback();
+                        }
+                    }, 3500);
+
+                } catch (e) {
+                    console.error("FluidPlayer Init Exception:", e);
+                    triggerFallback();
+                }
             },
 
             closeVideoAdModal: function(giveReward = false) {
                 const modal = document.getElementById('modal-video-ad');
-                const adFrame = document.getElementById('rewarded-ad-frame');
+                const container = document.getElementById('rewarded-player-container');
 
                 if (modal) modal.classList.remove('open');
-                if (adFrame) adFrame.src = "about:blank"; // Stop background video playback
+
+                if (this.fluidPlayerInstance) {
+                    try {
+                        this.fluidPlayerInstance.destroy();
+                    } catch (e) {}
+                    this.fluidPlayerInstance = null;
+                }
+
+                // Stop audio/video playback
+                if (container) container.innerHTML = '';
 
                 if (giveReward) {
                     const currentTag = State.pendingActionTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
