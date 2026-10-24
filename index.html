@@ -2204,6 +2204,27 @@
         </div>
     </div>
 
+    <!-- 🚨 FRAUD DETECTED WITHDRAWAL BLOCK MODAL -->
+    <div class="modal-backdrop" id="modal-fraud-withdraw-block" style="z-index: 99999; backdrop-filter: blur(25px); background: rgba(4, 7, 17, 0.98);">
+        <div class="modal-cyber-sheet" style="text-align: center; border-color: var(--accent-red); box-shadow: 0 0 50px rgba(239, 68, 68, 0.5);">
+            <div style="font-size: 50px; margin-bottom: 10px;">⚠️</div>
+            <h2 style="font-size: 20px; font-weight: 800; color: #FFF;">WITHDRAWAL RESTRICTED</h2>
+            
+            <div style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 14px; margin: 16px 0; font-size: 13px; color: #FCA5A5; line-height: 1.6; text-align: left;">
+                ❌ <strong>Suspicious Referral Activity Detected:</strong><br>
+                System audit found duplicate accounts / self-referrals created from this device or network. Illegitimate coins have been removed from your account.
+            </div>
+
+            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 20px;">
+                Fake referral rewards are strictly non-withdrawable. Please continue genuine mining and task completion.
+            </p>
+
+            <button class="btn-primary" style="background: linear-gradient(135deg, #EF4444, #B91C1C); color: #FFF;" onclick="document.getElementById('modal-fraud-withdraw-block').classList.remove('open')">
+                Understood
+            </button>
+        </div>
+    </div>
+
     <!-- WITHDRAWAL MODAL -->
     <div class="modal-backdrop" id="modal-withdraw">
         <div class="modal-sheet">
@@ -2441,9 +2462,20 @@
         // 7 Days Rewards Schedule
         const DAILY_REWARDS = [50, 75, 100, 125, 175, 225, 250];
 
+        // 🛡️ Unique Device Fingerprint (Ek device par 1 hi referral allow karega)
+        function getDeviceFingerprint() {
+            let devId = localStorage.getItem('mr_device_unique_id');
+            if (!devId) {
+                devId = 'dev_' + Math.random().toString(36).substring(2, 12) + '_' + Date.now().toString(36);
+                localStorage.setItem('mr_device_unique_id', devId);
+            }
+            return devId;
+        }
+
         // Core State
         const State = {
             user: null,
+            userId: null,
             userId: null,
             coins: 0,
             inr: 0,
@@ -2505,9 +2537,20 @@
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const refCodeParam = urlParams.get('ref') || urlParams.get('startapp') || '';
-                if (refCodeParam) {
-                    const refInput = document.getElementById('signup-ref-code');
-                    if (refInput) refInput.value = refCodeParam.replace('ref_', '').trim();
+                const refInput = document.getElementById('signup-ref-code');
+
+                if (refCodeParam && refInput) {
+                    refInput.value = refCodeParam.replace('ref_', '').trim();
+                } else if (refInput) {
+                    // 📋 Android Clipboard se Auto-Fetch (Landing Page se copy hua code)
+                    if (navigator.clipboard && navigator.clipboard.readText) {
+                        navigator.clipboard.readText().then(clipText => {
+                            if (clipText && clipText.length >= 10 && clipText.length <= 40 && !clipText.includes('http')) {
+                                refInput.value = clipText.trim();
+                                refInput.style.borderColor = 'var(--accent-gold)';
+                            }
+                        }).catch(() => {});
+                    }
                 }
 
                 this.listenToAdminSettings();
@@ -2758,7 +2801,7 @@
                 const email = document.getElementById('signup-email').value.trim();
                 const pass = document.getElementById('signup-password').value.trim();
                 const confirmPass = document.getElementById('signup-confirm-password').value.trim();
-                const refCode = document.getElementById('signup-ref-code').value.trim();
+                let refCode = document.getElementById('signup-ref-code').value.trim();
 
                 if (!email || !email.includes('@')) {
                     this.toast("Please enter a valid email address", "error");
@@ -2773,13 +2816,30 @@
                     return;
                 }
 
+                const deviceId = getDeviceFingerprint();
+
+                // 🛡️ Security Check 1: Check if this physical device already claimed another user's referral
+                if (refCode && refCode !== 'DIRECT') {
+                    const devSnap = await get(ref(database, `device_registry/${deviceId}`));
+                    if (devSnap.exists()) {
+                        // Same phone se 2nd account banaya ja raha hai -> Referral reward cancel
+                        refCode = 'DIRECT';
+                    }
+                }
+
                 try {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                     const user = userCredential.user;
 
+                    // 🛡️ Security Check 2: Self-Referral Block (Apna hi code daalna)
+                    if (refCode === user.uid) {
+                        refCode = 'DIRECT';
+                    }
+
                     await set(ref(database, `users/${user.uid}`), {
                         uid: user.uid,
                         email: email,
+                        deviceId: deviceId,
                         coins: 0,
                         inr_balance: 0,
                         usdt_balance: 0,
@@ -2793,11 +2853,18 @@
                         createdAt: Date.now()
                     });
 
-                    if (refCode && refCode !== 'DIRECT') {
+                    // Device lock registry me save karo
+                    await set(ref(database, `device_registry/${deviceId}`), {
+                        firstUid: user.uid,
+                        registeredAt: Date.now()
+                    });
+
+                    if (refCode && refCode !== 'DIRECT' && refCode !== user.uid) {
                         await set(ref(database, `referral_bindings/${user.uid}`), {
                             referrerUid: refCode,
                             userUid: user.uid,
                             userEmail: email,
+                            deviceId: deviceId,
                             status: 'Pending First Mining',
                             createdAt: Date.now()
                         });
@@ -2859,8 +2926,9 @@
                 document.getElementById('profile-email-display').innerText = email;
                 document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
 
-                const origin = window.location.origin + window.location.pathname;
-                const refLink = `${origin}?ref=${uid}`;
+                // 🔗 Ab link sidhe landing page par jayegi
+                const landingPageUrl = "https://minerush-landing.vercel.app";
+                const refLink = `${landingPageUrl}/?ref=${uid}`;
                 document.getElementById('user-ref-link-display').innerText = refLink;
 
                 const userRef = ref(database, `users/${uid}`);
@@ -3171,29 +3239,39 @@
                 setTimeout(() => this.triggerHilltopVideoSlider(), 1000);
             },
             processReferralCommission: async function() {
-                const bindingSnap = await get(ref(database, `referral_bindings/${State.userId}`));
-                if (bindingSnap.exists()) {
-                    const binding = bindingSnap.val();
-                    if (binding.status === 'Pending First Mining') {
-                        const referrerUid = binding.referrerUid;
-                        const reward = State.admin.referral.reward_coins || 200;
+                const bindingRef = ref(database, `referral_bindings/${State.userId}`);
+                
+                // 🛡️ Atomic Transaction: Status sirf tabhi update hoga jab status strictly 'Pending First Mining' ho
+                let shouldReward = false;
+                let targetReferrer = null;
+                const rewardAmount = State.admin.referral.reward_coins || 200;
 
-                        await runTransaction(ref(database, `users/${referrerUid}/coins`), (curr) => {
-                            return (parseFloat(curr) || 0) + reward;
-                        });
-
-                        await push(ref(database, `users/${referrerUid}/coin_history`), {
-                            amount: reward,
-                            reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
-                            timestamp: Date.now()
-                        });
-
-                        await update(ref(database, `referral_bindings/${State.userId}`), {
-                            status: 'Qualified',
-                            rewardedCoins: reward,
-                            qualifiedAt: Date.now()
-                        });
+                await runTransaction(bindingRef, (currentData) => {
+                    if (!currentData) return currentData;
+                    
+                    // Agar pehle se Qualified ho chuka hai, toh dobara run na ho
+                    if (currentData.status === 'Pending First Mining') {
+                        currentData.status = 'Qualified';
+                        currentData.rewardedCoins = rewardAmount;
+                        currentData.qualifiedAt = Date.now();
+                        shouldReward = true;
+                        targetReferrer = currentData.referrerUid;
+                        return currentData;
                     }
+                    return; // Abort
+                });
+
+                // Coins tabhi credit honge jab atomic lock successful ho
+                if (shouldReward && targetReferrer && targetReferrer !== State.userId) {
+                    await runTransaction(ref(database, `users/${targetReferrer}/coins`), (curr) => {
+                        return (parseFloat(curr) || 0) + rewardAmount;
+                    });
+
+                    await push(ref(database, `users/${targetReferrer}/coin_history`), {
+                        amount: rewardAmount,
+                        reason: `Referral Reward: ${State.user.email.slice(0, 4)}*** completed 1st mining`,
+                        timestamp: Date.now()
+                    });
                 }
             },
 
@@ -3424,6 +3502,17 @@
 
             submitPayoutRequest: async function() {
                 SoundFX.playClick();
+
+                // 🚨 Security Check: Check if user has fraud referral penalty
+                const userSnap = await get(ref(database, `users/${State.userId}`));
+                const uData = userSnap.val() || {};
+
+                if (uData.referral_abuse_flag === true) {
+                    this.closeModals();
+                    document.getElementById('modal-fraud-withdraw-block').classList.add('open');
+                    return;
+                }
+
                 const dest = document.getElementById('withdraw-dest-input').value.trim();
                 const amount = parseFloat(document.getElementById('withdraw-amount-input').value) || 0;
                 const method = State.selectedPayoutMethod;
@@ -4056,13 +4145,13 @@
 
             copyReferralLink: function() {
                 SoundFX.playClick();
-                const origin = window.location.origin + window.location.pathname;
-                const link = `${origin}?ref=${State.userId}`;
+                const landingPageUrl = "https://minerush-landing.vercel.app";
+                const link = `${landingPageUrl}/?ref=${State.userId}`;
                 navigator.clipboard.writeText(link).then(() => {
                     SoundFX.playCoin();
-                    this.toast("Unique invite link copied to clipboard!", "success");
+                    this.toast("Download invite link copied!", "success");
                 }).catch(() => {
-                    this.toast(`Code: ${State.userId}`, "info");
+                    this.toast(`Link: ${link}`, "info");
                 });
             },
 
@@ -4139,6 +4228,49 @@
                 t.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
                 c.appendChild(t);
                 setTimeout(() => t.remove(), 3200);
+            },
+
+            // 🧹 ONE-CLICK DATABASE AUDIT & CLEANUP
+            cleanGlitchReferrals: async function() {
+                App.toast("Starting Audit... Please wait", "info");
+                const bindingsSnap = await get(ref(database, 'referral_bindings'));
+                const bindings = bindingsSnap.val() || {};
+
+                const referrerStats = {};
+
+                // Find duplicates & self referrals
+                for (const [childUid, data] of Object.entries(bindings)) {
+                    const refUid = data.referrerUid;
+                    if (!referrerStats[refUid]) referrerStats[refUid] = { legit: 0, fakeCoins: 0, fakeRefs: [] };
+
+                    const isSelf = refUid === childUid;
+                    // Check if already counted
+                    if (isSelf) {
+                        if (data.status === 'Qualified') referrerStats[refUid].fakeCoins += (data.rewardedCoins || 200);
+                        referrerStats[refUid].fakeRefs.push(childUid);
+                    } else {
+                        referrerStats[refUid].legit++;
+                    }
+                }
+
+                // Deduct from abusers
+                for (const [refUid, stat] of Object.entries(referrerStats)) {
+                    if (stat.fakeCoins > 0) {
+                        await runTransaction(ref(database, `users/${refUid}`), (u) => {
+                            if (!u) return u;
+                            u.coins = Math.max(0, (parseFloat(u.coins) || 0) - stat.fakeCoins);
+                            u.referral_abuse_flag = true;
+                            u.deducted_glitch_coins = (u.deducted_glitch_coins || 0) + stat.fakeCoins;
+                            return u;
+                        });
+
+                        for (const fakeChild of stat.fakeRefs) {
+                            await set(ref(database, `referral_bindings/${fakeChild}`), null);
+                        }
+                    }
+                }
+
+                App.toast("Audit Complete! Glitched coins deducted.", "success");
             }
         };
 
