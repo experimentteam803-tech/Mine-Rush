@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
     <title>MineRush - NextGen Quantum Cloud Mining</title>
 
-    <!-- RichAds SDK -->
-    <script>(function(s){s.dataset.zone='12057384',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-
-    <!-- Fluid Player (RichAds VAST Video Player) -->
-    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
-    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
     
     <!-- Google Font: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2111,36 +2105,6 @@
         </nav>
     </div>
 
-    <!-- ================= 🎬 RICHADS FLUID PLAYER VIDEO MODAL ================= -->
-    <div class="modal-backdrop" id="modal-video-ad" style="z-index: 99999; padding: 0; background: #000;">
-        <div style="position: relative; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; background: #000;">
-            <!-- Top Status Bar -->
-            <div style="height: 52px; background: rgba(8,14,28,0.95); border-bottom: 1px solid rgba(0,242,254,0.3); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10002;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">🎬</span>
-                    <span style="font-size: 13px; font-weight: 800; color: #FFF;">Sponsor Video Ad</span>
-                </div>
-                <div id="rewarded-timer-badge" style="background: linear-gradient(135deg, #FFD200, #F59E0B); color: #000; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px;">
-                    ⏳ Playing Video...
-                </div>
-            </div>
-
-            <!-- Fluid Player Video Area -->
-            <div id="rewarded-player-container" style="flex: 1; width: 100%; position: relative; display: flex; align-items: center; justify-content: center; background: #000;">
-                <video id="richads-fluid-player" playsinline webkit-playsinline style="width: 100%; height: 100%;">
-                    <source src="https://cdn.fluidplayer.com/videos/valerian-1080p.mkv" type="video/mp4"/>
-                </video>
-            </div>
-
-            <!-- Bottom Disclaimer Bar -->
-            <div style="height: 48px; background: rgba(8,14,28,0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 10002;">
-                <span id="rewarded-footer-note" style="font-size: 11px; color: #94A3B8; font-weight: 700;">Please watch video to claim reward</span>
-                <button id="rewarded-done-btn" style="display: none; background: #10B981; border: none; color: #FFF; font-weight: 800; font-size: 12px; padding: 6px 16px; border-radius: 12px; cursor: pointer;" onclick="App.closeVideoAdModal(true)">
-                    ✅ Claim Reward
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- ================= 📋 TASK DETAILS POPUP MODAL ================= -->
     <div class="modal-backdrop" id="modal-task-details" style="z-index: 350;">
@@ -2512,19 +2476,20 @@
                     title: "🚀 App Update Available!",
                     message: "A new version of MineRush is available."
                 },
-               // 🔗 ADMIN CONTROLLED DIRECT & VAST VIDEO LINKS
+               // 🔗 ADMIN CONTROLLED DIRECT LINKS (Firebase Admin se update honge)
                 ad_links: {
-                    richads_url: "https://richads.com",
-                    monetag_url: "https://monetag.com",
-                    vast_video_url: "https://16793.rtb.adp3.net/pre-roll-rp?pubid=996843&siteid=410763",
-                    timer_seconds: 15
+                    mining_url: "https://uplcm.com/4/10010966",
+                    daily_claim_url: "https://uplcm.com/4/10010970",
+                    swap_url: "https://uplcm.com/4/10010966",
+                    upgrade_url: "https://uplcm.com/4/10010966",
+                    task1_url: "https://uplcm.com/4/10010970",
+                    task2_url: "https://uplcm.com/4/10010966"
                 }
             },
             selectedPayoutMethod: 'UPI',
             pendingAdReward: null,
             lastAdWatchTime: 0,
-            directAdTimerInterval: null,
-            directAdTimeLeft: 15
+            miningTimerRunning: false
         };
 
         window.App = {
@@ -3212,14 +3177,46 @@
                     return;
                 }
 
-                const requiredAds = State.admin.mining.ads_required;
-                if (State.miningAdsWatched < requiredAds) {
-                    State.pendingAdReward = { type: 'mining' };
-                    // Button dabate hi seedha ad trigger
-                    this.triggerDirectAd('mining');
+                if (State.miningTimerRunning) {
+                    this.toast("Please wait for countdown to finish!", "info");
                     return;
                 }
 
+                const requiredAds = State.admin.mining.ads_required;
+                if (State.miningAdsWatched < requiredAds) {
+                    State.pendingAdReward = { type: 'mining' };
+                    
+                    // 1. Sidhe Chrome / External Browser me Direct Link kholein
+                    const adUrl = this.getAdUrl('mining');
+                    this.openExternalUrl(adUrl);
+
+                    // 2. Button par 10 Second ka countdown shuru karein
+                    State.miningTimerRunning = true;
+                    const btn = document.getElementById('btn-mine-action');
+                    const btnLabel = document.getElementById('btn-mine-label');
+                    if (btn) btn.disabled = true;
+
+                    let secondsLeft = 10;
+                    if (btnLabel) btnLabel.innerText = `⏳ Please wait (${secondsLeft}s)...`;
+
+                    const countdown = setInterval(async () => {
+                        secondsLeft--;
+                        if (secondsLeft > 0) {
+                            if (btnLabel) btnLabel.innerText = `⏳ Please wait (${secondsLeft}s)...`;
+                        } else {
+                            clearInterval(countdown);
+                            State.miningTimerRunning = false;
+                            
+                            // 10 Second poore hote hi Ad count badhayein
+                            await window.onNativeAdRewarded('mining');
+                            if (btn) btn.disabled = false;
+                        }
+                    }, 1000);
+
+                    return;
+                }
+
+                // Agar required ads poore ho gaye hain toh Mining shuru karein
                 SoundFX.playTurbine();
                 SoundFX.playPowerUp();
                 const duration = State.admin.mining.session_duration_ms;
@@ -3235,8 +3232,6 @@
                 }
 
                 this.toast("Rig Online! Turbofans & Cloud Core active.", "success");
-                // 🎬 Mining start hote hi video slider trigger
-                setTimeout(() => this.triggerHilltopVideoSlider(), 1000);
             },
             processReferralCommission: async function() {
                 const bindingRef = ref(database, `referral_bindings/${State.userId}`);
@@ -3451,8 +3446,6 @@
                 document.getElementById('swap-output-preview').value = '';
                 SoundFX.playCoin();
                 this.toast("Coins swapped successfully!", "success");
-                // 🎬 Coins Convert hote hi video slider trigger
-                setTimeout(() => this.triggerHilltopVideoSlider(), 1000);
             },
 
             // ================= WITHDRAWALS =================
@@ -3648,48 +3641,31 @@
                 this.renderAllTasks();
             },
 
-            // 🎯 Admin Panel URL Finder (Har possible location check karega)
+            // 🎯 Admin Panel Direct Link Finder (Admin Settings se link fetch karega)
             getAdUrl: function(tag) {
                 const links = State.admin.ad_links || {};
                 const admin = State.admin || {};
-                const mining = admin.mining || {};
 
                 let url = "";
                 if (tag === 'mining') {
-                    url = links.mining_url || admin.mining_url || mining.ad_url || mining.ad_link || links.richads_url || admin.richads_url || "https://uplcm.com/4/10010966";
+                    url = links.mining_url || admin.mining_url || "https://uplcm.com/4/10010966";
                 } else if (tag === 'task_1') {
-                    url = links.task1_url || admin.task1_url || links.monetag_url || admin.monetag_url || "https://uplcm.com/4/10010970";
+                    url = links.task1_url || admin.task1_url || "https://uplcm.com/4/10010970";
                 } else if (tag === 'task_2') {
-                    url = links.task2_url || admin.task2_url || links.richads_url || admin.richads_url || "https://uplcm.com/4/10010966";
+                    url = links.task2_url || admin.task2_url || "https://uplcm.com/4/10010966";
                 } else if (tag === 'upgrade') {
-                    url = links.upgrade_url || admin.upgrade_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    url = links.upgrade_url || admin.upgrade_url || "https://uplcm.com/4/10010966";
                 } else if (tag === 'daily_claim') {
-                    url = links.daily_claim_url || admin.daily_claim_url || links.monetag_url || "https://uplcm.com/4/10010966";
+                    url = links.daily_claim_url || admin.daily_claim_url || "https://uplcm.com/4/10010970";
+                } else if (tag === 'swap') {
+                    url = links.swap_url || admin.swap_url || "https://uplcm.com/4/10010966";
                 } else {
-                    url = links.monetag_url || links.richads_url || "https://uplcm.com/4/10010966";
+                    url = links.mining_url || "https://uplcm.com/4/10010966";
                 }
                 return (url && typeof url === 'string') ? url.trim() : "https://uplcm.com/4/10010966";
             },
 
-            // ================= 🎬 ON-DEMAND HILLTOPADS VIDEO SLIDER =================
-            triggerHilltopVideoSlider: function() {
-                try {
-                    // Purana script remove karke naya inject karein
-                    const old = document.getElementById('hilltop-slider-call');
-                    if (old) old.remove();
-
-                    const s = document.createElement('script');
-                    s.id = 'hilltop-slider-call';
-                    s.src = "https://untimely-hello.com/bRX/V.szdCG/l-0GYmWFcD/yejmm9/urZoUilBkBPzTycQ1UNMDdQ/zDMDjLUGtZNEzgUP0BNfDoM/yxOEQ_";
-                    s.async = true;
-                    s.referrerPolicy = 'no-referrer-when-downgrade';
-                    document.body.appendChild(s);
-                } catch(e) {
-                    console.warn("Slider trigger error", e);
-                }
-            },
-
-            // ================= 🎬 100% GUARANTEED REWARDED VIDEO ENGINE =================
+            // 🚀 SIDHE CHROME / EXTERNAL BROWSER REDIRECT ENGINE (No In-App Frame)
             triggerDirectAd: function(targetTag) {
                 if (State.isVpnActive) {
                     this.triggerVpnLockdown();
@@ -3697,149 +3673,18 @@
                 }
 
                 const tag = targetTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
-                State.pendingActionTag = tag;
                 this.closeModals();
                 SoundFX.playClick();
 
-                this.launchRewardedVideoAd(tag);
-            },
+                // 1. External Chrome me direct link open karein
+                const adUrl = this.getAdUrl(tag);
+                this.openExternalUrl(adUrl);
 
-            fluidPlayerInstance: null,
-
-            launchRewardedVideoAd: function(tag) {
-                const modal = document.getElementById('modal-video-ad');
-                const badge = document.getElementById('rewarded-timer-badge');
-                const footerNote = document.getElementById('rewarded-footer-note');
-                const doneBtn = document.getElementById('rewarded-done-btn');
-                const container = document.getElementById('rewarded-player-container');
-
-                if (!modal || !container) return;
-
-                modal.classList.add('open');
-                doneBtn.style.display = 'none';
-                footerNote.style.display = 'block';
-                footerNote.innerText = "Please watch video to claim reward";
-                badge.innerText = "⏳ Loading Video...";
-                badge.style.background = "linear-gradient(135deg, #FFD200, #F59E0B)";
-                badge.style.color = "#000";
-
-                // 🚀 FIX 1: Har baar fresh clean video element recreate karein (No "HTML node not found" bug)
-                container.innerHTML = `
-                    <video id="richads-fluid-player" playsinline webkit-playsinline style="width: 100%; height: 100%;">
-                        <source src="https://cdn.fluidplayer.com/videos/valerian-1080p.mkv" type="video/mp4"/>
-                    </video>
-                `;
-
-                // Cache buster taaki har request fresh ho
-                const userUA = encodeURIComponent(navigator.userAgent);
-                const cb = Date.now();
-                const richadsVastTag = `https://16793.rtb.adp3.net/pre-roll-rp?pubid=996843&siteid=410763&ua=${userUA}&cb=${cb}`;
-
-                let timerStarted = false;
-
-                const startCountdown = () => {
-                    if (timerStarted) return;
-                    timerStarted = true;
-
-                    let timeLeft = 15;
-                    const timer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            badge.innerText = `⏳ Reward in: ${timeLeft}s`;
-                        } else {
-                            clearInterval(timer);
-                            badge.innerText = "✅ Reward Ready!";
-                            badge.style.background = "#10B981";
-                            badge.style.color = "#FFF";
-                            footerNote.style.display = 'none';
-                            doneBtn.style.display = 'block';
-
-                            // 15 Second poore hote hi direct reward
-                            SoundFX.playCoin();
-                            setTimeout(() => {
-                                this.closeVideoAdModal(true);
-                            }, 1200);
-                        }
-                    }, 1000);
-                };
-
-                // 🚀 FIX 2: Agar RichAds Error 101/900 de, toh black screen atkne ke bajaye fallback chalao
-                const triggerFallback = () => {
-                    console.warn("Switching to live sponsor stream...");
-                    container.innerHTML = `
-                        <iframe src="${State.admin.ad_links.monetag_url || 'https://uplcm.com/4/10010970'}" style="width:100%; height:100%; border:none; background:#FFF;" allow="autoplay"></iframe>
-                    `;
-                    badge.innerText = "🎬 Sponsor Playing";
-                    startCountdown();
-                };
-
-                // Fluid Player Setup
-                try {
-                    this.fluidPlayerInstance = fluidPlayer('richads-fluid-player', {
-                        layoutControls: {
-                            fillToContainer: true,
-                            autoPlay: true,
-                            mute: true,
-                            playButtonShowing: false,
-                            controlBar: {
-                                autoHide: true
-                            }
-                        },
-                        vastOptions: {
-                            adList: [
-                                {
-                                    roll: 'preRoll',
-                                    vastTag: richadsVastTag,
-                                    timer: 15
-                                }
-                            ],
-                            vastAdvanced: {
-                                vastLoadedCallback: () => {
-                                    badge.innerText = "🎬 Ad Playing";
-                                    startCountdown();
-                                },
-                                noVastVideoCallback: () => {
-                                    triggerFallback();
-                                },
-                                vastErrorCallback: () => {
-                                    triggerFallback();
-                                }
-                            }
-                        }
-                    });
-
-                    // Safety Trigger (Agar 3.5s tak video load na ho toh user ko freeze na rakhe)
+                // 2. Instant reward deliver karein (Mining ke alawa baki sabhi me)
+                if (tag !== 'mining') {
                     setTimeout(() => {
-                        if (!timerStarted) {
-                            triggerFallback();
-                        }
-                    }, 3500);
-
-                } catch (e) {
-                    console.error("FluidPlayer Init Exception:", e);
-                    triggerFallback();
-                }
-            },
-
-            closeVideoAdModal: function(giveReward = false) {
-                const modal = document.getElementById('modal-video-ad');
-                const container = document.getElementById('rewarded-player-container');
-
-                if (modal) modal.classList.remove('open');
-
-                if (this.fluidPlayerInstance) {
-                    try {
-                        this.fluidPlayerInstance.destroy();
-                    } catch (e) {}
-                    this.fluidPlayerInstance = null;
-                }
-
-                // Stop audio/video playback
-                if (container) container.innerHTML = '';
-
-                if (giveReward) {
-                    const currentTag = State.pendingActionTag || (State.pendingAdReward ? State.pendingAdReward.type : "mining");
-                    window.onNativeAdRewarded(currentTag);
+                        window.onNativeAdRewarded(tag);
+                    }, 500);
                 }
             },
 
@@ -4295,23 +4140,17 @@
                 SoundFX.playUpgrade();
                 App.triggerUpgradeVFX();
                 App.toast(`🎉 Machine Rig Upgraded to Level ${nextLevel}!`, "success");
-                // 🎬 Upgrade ke baad video slider
-                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
             // 2. Mining Power-Up Handler
             else if (rawTarget === 'mining' || (reward && reward.type === 'mining')) {
                 const reqMiningAds = State.admin.mining.ads_required;
                 if (State.miningEndTime <= Date.now() && State.miningAdsWatched < reqMiningAds) {
                     await runTransaction(ref(database, `users/${State.userId}/miningAdsWatched`), (curr) => {
-                        const updated = (parseInt(curr) || 0) + 1;
-                        // Agar yeh last ad tha (jaise 3/3), toh video slider trigger karo
-                        if (updated >= reqMiningAds) {
-                            setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
-                        }
-                        return updated;
+                        return (parseInt(curr) || 0) + 1;
                     });
                     SoundFX.playCoin();
                     App.toast("Direct Sponsor Verified! Power step added.", "success");
+                    App.updateMiningUI();
                 }
             }
             // 3. Currency Swap Handler
@@ -4334,8 +4173,6 @@
                 await App.creditCoins(coins, `Daily Streak Day ${day} Bonus`);
                 SoundFX.playSuccess();
                 App.toast(`🎉 Day ${day} Streak Claimed (+${coins} Coins)!`, "success");
-                // 🎬 Daily Bonus lene ke baad video slider
-                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
             // 5. Tasks Page Ad Rewards (30-Minute Cooldown Recorded)
             else if ((rawTarget && typeof rawTarget === 'string' && rawTarget.startsWith('task_')) || (reward && reward.type === 'ad_task')) {
@@ -4350,8 +4187,6 @@
 
                 await update(ref(database, `users/${State.userId}`), updateObj);
                 await App.creditCoins(amount, title);
-                // 🎬 Task complete hone ke baad video slider
-                setTimeout(() => App.triggerHilltopVideoSlider(), 1000);
             }
         };
 
