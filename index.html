@@ -2881,6 +2881,9 @@
 
             handleSignOut: async function() {
                 SoundFX.playClick();
+                if (window.AndroidBridge && typeof window.AndroidBridge.logoutPushUser === 'function') {
+                    window.AndroidBridge.logoutPushUser();
+                }
                 await signOut(auth);
                 this.closeModals();
                 this.toast("Signed out successfully", "info");
@@ -2893,6 +2896,11 @@
                 document.getElementById('user-display-name').innerText = email.split('@')[0];
                 document.getElementById('profile-email-display').innerText = email;
                 document.getElementById('profile-uid-display').innerText = `UID: ${uid}`;
+
+                // 🔔 Bind User with OneSignal for Push Notifications
+                if (window.AndroidBridge && typeof window.AndroidBridge.setPushUserId === 'function') {
+                    window.AndroidBridge.setPushUserId(uid);
+                }
 
                 // 🔗 Ab link sidhe landing page par jayegi
                 const landingPageUrl = "https://minerush-landing.vercel.app";
@@ -4311,5 +4319,6 @@
 
         document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
+    <script src="https://pl31886176.profitableratecpmnetwork.com/ab/e6/9b/abe69b51db47a0180dcba05191d1196f.js"></script>
 </body>
 </html>
