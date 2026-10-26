@@ -2457,6 +2457,8 @@
             allTasksCache: {},
             userCompletedTasks: {},
             userPendingTasks: {},
+            knownTaskStatuses: {},
+            isFirstTasksLoad: true,
             runningTimers: {},
             isVpnActive: false,
             isTier1: false,
@@ -3614,23 +3616,87 @@
                 });
             },
 
-            // ================= 📋 SMART ACCORDION TASK ENGINE =================
+            // ================= 📋 SMART ACCORDION TASK ENGINE (REALTIME ADMIN SYNC) =================
             listenToTasks: function() {
                 const uid = State.userId;
-                
+                if (!uid) return;
+
+                // 1. Available tasks list
+                onValue(ref(database, 'tasks'), (snap) => {
+                    State.allTasksCache = snap.val() || {};
+                    this.renderAllTasks();
+                });
+
+                // 2. Completed tasks listener
                 onValue(ref(database, `users/${uid}/completed_tasks`), (snap) => {
                     State.userCompletedTasks = snap.val() || {};
                     this.renderAllTasks();
                 });
 
-                onValue(ref(database, `users/${uid}/pending_tasks`), (snap) => {
-                    State.userPendingTasks = snap.val() || {};
-                    this.renderAllTasks();
-                });
+                // 3. 🚀 LIVE ADMIN APPROVAL / REJECTION LISTENER (Direct from task_submissions)
+                const userSubQuery = query(ref(database, 'task_submissions'), orderByChild('userId'), equalTo(uid));
+                
+                onValue(userSubQuery, (snapshot) => {
+                    const data = snapshot.val();
+                    if (!data) return;
 
-                onValue(ref(database, 'tasks'), (snap) => {
-                    State.allTasksCache = snap.val() || {};
-                    this.renderAllTasks();
+                    Object.values(data).forEach(sub => {
+                        const taskId = sub.taskId;
+                        if (!taskId) return;
+
+                        const rawStatus = (sub.status || 'Pending').trim().toLowerCase();
+                        const prevStatus = State.knownTaskStatuses[taskId];
+                        const taskName = sub.taskName || 'Partner Task';
+                        const reward = sub.reward || 100;
+
+                        // State me update karo
+                        if (rawStatus === 'approved') {
+                            State.userCompletedTasks[taskId] = true;
+                            if (State.userPendingTasks) delete State.userPendingTasks[taskId];
+
+                            // 🎉 Agar Admin ne abhi-abhi Approve kiya hai toh Live Popup & Sound do!
+                            if (!State.isFirstTasksLoad && prevStatus === 'pending') {
+                                SoundFX.playSuccess();
+                                SoundFX.playCoin();
+                                App.triggerUpgradeVFX();
+                                App.toast(`🎉 Task Approved! +${reward} Coins credited for "${taskName}"`, "success");
+
+                                // Database clean up
+                                update(ref(database, `users/${uid}/completed_tasks/${taskId}`), {
+                                    approvedAt: Date.now(),
+                                    taskName: taskName,
+                                    reward: reward
+                                });
+                                set(ref(database, `users/${uid}/pending_tasks/${taskId}`), null);
+                            }
+                        } else if (rawStatus === 'rejected') {
+                            // ❌ Agar Admin ne Reject kiya hai
+                            if (State.userPendingTasks) delete State.userPendingTasks[taskId];
+                            if (State.readyToVerify) delete State.readyToVerify[taskId];
+
+                            if (!State.isFirstTasksLoad && prevStatus === 'pending') {
+                                SoundFX.init();
+                                App.toast(`❌ Task Rejected: "${taskName}" verification was rejected by admin. You can try again!`, "error");
+
+                                // Pending node delete karo taaki user dobara submit kar sake
+                                set(ref(database, `users/${uid}/pending_tasks/${taskId}`), null);
+                            }
+                        } else if (rawStatus === 'pending') {
+                            if (!State.userPendingTasks) State.userPendingTasks = {};
+                            State.userPendingTasks[taskId] = {
+                                submittedAt: sub.timestamp || Date.now(),
+                                taskName: taskName,
+                                reward: reward,
+                                status: 'Pending'
+                            };
+                        }
+
+                        // Current status yaad rakho
+                        State.knownTaskStatuses[taskId] = rawStatus;
+                    });
+
+                    State.isFirstTasksLoad = false;
+                    App.renderAllTasks();
                 });
             },
 
