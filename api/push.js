@@ -20,30 +20,59 @@ export default async function handler(req, res) {
   const DEFAULT_KEY = k1 + k2;
 
   // 🧪 BROWSER LIVE SELF-TEST (Jab aap browser me link open karein toh ye test push bhejega)
+ // 🧪 BROWSER LIVE SELF-TEST
   if (req.method === 'GET') {
-    try {
-      const testResponse = await fetch("https://api.onesignal.com/notifications?c=push", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-          "Authorization": `Key ${DEFAULT_KEY}`
-        },
-        body: JSON.stringify({
-          app_id: ONESIGNAL_APP_ID,
-          included_segments: ["Subscribed Users"],
-          headings: { en: "⚡ MineRush Live Test" },
-          contents: { en: "Vercel Push Relay is 100% Working!" }
-        })
-      });
-      const testJson = await testResponse.json();
-      return res.status(200).json({
-        relay_status: "Online ✅",
-        http_code: testResponse.status,
-        onesignal_result: testJson
-      });
-    } catch(e) {
-      return res.status(500).json({ error: e.message });
+    // Agar URL me ?key=os_v2_app_... pass ki ho toh wahi use kare, warna default
+    const testKey = req.query.key ? req.query.key.trim() : DEFAULT_KEY;
+
+    // Both authorization header formats (Key and Basic)
+    const formats = [
+      `Key ${testKey}`,
+      `Basic ${testKey}`
+    ];
+
+    let testResults = [];
+
+    for (const authHeader of formats) {
+      try {
+        const testResponse = await fetch("https://api.onesignal.com/notifications?c=push", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": authHeader
+          },
+          body: JSON.stringify({
+            app_id: ONESIGNAL_APP_ID,
+            included_segments: ["Subscribed Users"],
+            headings: { en: "⚡ MineRush Test" },
+            contents: { en: "Notification is working perfectly!" }
+          })
+        });
+        const testJson = await testResponse.json();
+        testResults.push({
+          auth_used: authHeader.slice(0, 10) + "...",
+          status: testResponse.status,
+          response: testJson
+        });
+
+        // Agar deliver ho gaya toh turant success return karo
+        if (testResponse.status === 200 && testJson.id) {
+          return res.status(200).json({
+            message: "🎉 Success! Notification delivered to your phone!",
+            auth_working: authHeader.slice(0, 10),
+            onesignal_response: testJson
+          });
+        }
+      } catch(e) {
+        testResults.push({ auth_used: authHeader.slice(0, 10), error: e.message });
+      }
     }
+
+    return res.status(200).json({
+      relay_status: "Online ✅",
+      note: "Key authorization failed. Please generate a fresh key in OneSignal and test with ?key=YOUR_NEW_KEY",
+      debug_trials: testResults
+    });
   }
 
   if (req.method !== 'POST') {
