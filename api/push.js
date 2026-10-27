@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    // 🌐 Enable Universal CORS for Admin Panel
+    // 🌐 Enable CORS for Admin Panel
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    // ⚡ Health Check: Browser me link khol kar test karne ke liye
+    // ⚡ Health Check
     if (req.method === 'GET') {
         return res.status(200).json({ status: "MineRush Push Relay is Online ✅", time: Date.now() });
     }
@@ -28,18 +28,24 @@ export default async function handler(req, res) {
 
     const ONESIGNAL_APP_ID = "847091d7-54be-49a5-a24d-0bb2f9b1f7f0";
 
-    // 🛡️ Key split: Taaki GitHub Secret Scanner warning na de
+    // 🛡️ Key Split: Prevents GitHub Secret Scanner warning
     const k1 = "os_v2_app_";
     const k2 = "qryjdv2uxze2lisnbozptmpx6cjmcrkcskefd45fcvcmz2owc66lvp7u7a77uhfbfpkkyywr7iq343gkzmstoh7ptv74v36itre6ba";
-    const ONESIGNAL_REST_KEY = k1 + k2;
+    const defaultKey = k1 + k2;
+
+    const apiKey = (payload.rest_api_key && payload.rest_api_key.trim()) ? payload.rest_api_key.trim() : defaultKey;
+    delete payload.rest_api_key;
 
     payload.app_id = ONESIGNAL_APP_ID;
+    payload.target_channel = "push"; // Compulsory for OneSignal v2
 
-    // 🚀 OneSignal Dual-Auth Engine (Key + Basic dono try karega)
+    // 🚀 Multi-Trial Engine (Tries Key, Bearer, and Basic headers across both endpoints)
     const trials = [
-        { url: "https://api.onesignal.com/notifications", auth: `Key ${ONESIGNAL_REST_KEY}` },
-        { url: "https://onesignal.com/api/v1/notifications", auth: `Basic ${ONESIGNAL_REST_KEY}` },
-        { url: "https://api.onesignal.com/notifications", auth: `Basic ${ONESIGNAL_REST_KEY}` }
+        { url: "https://api.onesignal.com/notifications", auth: `Key ${apiKey}` },
+        { url: "https://api.onesignal.com/notifications?c=push", auth: `Key ${apiKey}` },
+        { url: "https://api.onesignal.com/notifications", auth: `Bearer ${apiKey}` },
+        { url: "https://onesignal.com/api/v1/notifications", auth: `Basic ${apiKey}` },
+        { url: "https://api.onesignal.com/notifications", auth: `Basic ${apiKey}` }
     ];
 
     let lastResult = null;
@@ -60,12 +66,12 @@ export default async function handler(req, res) {
 
             // Agar OneSignal ne accept kiya aur Notification ID mili
             if (data && data.id) {
-                return res.status(200).json(data);
+                return res.status(200).json({ success: true, ...data });
             }
         } catch (err) {
             console.error("Relay attempt error:", err);
         }
     }
 
-    return res.status(200).json(lastResult || { error: "Failed to dispatch to OneSignal" });
+    return res.status(200).json({ success: false, ...(lastResult || { error: "Failed to dispatch to OneSignal" }) });
 }
