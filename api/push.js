@@ -12,12 +12,11 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // 🛡️ Key split: Prevents GitHub Secret Scanner warning
   const ONESIGNAL_APP_ID = "847091d7-54be-49a5-a24d-0bb2f9b1f7f0";
 
-  // 🛡️ Key split: Prevents GitHub Secret Scanner warning
-  const k1 = "os_v2_app_";
-  const k2 = "os_v2_app_qryjdv2uxze2lisnbozptmpx6cjmcrkcxskefd45fcvcmz2owc63rt4nvhzifeznbeaiewrze576w6wauvg7aynrcspt7belmddh2gy";
-  const DEFAULT_KEY = k1 + k2;
+  // 🔑 Step 1 me copy ki hui nayi MasterKey yaha paste karein:
+  const DEFAULT_KEY = "os_v2_app_qryjdv2uxze2lisnbozptmpx6agyogm65iuezrmngxo344x4wvs4cok77dijwfxp53j7dlb4lrzsyo5yzc5ibv53l2cs3wkri2spufa";
 
   // 🧪 BROWSER LIVE SELF-TEST (Jab aap browser me link open karein toh ye test push bhejega)
  // 🧪 BROWSER LIVE SELF-TEST
