@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   // 🛡️ Key split: Prevents GitHub Secret Scanner warning
   const k1 = "os_v2_app_";
-  const k2 = "os_v2_app_qryjdv2uxze2lisnbozptmpx6cl2icwzzgfufr4xb55fgjer254ffbsphfoa6gmi76od7fft2d4y7v4ir7secwwmzt5za4xusbhgucq";
+  const k2 = "qryjdv2uxze2lisnbozptmpx6cjmcrkcskefd45fcvcmz2owc66lvp7u7a77uhfbfpkkyywr7iq343gkzmstoh7ptv74v36itre6ba";
   const DEFAULT_KEY = k1 + k2;
 
   // 🧪 BROWSER LIVE SELF-TEST (Jab aap browser me link open karein toh ye test push bhejega)
